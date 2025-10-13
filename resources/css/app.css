@@ -2,10 +2,160 @@
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../**/*.vue";
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+@layer base {
+    :root {
+        --color-black: #000000;
+        --color-custom-yellow: #FFD700;
+        --color-primary-600: #2b6cb0;
+        --color-primary-700: #2c5282;
+
+        --color-warning-50: #fff8f1;
+        --color-warning-100: #feecdc;
+        --color-warning-200: #fcd9bd;
+        --color-warning-300: #fdba8c;
+        --color-warning-400: #ff8a4c;
+        --color-warning-500: #ff5a1f;
+        --color-warning-600: #d03801;
+        --color-warning-700: #b43403;
+        --color-warning-800: #8a2c0d;
+        --color-warning-900: #73230d;
+
+        --color-danger-100: #fff5f5;
+        --color-danger-200: #fed7d7;
+        --color-danger-300: #feb2b2;
+        --color-danger-400: #fc8181;
+        --color-danger-500: #f56565;
+        --color-danger-600: #e53e3e;
+        --color-danger-700: #c53030;
+        --color-danger-800: #9b2c2c;
+        --color-danger-900: #742a2a;
+
+        --color-neutral-50: #f9fafb;
+        --color-neutral-100: #f4f5f7;
+        --color-neutral-200: #e5e7eb;
+        --color-neutral-300: #d2d6dc;
+        --color-neutral-400: #9fa6b2;
+        --color-neutral-500: #6b7280;
+        --color-neutral-600: #4b5563;
+        --color-neutral-700: #374151;
+        --color-neutral-800: #252f3f;
+        --color-neutral-900: #161e2e;
+
+        --color-indigo-100: #e6e8ff;
+        --color-indigo-300: #b2b7ff;
+        --color-indigo-400: #7886d7;
+        --color-indigo-500: #6574cd;
+        --color-indigo-600: #5661b3;
+        --color-indigo-800: #2f365f;
+        --color-indigo-900: #191e38;
+
+        --font-sans: Figtree, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+}
+
+@layer utilities {
+    .bg-black { background-color: var(--color-black); }
+    .text-black { color: var(--color-black); }
+
+    .bg-custom-yellow { background-color: var(--color-custom-yellow); }
+    .text-custom-yellow { color: var(--color-custom-yellow); }
+
+    .bg-primary-600 { background-color: var(--color-primary-600); }
+    .text-primary-600 { color: var(--color-primary-600); }
+    .bg-primary-700 { background-color: var(--color-primary-700); }
+    .text-primary-700 { color: var(--color-primary-700); }
+
+    .bg-warning-50 { background-color: var(--color-warning-50); }
+    .text-warning-50 { color: var(--color-warning-50); }
+    .bg-warning-100 { background-color: var(--color-warning-100); }
+    .text-warning-100 { color: var(--color-warning-100); }
+    .bg-warning-200 { background-color: var(--color-warning-200); }
+    .text-warning-200 { color: var(--color-warning-200); }
+    .bg-warning-300 { background-color: var(--color-warning-300); }
+    .text-warning-300 { color: var(--color-warning-300); }
+    .bg-warning-400 { background-color: var(--color-warning-400); }
+    .text-warning-400 { color: var(--color-warning-400); }
+    .bg-warning-500 { background-color: var(--color-warning-500); }
+    .text-warning-500 { color: var(--color-warning-500); }
+    .bg-warning-600 { background-color: var(--color-warning-600); }
+    .text-warning-600 { color: var(--color-warning-600); }
+    .bg-warning-700 { background-color: var(--color-warning-700); }
+    .text-warning-700 { color: var(--color-warning-700); }
+    .bg-warning-800 { background-color: var(--color-warning-800); }
+    .text-warning-800 { color: var(--color-warning-800); }
+    .bg-warning-900 { background-color: var(--color-warning-900); }
+    .text-warning-900 { color: var(--color-warning-900); }
+
+    .bg-danger-100 { background-color: var(--color-danger-100); }
+    .text-danger-100 { color: var(--color-danger-100); }
+    .bg-danger-200 { background-color: var(--color-danger-200); }
+    .text-danger-200 { color: var(--color-danger-200); }
+    .bg-danger-300 { background-color: var(--color-danger-300); }
+    .text-danger-300 { color: var(--color-danger-300); }
+    .bg-danger-400 { background-color: var(--color-danger-400); }
+    .text-danger-400 { color: var(--color-danger-400); }
+    .bg-danger-500 { background-color: var(--color-danger-500); }
+    .text-danger-500 { color: var(--color-danger-500); }
+    .bg-danger-600 { background-color: var(--color-danger-600); }
+    .text-danger-600 { color: var(--color-danger-600); }
+    .bg-danger-700 { background-color: var(--color-danger-700); }
+    .text-danger-700 { color: var(--color-danger-700); }
+    .bg-danger-800 { background-color: var(--color-danger-800); }
+    .text-danger-800 { color: var(--color-danger-800); }
+    .bg-danger-900 { background-color: var(--color-danger-900); }
+    .text-danger-900 { color: var(--color-danger-900); }
+
+    .bg-neutral-50 { background-color: var(--color-neutral-50); }
+    .text-neutral-50 { color: var(--color-neutral-50); }
+    .bg-neutral-100 { background-color: var(--color-neutral-100); }
+    .text-neutral-100 { color: var(--color-neutral-100); }
+    .bg-neutral-200 { background-color: var(--color-neutral-200); }
+    .text-neutral-200 { color: var(--color-neutral-200); }
+    .bg-neutral-300 { background-color: var(--color-neutral-300); }
+    .text-neutral-300 { color: var(--color-neutral-300); }
+    .bg-neutral-400 { background-color: var(--color-neutral-400); }
+    .text-neutral-400 { color: var(--color-neutral-400); }
+    .bg-neutral-500 { background-color: var(--color-neutral-500); }
+    .text-neutral-500 { color: var(--color-neutral-500); }
+    .bg-neutral-600 { background-color: var(--color-neutral-600); }
+    .text-neutral-600 { color: var(--color-neutral-600); }
+    .bg-neutral-700 { background-color: var(--color-neutral-700); }
+    .text-neutral-700 { color: var(--color-neutral-700); }
+    .bg-neutral-800 { background-color: var(--color-neutral-800); }
+    .text-neutral-800 { color: var(--color-neutral-800); }
+    .bg-neutral-900 { background-color: var(--color-neutral-900); }
+    .text-neutral-900 { color: var(--color-neutral-900); }
+
+    .bg-indigo-100 { background-color: var(--color-indigo-100); }
+    .text-indigo-100 { color: var(--color-indigo-100); }
+    .bg-indigo-300 { background-color: var(--color-indigo-300); }
+    .text-indigo-300 { color: var(--color-indigo-300); }
+    .bg-indigo-400 { background-color: var(--color-indigo-400); }
+    .text-indigo-400 { color: var(--color-indigo-400); }
+    .bg-indigo-500 { background-color: var(--color-indigo-500); }
+    .text-indigo-500 { color: var(--color-indigo-500); }
+    .bg-indigo-600 { background-color: var(--color-indigo-600); }
+    .text-indigo-600 { color: var(--color-indigo-600); }
+    .bg-indigo-800 { background-color: var(--color-indigo-800); }
+    .text-indigo-800 { color: var(--color-indigo-800); }
+    .bg-indigo-900 { background-color: var(--color-indigo-900); }
+    .text-indigo-900 { color: var(--color-indigo-900); }
+
+    .font-sans { font-family: var(--font-sans); }
+    .animate-spin-slow { animation: spin-slow 7s linear infinite; }
+}
+
+@keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (min-width: 2200px) {
+    .screen-3xl\:block{
+        display: block;
+    }
 }

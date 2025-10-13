@@ -16,6 +16,8 @@ return [
     'defaults' => [
         'guard' => env('AUTH_GUARD', 'web'),
         'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'max_attempts' => env('AUTH_MAX_ATTEMPTS', 3),
+        'throttle_seconds' => env('AUTH_THROTTLE_SECONDS', 120),
     ],
 
     /*
@@ -94,7 +96,7 @@ return [
         'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
+            'expire' => env('AUTH_PASSWORD_RESET_EXPIRE', 60),
             'throttle' => 60,
         ],
     ],
@@ -104,12 +106,25 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
-    | Here you may define the number of seconds before a password confirmation
+    | Here you may define the amount of seconds before a password confirmation
     | window expires and users are asked to re-enter their password via the
     | confirmation screen. By default, the timeout lasts for three hours.
     |
     */
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
+
+    /*|--------------------------------------------------------------------------
+    | Email Verification
+    |--------------------------------------------------------------------------
+    || This option controls the expiration time for signed email verification
+    | URLs. The default is 60 minutes, but you can change it to suit your
+    | application's needs. After this time, the verification link will
+    | no longer be valid.
+    |*/
+
+    'verification' => [
+        'expire' => env('AUTH_VERIFICATION_EXPIRE', 60),
+    ],
 
 ];

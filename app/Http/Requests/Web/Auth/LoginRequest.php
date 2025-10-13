@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Requests\Web\Auth;
+
+use App\Rules\EmailOrUsername;
+use Illuminate\Foundation\Http\FormRequest;
+
+class LoginRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return !auth('web')->check();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'email-username' => ['required', 'string', 'min:6', 'max:140', new EmailOrUsername],
+            'password' => ['required', 'string', 'min:8', 'max:20'],
+        ];
+    }
+}

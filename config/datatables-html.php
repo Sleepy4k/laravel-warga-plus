@@ -5,7 +5,7 @@ return [
      * DataTables JavaScript global namespace.
      */
 
-    'namespace' => 'LaravelDataTables',
+    'namespace' => 'HIPMIDataTables',
 
     /*
      * Default table attributes when generating the table.

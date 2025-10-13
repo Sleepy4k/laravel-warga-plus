@@ -37,7 +37,7 @@ return [
      * Snappy package: barryvdh/laravel-snappy
      * Excel package: maatwebsite/excel
      */
-    'pdf_generator' => 'snappy',
+    'pdf_generator' => 'excel',
 
     /*
      * Snappy PDF options.
@@ -57,7 +57,7 @@ return [
      * Default html builder parameters.
      */
     'parameters' => [
-        'dom' => 'Bfrtip',
+        'dom' => 'lBfrtip',
         'order' => [[0, 'desc']],
         'buttons' => [
             'excel',
@@ -86,6 +86,6 @@ return [
         /*
          * Default DOM to generate when not set.
          */
-        'dom' => 'Bfrtip',
+        'dom' => 'lBfrtip',
     ],
 ];

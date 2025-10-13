@@ -1,0 +1,67 @@
+/* ----------------------------------------------------- */
+/* Basic Scrollbar Styles (WebKit Browsers)             */
+/* Applies to most modern browsers except Firefox & IE  */
+/* ----------------------------------------------------- */
+
+/* This targets the entire scrollbar */
+::-webkit-scrollbar {
+  width: 10px; /* Adjust scrollbar width */
+  height: 10px; /* Adjust scrollbar height for horizontal scrollbars */
+}
+
+/* The track (the area the thumb slides on) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Make the track transparent */
+  border-radius: 5px; /* Optional: subtle rounding for the track */
+}
+
+/* The thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark grey */
+  border-radius: 5px; /* Rounded corners for the thumb */
+  border: 2px solid transparent; /* Optional: creates a subtle gap around the thumb */
+  background-clip: padding-box; /* Ensures border doesn't consume background */
+}
+
+/* When the scrollbar is hovered */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.75); /* Darker on hover */
+}
+
+/* When the scrollbar is active (being dragged) */
+::-webkit-scrollbar-thumb:active {
+  background-color: rgba(0, 0, 0, 1); /* Even darker when active */
+}
+
+/* ----------------------------------------------------- */
+/* Advanced Styling / Specific Scenarios                 */
+/* ----------------------------------------------------- */
+
+/* 1. For Dark Mode / Dark Backgrounds */
+/* You would typically apply these to a body with a 'dark-mode' class
+   or similar, or within a component that has a dark background. */
+.dark-mode ::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent light grey */
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.75); /* Lighter on hover */
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:active {
+  background-color: rgba(255, 255, 255, 1); /* Even lighter when active */
+}
+
+/* 3. Firefox Specific (Limited Styling) */
+/* Firefox has different, more limited properties */
+/* These don't offer the same level of customization as Webkit */
+
+body {
+  scrollbar-width: thin; /* 'auto' | 'thin' | 'none' */
+  scrollbar-color: rgba(0, 0, 0, 0.5) transparent; /* thumb color track color */
+}
+
+/* For dark mode in Firefox */
+.dark-mode body {
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}

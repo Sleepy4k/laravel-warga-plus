@@ -1,8 +1,5 @@
 <?php
 
-// use Spatie\Csp\Directive;
-// use Spatie\Csp\Keyword;
-
 return [
 
     /*
@@ -10,7 +7,10 @@ return [
      * any class that implements `Spatie\Csp\Preset`
      */
     'presets' => [
-        Spatie\Csp\Presets\Basic::class,
+        App\Presets\BasicPolicy::class,
+        App\Presets\BootstrapCDNPolicy::class,
+        App\Presets\GoogleFontStaticPolicy::class,
+        App\Presets\GoogleFontApiPolicy::class,
     ],
 
     /**
@@ -54,10 +54,10 @@ return [
     /*
      * The class responsible for generating the nonces used in inline tags and headers.
      */
-    'nonce_generator' => Spatie\Csp\Nonce\RandomString::class,
+    'nonce_generator' => App\Support\CspRandomString::class,
 
     /*
-     * Set false to disable automatic nonce generation and handling.
+     * Set to false to disable automatic nonce generation and handling.
      * This is useful when you want to use 'unsafe-inline' for scripts/styles
      * and cannot add inline nonces.
      * Note that this will make your CSP policy less secure.

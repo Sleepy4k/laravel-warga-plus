@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,11 +12,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $isMustSilent = !file_exists(storage_path('.installed'));
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        Artisan::call('optimize:clear', [
+            '--no-interaction' => true,
+            '--quiet' => $isMustSilent,
         ]);
+
+        $this->call([
+            SettingSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            MenuMetaSeeder::class,
+            MenuSeeder::class,
+            NavbarMenuMetaSeeder::class,
+            NavbarMenuSeeder::class,
+            UserSeeder::class,
+            UserPersonalDataSeeder::class,
+            UserAgreementSeeder::class,
+            SitemapDataSeeder::class,
+            ShortcutSeeder::class,
+            LetterClassificationSeeder::class,
+            LetterStatusSeeder::class,
+            ActivityCategorySeeder::class,
+            DocumentCategorySeeder::class,
+        ], $isMustSilent);
     }
 }
