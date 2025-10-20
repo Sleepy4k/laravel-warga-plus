@@ -16,18 +16,18 @@ class SettingFactory extends Factory
      */
     public function definition(): array
     {
-        $defaultLogo = asset('hipmi.png', (bool) !config('app.debug', false));
+        $defaultLogo = asset('warga-plus.png', (bool) !config('app.debug', false));
 
         $data = [
             [
                 'group' => 'app',
                 'key' => 'name',
-                'value' => config('app.name', 'HIPMI TUP CMS'),
+                'value' => config('app.name', 'WARGA PLUS'),
             ],
             [
                 'group' => 'app',
                 'key' => 'description',
-                'value' => 'Website resmi Himpunan Pengusaha Muda Indonesia (HIPMI) PT Telkom University Purwokerto.',
+                'value' => 'Sistem Informasi Manajemen Warga dan RT berbasis web.',
             ],
             [
                 'group' => 'app',
@@ -51,22 +51,22 @@ class SettingFactory extends Factory
             [
                 'group' => 'seo',
                 'key' => 'title',
-                'value' => config('app.name', 'HIPMI TUP CMS'),
+                'value' => config('app.name', 'WARGA PLUS'),
             ],
             [
                 'group' => 'seo',
                 'key' => 'description',
-                'value' => 'Website resmi Himpunan Pengusaha Muda Indonesia (HIPMI) PT Telkom University Purwokerto.',
+                'value' => 'Sistem Informasi Manajemen Warga dan RT berbasis web.',
             ],
             [
                 'group' => 'seo',
                 'key' => 'keywords',
-                'value' => 'cms, hipmi, hipmi pt, pt, tup, telkom, university, universitas, telkom university, universitas telkom, purwokerto, banyumas, bpc, hipmi bpc, jawa tengah, hipmi jawa tengah, hipmi jateng',
+                'value' => 'warga, rt, sistem informasi, manajemen warga, web',
             ],
             [
                 'group' => 'seo',
                 'key' => 'author',
-                'value' => 'HIPMI TUP',
+                'value' => 'WARGA PLUS',
             ],
             [
                 'group' => 'seo',
@@ -83,7 +83,7 @@ class SettingFactory extends Factory
             [
                 'group' => 'sidebar',
                 'key' => 'name',
-                'value' => 'HIPMI CMS',
+                'value' => 'WARGA PLUS',
             ],
             [
                 'group' => 'sidebar',
@@ -101,35 +101,23 @@ class SettingFactory extends Factory
             [
                 'group' => 'footer',
                 'key' => 'copyright',
-                'value' => 'Research and Technology Division',
+                'value' => 'Telkom University Purwokerto',
             ],
             [
                 'group' => 'footer',
                 'key' => 'copyright_url',
-                'value' => 'https://github.com/hipmi-pt-tup',
+                'value' => 'https://purwokerto.telkomuniversity.ac.id',
             ],
             [
                 'group' => 'footer',
                 'key' => 'support_title',
-                'value' => 'Support',
+                'value' => 'About Us',
                 'is_required' => false,
             ],
             [
                 'group' => 'footer',
                 'key' => 'support_url',
-                'value' => 'https://github.com/hipmi-pt-tup/bantuan-pengguna',
-                'is_required' => false,
-            ],
-            [
-                'group' => 'footer',
-                'key' => 'landing_page_title',
-                'value' => 'Landing Page',
-                'is_required' => false,
-            ],
-            [
-                'group' => 'footer',
-                'key' => 'landing_page_url',
-                'value' => 'https://hipmi-tup.com',
+                'value' => 'https://purwokerto.telkomuniversity.ac.id',
                 'is_required' => false,
             ],
         ];

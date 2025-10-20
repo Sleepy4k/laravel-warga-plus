@@ -29,51 +29,6 @@ class MenuMetaFactory extends Factory
                 'active_routes' => 'dashboard.index',
             ],
             [
-                'permissions'   => ['product.menu', 'article.menu', 'activity.menu'],
-            ],
-            [
-                'permissions'   => ['product.menu'],
-                'icon'          => 'box',
-            ],
-            [
-                'route'         => 'dashboard.product.index',
-                'permissions'   => ['product.index'],
-                'active_routes' => 'dashboard.product.index',
-            ],
-            [
-                'route'         => 'dashboard.product.category.index',
-                'permissions'   => ['product.category.index'],
-                'active_routes' => 'dashboard.product.category.index',
-            ],
-            [
-                'permissions'   => ['article.menu'],
-                'icon'          => 'detail',
-            ],
-            [
-                'route'         => 'dashboard.article.index',
-                'permissions'   => ['article.index'],
-                'active_routes' => 'dashboard.article.index',
-            ],
-            [
-                'route'         => 'dashboard.article.category.index',
-                'permissions'   => ['article.category.index'],
-                'active_routes' => 'dashboard.article.category.index',
-            ],
-            [
-                'permissions'   => ['activity.menu'],
-                'icon'          => 'calendar',
-            ],
-            [
-                'route'         => 'dashboard.activity.index',
-                'permissions'   => ['activity.index'],
-                'active_routes' => 'dashboard.activity.index',
-            ],
-            [
-                'route'         => 'dashboard.activity.category.index',
-                'permissions'   => ['activity.category.index'],
-                'active_routes' => 'dashboard.activity.category.index',
-            ],
-            [
                 'permissions'   => ['letter_transaction.menu', 'book_agenda.menu', 'document.menu', 'letter_references.menu'],
             ],
             [

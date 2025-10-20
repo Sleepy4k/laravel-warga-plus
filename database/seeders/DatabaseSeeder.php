@@ -34,7 +34,6 @@ class DatabaseSeeder extends Seeder
             ShortcutSeeder::class,
             LetterClassificationSeeder::class,
             LetterStatusSeeder::class,
-            ActivityCategorySeeder::class,
             DocumentCategorySeeder::class,
         ], $isMustSilent);
     }

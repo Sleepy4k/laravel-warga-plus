@@ -19,10 +19,6 @@ class MenuFactory extends Factory
     {
         $parentMenus = [
             'dashboard'             => ['name' => 'Dashboard'],
-            'spacer_management'     => ['name' => 'Management'],
-            'product'               => ['name' => 'Products'],
-            'article'               => ['name' => 'Articles'],
-            'activity'              => ['name' => 'Activities'],
             'spacer_secretary'      => ['name' => 'Administration'],
             'documents'             => ['name' => 'Documents'],
             'letter_transaction'    => ['name' => 'Letter Transactions'],
@@ -57,57 +53,6 @@ class MenuFactory extends Factory
                 'name'      => 'Home',
                 'order'     => 1,
                 'parent_id' => $parentMenus['dashboard']['id'],
-            ],
-            [
-                'id'        => $parentMenus['spacer_management']['id'],
-                'name'      => $parentMenus['spacer_management']['name'],
-                'order'     => $parentMenus['spacer_management']['order'],
-                'is_spacer' => true,
-            ],
-            [
-                'id'        => $parentMenus['product']['id'],
-                'name'      => $parentMenus['product']['name'],
-                'order'     => $parentMenus['product']['order'],
-            ],
-            [
-                'name'      => 'Products',
-                'order'     => 1,
-                'parent_id' => $parentMenus['product']['id'],
-            ],
-            [
-                'name'      => 'Product Categories',
-                'order'     => 2,
-                'parent_id' => $parentMenus['product']['id'],
-            ],
-            [
-                'id'        => $parentMenus['article']['id'],
-                'name'      => $parentMenus['article']['name'],
-                'order'     => $parentMenus['article']['order'],
-            ],
-            [
-                'name'      => 'Articles',
-                'order'     => 1,
-                'parent_id' => $parentMenus['article']['id'],
-            ],
-            [
-                'name'      => 'Article Categories',
-                'order'     => 2,
-                'parent_id' => $parentMenus['article']['id'],
-            ],
-            [
-                'id'        => $parentMenus['activity']['id'],
-                'name'      => $parentMenus['activity']['name'],
-                'order'     => $parentMenus['activity']['order'],
-            ],
-            [
-                'name'      => 'Activities',
-                'order'     => 1,
-                'parent_id' => $parentMenus['activity']['id'],
-            ],
-            [
-                'name'      => 'Activity Categories',
-                'order'     => 2,
-                'parent_id' => $parentMenus['activity']['id'],
             ],
             [
                 'id'        => $parentMenus['spacer_secretary']['id'],

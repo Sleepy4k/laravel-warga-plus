@@ -24,27 +24,6 @@ class ShortcutFactory extends Factory
                 'description' => 'View the dashboard',
             ],
             [
-                'icon' => 'box',
-                'label' => 'Products',
-                'route' => 'dashboard.product.index',
-                'description' => 'Manage products',
-                'permissions' => ['product.index'],
-            ],
-            [
-                'icon' => 'detail',
-                'label' => 'Articles',
-                'route' => 'dashboard.article.index',
-                'description' => 'Manage articles',
-                'permissions' => ['article.index'],
-            ],
-            [
-                'icon' => 'calendar',
-                'label' => 'Activities',
-                'route' => 'dashboard.activity.index',
-                'description' => 'Manage activities',
-                'permissions' => ['activity.index'],
-            ],
-            [
                 'icon' => 'cog',
                 'label' => 'Application Settings',
                 'route' => 'dashboard.settings.application.index',
