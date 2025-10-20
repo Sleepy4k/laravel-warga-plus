@@ -6,19 +6,23 @@
 
     <div class="row g-3">
         <div class="col-sm-6">
-            <label class="form-label" for="username">Username</label>
-            <input type="text" name="username" id="username" class="form-control" placeholder="nurhadi123"
-                value="{{ old('username') }}" />
+            <label class="form-label" for="phone">Whatsapp Number</label>
+            <div class="input-group input-group-merge">
+                <span class="input-group-text">IDN (+62)</span>
+                <input type="text" id="phone" name="phone"
+                    class="form-control multi-steps-mobile" placeholder="8xx xxxx xxxx" maxlength="14"
+                    value="{{ old('phone') }}" />
+            </div>
 
-            <x-input.error for="username" />
+            <x-input.error for="phone" />
         </div>
 
         <div class="col-sm-6">
-            <label class="form-label" for="email">Email</label>
-            <input type="email" name="email" id="email" class="form-control"
-                placeholder="nurhadi.aldo@example.com" aria-label="nurhadi.aldo" value="{{ old('email') }}" />
+            <label class="form-label" for="identity_number">Identity Number</label>
+            <input type="text" name="identity_number" id="identity_number" class="form-control"
+                placeholder="330123456789" aria-label="330123456789" value="{{ old('identity_number') }}" />
 
-            <x-input.error for="email" />
+            <x-input.error for="identity_number" />
         </div>
 
         <div class="col-sm-6 form-password-toggle">

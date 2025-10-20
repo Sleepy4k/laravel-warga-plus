@@ -22,29 +22,30 @@
         </div>
 
         <div class="col-sm-6">
-            <label class="form-label" for="whatsapp_number">Whatsapp Number</label>
-            <div class="input-group input-group-merge">
-                <span class="input-group-text">IDN (+62)</span>
-                <input type="text" id="whatsapp_number" name="whatsapp_number"
-                    class="form-control multi-steps-mobile" placeholder="8xx xxxx xxxx" maxlength="14"
-                    value="{{ old('whatsapp_number') }}" />
-            </div>
+            <label class="form-label" for="gender">Gender</label>
+            <select id="gender" name="gender" class="form-select select2"
+                data-placeholder="Select your gender">
+                <option value="male" @selected(old('gender') == 'male')>Male</option>
+                <option value="female" @selected(old('gender') == 'female')>Female</option>
+            </select>
 
-            <x-input.error for="whatsapp_number" />
+            <x-input.error for="gender" />
         </div>
 
         <div class="col-sm-6">
-            <label class="form-label" for="telkom_batch">Telkom Batch</label>
-            <select id="telkom_batch" name="telkom_batch" class="form-select select2"
-                data-placeholder="Select your batch">
-                @foreach ($years as $year)
-                    <option value="{{ $year }}" @selected(old('telkom_batch', date('Y')) == $year)>
-                        {{ $year }}
-                    </option>
-                @endforeach
-            </select>
+            <label class="form-label" for="birth_date">Birth Date</label>
+            <input type="date" id="birth_date" name="birth_date" class="form-control"
+                value="{{ old('birth_date') }}" />
 
-            <x-input.error for="telkom_batch" />
+            <x-input.error for="birth_date" />
+        </div>
+
+        <div class="col-sm-12">
+            <label class="form-label" for="job">Job</label>
+            <input type="text" id="job" name="job" class="form-control" placeholder="Software Engineer"
+                value="{{ old('job') }}" />
+
+            <x-input.error for="job" />
         </div>
 
         <div class="col-md-12">

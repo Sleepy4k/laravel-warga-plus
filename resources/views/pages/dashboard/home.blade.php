@@ -11,13 +11,13 @@
                     <div class="row g-0 align-items-center">
                         <div class="col-sm-8">
                             <div class="card-body">
-                                <h5 class="card-title text-primary mb-2">Welcome to Your CMS Dashboard! 🚀</h5>
+                                <h5 class="card-title text-primary mb-2">Welcome to WARGA PLUS! 🚀</h5>
                                 <p class="mb-3 text-muted">
-                                    Efficiently manage your business content and monitor landing page data storage.<br>
-                                    Stay updated with the latest analytics and optimize your website's performance.
+                                    You have been actively participating in community reports. Keep up!<br>
+                                    Click the button below to create a new report and contribute further to our community.
                                 </p>
-                                <a href="{{ route('dashboard.product.index') }}"
-                                    class="btn btn-primary btn-sm rounded-pill px-4">Manage Your Product</a>
+                                <a href="#"
+                                    class="btn btn-primary btn-sm rounded-pill px-4">Write a Report</a>
                             </div>
                         </div>
                         <div class="col-sm-4 text-center">
@@ -37,12 +37,12 @@
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div class="mb-3">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h6 class="mb-0 fw-semibold">Article Published</h6>
+                                <h6 class="mb-0 fw-semibold">My Reports</h6>
                                 <span class="badge bg-warning text-black rounded-pill">Year {{ now()->format('Y') }}</span>
                             </div>
                         </div>
                         <div class="mb-3">
-                            <h3 class="mb-0 fw-bold">{{ $totalArticles }} Article</h3>
+                            <h3 class="mb-0 fw-bold">{{ $totalArticles }} Report</h3>
                         </div>
                         <div id="profileReportChart" style="min-height: 80px;"></div>
                     </div>
@@ -56,8 +56,8 @@
                     <div class="row row-bordered g-0">
                         <div class="col-md-12">
                             <div class="card-header">
-                                <h5 class="card-title mb-0">Total Product Created</h5>
-                                <small class="card-subtitle">Yearly report overview about your product being created and published on our website</small>
+                                <h5 class="card-title mb-0">Total Report Created</h5>
+                                <small class="card-subtitle">Yearly report overview about residents report being created and processed on our website</small>
                             </div>
                             <div class="card-body" style="position: relative;">
                                 <div id="totalProductEl" style="min-height: 50%;"></div>

@@ -1,4 +1,4 @@
-<x-layouts.auth title="Verify your email">
+<x-layouts.auth title="Verify your account">
     <div class="authentication-wrapper authentication-basic px-4">
         <div class="authentication-inner">
             <div class="card">

@@ -2,12 +2,12 @@
     @csrf
 
     <div class="mb-3">
-        <label for="email" class="form-label">Email or Username</label>
-        <input type="text" class="form-control @error('email-username') is-invalid @enderror" id="email"
-            name="email-username" placeholder="Enter your email or username" @disabled($disabled) required
+        <label for="phone-identity" class="form-label">Phone or Identity Number</label>
+        <input type="text" class="form-control @error('phone-identity') is-invalid @enderror" id="phone-identity"
+            name="phone-identity" placeholder="Enter your phone or identity number" @disabled($disabled) required
             autofocus />
 
-        <x-input.error for="email-username" />
+        <x-input.error for="phone-identity" />
     </div>
 
     <div class="mb-3 form-password-toggle">
