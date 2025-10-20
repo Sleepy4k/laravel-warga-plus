@@ -28,6 +28,7 @@ class ViewServiceProvider extends ServiceProvider
 
         View::composer([
             'components.layouts.auth',
+            'components.layouts.landing',
             'components.layouts.dashboard',
             'components.layouts.error',
 

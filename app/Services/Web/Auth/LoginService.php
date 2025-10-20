@@ -3,7 +3,8 @@
 namespace App\Services\Web\Auth;
 
 use App\Foundations\Service;
-use App\Models\User;
+use App\Support\AttributeEncryptor;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 
 class LoginService extends Service
@@ -34,25 +35,23 @@ class LoginService extends Service
      */
     public function store(array $request): mixed
     {
-        $identifier = $request['phone-identity'];
+        $identifier = (string) trim($request['phone-identity'] ?? '');
+        $password = $request['password'] ?? '';
+
         $phonePattern = '/^(\+62|62|0)8[1-9][0-9]{6,10}$/';
-        $identifierType = preg_match($phonePattern, $identifier) ? 'phone' : 'identity_number';
+        $isPhone = preg_match($phonePattern, $identifier) === 1;
+
+        $key = $isPhone ? 'phone' : 'identity_number';
+        $value = $isPhone ? $identifier : AttributeEncryptor::encrypt($identifier);
+
         $payload = [
-            'password' => $request['password'],
-            $identifierType => $identifier,
+            $key => $value,
+            'password' => $password,
         ];
 
-        // $user = User::where($identifierType, $identifier)->first();
-        // dd($user, $identifierType, $identifier);
-        // if ($user) {
-        //     $attempt = auth('web')->attempt($payload);
-        //     if (!$attempt) return null;
-        // } else {
-        //     return null;
-        // }
-
-        $attempt = auth('web')->attempt($payload);
-        if (!$attempt) return null;
+        if (!Auth::attempt($payload)) {
+            return null;
+        }
 
         $user = auth('web')->user();
 

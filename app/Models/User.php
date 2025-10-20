@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Actions\SendEmailVerification;
+use App\Casts\ProtectedCast;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use App\Concerns\MakeCacheable;
@@ -52,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'id' => 'string',
             'phone' => 'string',
-            'identity_number' => 'hashed',
+            'identity_number' => ProtectedCast::class,
             'verified_at' => 'datetime:Y-m-d',
             'password' => 'hashed',
             'last_seen' => 'datetime',
