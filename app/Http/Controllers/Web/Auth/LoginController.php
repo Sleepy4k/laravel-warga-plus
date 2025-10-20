@@ -38,7 +38,7 @@ class LoginController extends Controller
             return back();
         }
 
-        RateLimiter::hit($key, config('auth.defaults.throttle_seconds'));
+        // RateLimiter::hit($key, config('auth.defaults.throttle_seconds'));
 
         $user = $this->service->store($request->validated());
 

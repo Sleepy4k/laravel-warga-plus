@@ -38,6 +38,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $hidden = [
+        'identity_number',
         'password',
     ];
 
@@ -50,6 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'id' => 'string',
+            'phone' => 'string',
+            'identity_number' => 'hashed',
             'verified_at' => 'datetime:Y-m-d',
             'password' => 'hashed',
             'last_seen' => 'datetime',

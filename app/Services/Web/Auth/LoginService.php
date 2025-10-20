@@ -3,6 +3,7 @@
 namespace App\Services\Web\Auth;
 
 use App\Foundations\Service;
+use App\Models\User;
 use Illuminate\Support\Facades\RateLimiter;
 
 class LoginService extends Service
@@ -35,10 +36,20 @@ class LoginService extends Service
     {
         $identifier = $request['phone-identity'];
         $phonePattern = '/^(\+62|62|0)8[1-9][0-9]{6,10}$/';
+        $identifierType = preg_match($phonePattern, $identifier) ? 'phone' : 'identity_number';
         $payload = [
             'password' => $request['password'],
-            preg_match($phonePattern, $identifier) ? 'phone' : 'identity_number' => $identifier,
+            $identifierType => $identifier,
         ];
+
+        // $user = User::where($identifierType, $identifier)->first();
+        // dd($user, $identifierType, $identifier);
+        // if ($user) {
+        //     $attempt = auth('web')->attempt($payload);
+        //     if (!$attempt) return null;
+        // } else {
+        //     return null;
+        // }
 
         $attempt = auth('web')->attempt($payload);
         if (!$attempt) return null;
