@@ -3,10 +3,7 @@
 use App\Http\Controllers\Web\Auth;
 use App\Http\Controllers\Web\Policy;
 use App\Http\Controllers\Web\Storage;
-use App\Http\Controllers\Web\Dashboard\Activity;
 use App\Http\Controllers\Web\Dashboard\AnalyticController;
-use App\Http\Controllers\Web\Dashboard\Article;
-use App\Http\Controllers\Web\Dashboard\Product;
 use App\Http\Controllers\Web\Dashboard\Profile;
 use App\Http\Controllers\Web\Dashboard\User;
 use App\Http\Controllers\Web\Dashboard\RBAC;
@@ -118,27 +115,6 @@ Route::middleware('auth')->group(function () {
 
             Route::name('dashboard.')->prefix('dashboard')->group(function () {
                 Route::get('/', AnalyticController::class)->name('index');
-
-                Route::resource('product', Product\ProductController::class)->except(['create', 'show', 'edit']);
-                Route::resource('product/category', Product\ProductCategoryController::class)
-                    ->names('product.category')
-                    ->parameter('category', 'productCategory')
-                    ->except(['create', 'show', 'edit']);
-
-                Route::resource('article', Article\ArticleController::class)->except(['create', 'show', 'edit']);
-                Route::resource('article/category', Article\ArticleCategoryController::class)
-                    ->names('article.category')
-                    ->parameter('category', 'articleCategory')
-                    ->except(['create', 'show', 'edit']);
-
-                Route::get('article/{article}/preview', [Article\ArticleController::class, 'show'])
-                    ->name('article.preview');
-
-                Route::resource('activity', Activity\ActivityController::class)->except(['create', 'show', 'edit']);
-                Route::resource('activity/category', Activity\ActivityCategoryController::class)
-                    ->names('activity.category')
-                    ->parameter('category', 'activityCategory')
-                    ->except(['create', 'show', 'edit']);
 
                 Route::resource('user', User\ListController::class)
                     ->except(['create', 'edit']);
