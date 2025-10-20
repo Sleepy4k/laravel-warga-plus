@@ -1,12 +1,12 @@
-# Laravel HIPMI PT Telkom University Purwokerto Content Management Service
+# Laravel Warga Plus
 
-This project is a content management service built with Laravel for HIPMI PT Telkom University Purwokerto. It enables users to register, manage their products, and submit articles, while administrators can oversee application settings, manage content, verify user data, and ensure secure operations across the platform.
+This project is a
 
 ## Overview
 
 ### User Dashboard
 
-- User can see their dashboard including product, article, and much more
+- User can see their dashboard to see and create a report.
 - Submit their spesific task easily only with some step on submission form
 
 ### Admin Dashboard
@@ -36,13 +36,13 @@ This project is a content management service built with Laravel for HIPMI PT Tel
 Clone the project
 
 ~~~bash
-git clone https://github.com/hipmi-pt-tup/cms.git
+git clone https://github.com/sleepy4k/laravel-warga-plus.git
 ~~~
 
 Go to the project directory
 
 ~~~bash
-cd cms
+cd laravel-warga-plus
 ~~~
 
 Install composer dependencies
