@@ -17,77 +17,12 @@ return [
     'list' => [
         'roles' => [
             'admin',
-            'ketum',
-            'waketum',
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
+            'pengurus',
             'user',
         ],
         'permissions' => [
             'dashboard.menu',
             'dashboard.index',
-
-            'product.menu',
-
-            'product.index',
-            'product.create',
-            'product.store',
-            'product.show',
-            'product.edit',
-            'product.update',
-            'product.delete',
-
-            'product.category.index',
-            'product.category.create',
-            'product.category.store',
-            'product.category.show',
-            'product.category.edit',
-            'product.category.update',
-            'product.category.delete',
-
-            'article.menu',
-
-            'article.index',
-            'article.create',
-            'article.store',
-            'article.show',
-            'article.edit',
-            'article.update',
-            'article.delete',
-
-            'article.category.index',
-            'article.category.create',
-            'article.category.store',
-            'article.category.show',
-            'article.category.edit',
-            'article.category.update',
-            'article.category.delete',
-
-            'activity.menu',
-
-            'activity.index',
-            'activity.create',
-            'activity.store',
-            'activity.show',
-            'activity.edit',
-            'activity.update',
-            'activity.delete',
-
-            'activity.category.index',
-            'activity.category.create',
-            'activity.category.store',
-            'activity.category.show',
-            'activity.category.edit',
-            'activity.category.update',
-            'activity.category.delete',
 
             'letter_transaction.menu',
 
@@ -272,227 +207,105 @@ return [
 
     /* Roles that can assign other roles */
     'assign' => [
-        'ketum' => [
-            'ketum',
-            'waketum',
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'waketum' => [
-            'waketum',
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'bendahara' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'sekretaris' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'ristek' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'medkraf' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'okk' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'psdm' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'sosmas' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'enterprise' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'harmoni' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
-        'ppb' => [
-            'bendahara',
-            'sekretaris',
-            'ristek',
-            'medkraf',
-            'okk',
-            'psdm',
-            'sosmas',
-            'enterprise',
-            'harmoni',
-            'ppb',
-            'user',
-        ],
+
     ],
 
     /* Permissions for each role */
     'permissions' => [
         'admin' => 'all',
-        'ketum' => [
-            //
-        ],
-        'waketum' => [
-            //
-        ],
-        'bendahara' => [
-            //
-        ],
-        'sekretaris' => [
-            //
-        ],
-        'ristek' => [
-            //
-        ],
-        'medkraf' => [
-            //
-        ],
-        'okk' => [
-            //
-        ],
-        'psdm' => [
-            //
-        ],
-        'sosmas' => [
-            //
-        ],
-        'enterprise' => [
-            //
-        ],
-        'harmoni' => [
-            //
-        ],
-        'ppb' => [
-            //
+        'pengurus' => [
+            'dashboard.menu',
+            'dashboard.index',
+
+            'letter_transaction.menu',
+
+            'letter_transaction.incoming.index',
+            'letter_transaction.incoming.create',
+            'letter_transaction.incoming.store',
+            'letter_transaction.incoming.show',
+            'letter_transaction.incoming.edit',
+            'letter_transaction.incoming.update',
+            'letter_transaction.incoming.delete',
+
+            'letter_transaction.outgoing.index',
+            'letter_transaction.outgoing.create',
+            'letter_transaction.outgoing.store',
+            'letter_transaction.outgoing.show',
+            'letter_transaction.outgoing.edit',
+            'letter_transaction.outgoing.update',
+            'letter_transaction.outgoing.delete',
+
+            'letter_transaction.disposition.index',
+            'letter_transaction.disposition.create',
+            'letter_transaction.disposition.store',
+            'letter_transaction.disposition.edit',
+            'letter_transaction.disposition.update',
+            'letter_transaction.disposition.delete',
+
+            'book_agenda.menu',
+
+            'book_agenda.incoming.index',
+
+            'book_agenda.outgoing.index',
+
+            'document.menu',
+
+            'document.index',
+            'document.create',
+            'document.store',
+            'document.show',
+            'document.edit',
+            'document.update',
+            'document.delete',
+
+            'document.category.index',
+            'document.category.create',
+            'document.category.store',
+            'document.category.show',
+            'document.category.edit',
+            'document.category.update',
+            'document.category.delete',
+
+            'document.version.create',
+            'document.version.store',
+            'document.version.show',
+            'document.version.delete',
+            'document.version.download',
+
+            'document.gallery.index',
+            'document.gallery.show',
+
+            'letter_references.menu',
+
+            'letter_references.classification.index',
+            'letter_references.classification.create',
+            'letter_references.classification.store',
+            'letter_references.classification.show',
+            'letter_references.classification.edit',
+            'letter_references.classification.update',
+            'letter_references.classification.delete',
+
+            'letter_references.status.index',
+            'letter_references.status.create',
+            'letter_references.status.store',
+            'letter_references.status.show',
+            'letter_references.status.edit',
+            'letter_references.status.update',
+            'letter_references.status.delete',
+
+            'user.menu',
+
+            'user.index',
+            'user.create',
+            'user.store',
+            'user.show',
+            'user.edit',
+            'user.update',
+            'user.delete',
         ],
         'user' => [
             'dashboard.menu',
             'dashboard.index',
-
-            'product.menu',
-
-            'product.index',
-            'product.create',
-            'product.store',
-            'product.show',
-            'product.edit',
-            'product.update',
-            'product.delete',
-
-            'product.category.index',
-            'product.category.create',
-            'product.category.store',
-            'product.category.show',
-            'product.category.edit',
-            'product.category.update',
-            'product.category.delete',
         ],
     ],
 ];
