@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\Auth;
 use App\Http\Controllers\Web\Policy;
 use App\Http\Controllers\Web\Storage;
+use App\Http\Controllers\Web\Landing;
 use App\Http\Controllers\Web\Dashboard\AnalyticController;
 use App\Http\Controllers\Web\Dashboard\Profile;
 use App\Http\Controllers\Web\Dashboard\User;
@@ -26,6 +27,8 @@ use Illuminate\Support\Facades\Route;
 | by any authentication system. In other words, any user can access it directly.
 | Remember not to list anything of importance, use authenticate route instead.
 */
+
+Route::get('/', Landing\HomeController::class)->name('landing.home');
 
 Route::middleware('throttle:10,1')->group(function () {
     Route::get('/cookie-policy', Policy\CookieController::class)->name('cookie.policy');
@@ -91,8 +94,6 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::middleware('verified')->group(function () {
-            Route::permanentRedirect('/', 'dashboard')->name('dashboard.redirect'); // Redirect root to dashboard
-
             Route::post('logout', Auth\LogoutController::class)->name('logout');
 
             Route::prefix('profile')->name('profile.')->group(function () {
