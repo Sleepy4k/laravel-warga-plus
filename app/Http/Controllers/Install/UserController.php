@@ -33,7 +33,7 @@ class UserController extends Controller
             return view('pages.install.user', $this->service->index());
         } catch (\Throwable $th) {
             $this->installationStep->markAsNotCompleted();
-            return back()->withErrors([
+            return to_route('install.database')->withErrors([
                 'user' => 'Failed to load user setup. Please check your server configuration and try again.',
             ]);
         }

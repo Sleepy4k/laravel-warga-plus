@@ -14,7 +14,7 @@ class CookieController extends Controller
     {
         return view('pages.policy.cookie', [
             'name' => config('app.name'),
-            'email' => 'info@hipmi-tup.com'
+            'email' => 'info@warga-plus.com'
         ]);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Channels\WhatsappChannel;
+use App\Notifications\Messages\WhatsappMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -25,7 +27,7 @@ class NewDeviceDetected extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [WhatsappChannel::class];
     }
 
     /**
@@ -40,6 +42,16 @@ class NewDeviceDetected extends Notification
             ->line("If this wasn't you, please change your password immediately.")
             ->action("View Activity", url(route('profile.security.index')))
             ->line("If this was a legitimate activity, no further action is required.");
+    }
+
+    /**
+     * Get the WhatsApp representation of the notification.
+     */
+    public function toWhatsApp(object $notifiable): WhatsappMessage
+    {
+        return (new WhatsappMessage)
+            ->phone($notifiable->phone)
+            ->message("👋 Hello {$this->fullname}!\n\nWe noticed a new device accessed your account ({$this->email}). If this wasn't you, please change your password immediately.\n\n🔗 View your account activity: " . url(route('profile.security.index')) . "\n\nIf this was you, no further action is needed.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

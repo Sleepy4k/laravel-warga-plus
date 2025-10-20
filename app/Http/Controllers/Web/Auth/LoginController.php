@@ -45,7 +45,7 @@ class LoginController extends Controller
         if (!$user) {
             Toast::danger('Error', 'Invalid credentials provided.');
             return back()->withErrors([
-                'email-username' => 'The provided credentials do not match our records.',
+                'phone-identity' => 'The provided credentials do not match our records.',
                 'password' => 'The provided credentials do not match our records.',
             ]);
         }
@@ -53,7 +53,7 @@ class LoginController extends Controller
         if (!$user->personal()->exists()) {
             Toast::primary('Info', 'Please complete your personal data.');
             return to_route('register.complete', [
-                'payload' => encrypt($user->id . '|' . $user->email)
+                'payload' => encrypt($user->id . '|' . $user->identity_number)
             ]);
         }
 

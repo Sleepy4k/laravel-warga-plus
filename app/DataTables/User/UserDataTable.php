@@ -77,7 +77,7 @@ class UserDataTable extends DataTable
                         '<a href="'.route('dashboard.user.show', $query->id).'" class="text-heading text-truncate">'.
                             '<span class="fw-medium">'.$query->personal->full_name.'</span>'.
                         '</a>'.
-                        '<small>'.$query->email.'</small>'.
+                        '<small>'.$query->phone.'</small>'.
                     '</div>'.
                 '</div>';
             })
@@ -108,6 +108,9 @@ class UserDataTable extends DataTable
                 $class = $query->is_active ? 'bg-label-primary' : 'bg-label-secondary';
                 return '<span class="badge ' . $class . '" text-capitalized="">' . ($query->is_active ? 'Active' : 'Inactive') . '</span>';
             })
+            ->editColumn('personal.gender', function ($query) {
+                return ucfirst($query->personal->gender);
+            })
             ->rawColumns(['action', 'user', 'role_display', 'is_active_display'])
             ->addIndexColumn();
     }
@@ -120,8 +123,8 @@ class UserDataTable extends DataTable
     public function query(User $model): QueryBuilder
     {
         return $model
-            ->select('users.id', 'users.email', 'users.username', 'users.last_seen', 'users.is_active', 'users.created_at', 'users.updated_at')
-            ->with('personal:id,user_id,first_name,last_name,avatar,telkom_batch,whatsapp_number,address')
+            ->select('users.id', 'users.phone', 'users.identity_number', 'users.last_seen', 'users.is_active', 'users.created_at', 'users.updated_at')
+            ->with('personal:id,user_id,first_name,last_name,avatar,gender,job,address')
             ->whereHas('personal');
     }
 
@@ -174,8 +177,8 @@ class UserDataTable extends DataTable
                 ->orderable(false)
                 ->printable(false)
                 ->title('User'),
-            Column::make('email')
-                ->title('Email')
+            Column::make('phone')
+                ->title('Phone')
                 ->addClass('text-center')
                 ->hidden(),
             Column::make('personal.first_name')
@@ -194,11 +197,11 @@ class UserDataTable extends DataTable
                 ->exportable(false)
                 ->printable(false)
                 ->title('Role'),
-            Column::make('personal.telkom_batch')
-                ->title('Telkom Batch')
+            Column::make('personal.gender')
+                ->title('Gender')
                 ->addClass('text-center'),
-            Column::make('personal.whatsapp_number')
-                ->title('WhatsApp Number')
+            Column::make('personal.job')
+                ->title('Job')
                 ->addClass('text-center')
                 ->hidden(),
             Column::make('personal.address')

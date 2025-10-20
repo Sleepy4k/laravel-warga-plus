@@ -33,7 +33,7 @@ class SetupController extends Controller
             return view('pages.install.setup', $this->service->index());
         } catch (\Throwable $th) {
             $this->installationStep->markAsNotCompleted();
-            return back()->withErrors([
+            return to_route('install.permissions')->withErrors([
                 'setup' => 'Failed to load setup page. Please check your server configuration and try again.',
             ]);
         }

@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Channels\WhatsappChannel;
+use App\Notifications\Messages\WhatsappMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -25,7 +27,7 @@ class ResetPassword extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [WhatsappChannel::class];
     }
 
     /**
@@ -40,6 +42,16 @@ class ResetPassword extends Notification
             ->action("Reset Password", $this->url)
             ->line("This link will expire in 60 minutes.")
             ->line("If you did not request a password reset, no further action is required.");
+    }
+
+    /**
+     * Get the WhatsApp representation of the notification.
+     */
+    public function toWhatsApp(object $notifiable): WhatsappMessage
+    {
+        return (new WhatsappMessage)
+            ->phone($notifiable->phone)
+            ->message("👋 Hello {$this->fullname}!\n\nWe received a request to reset your account password. You can reset your password by clicking the link below:\n\n🔗 Reset Password: {$this->url}\n\nThis link will expire in 60 minutes. If you did not request a password reset, please ignore this message.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

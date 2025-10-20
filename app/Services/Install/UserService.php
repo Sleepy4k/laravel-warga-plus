@@ -6,6 +6,7 @@ use App\Contracts\Models\RoleInterface;
 use App\Contracts\Models\UserAgreementInterface;
 use App\Contracts\Models\UserInterface;
 use App\Contracts\Models\UserPersonalDataInterface;
+use App\Enums\Gender;
 use App\Foundations\Service;
 use Illuminate\Support\Facades\Artisan;
 
@@ -75,9 +76,10 @@ class UserService extends Service
                 'id' => \Illuminate\Support\Str::uuid(),
                 'user_id' => $user->id,
                 'first_name' => 'Admin',
-                'last_name' => 'Hipmi',
-                'whatsapp_number' => '6281234567890',
-                'telkom_batch' => date('Y'),
+                'last_name' => 'Warga Plus',
+                'gender' => Gender::MALE->value,
+                'birth_date' => now()->subYears(20)->toDateString(),
+                'job' => 'Administrator',
                 'address' => 'Jl. Hipmi No. 1',
             ]);
 
@@ -91,7 +93,7 @@ class UserService extends Service
             ]);
         } catch (\Exception $e) {
             // Check if the user already created
-            $user = $this->userInterface->findByCustomId(['email' => $request['email']], ['id']);
+            $user = $this->userInterface->findByCustomId(['phone' => $request['phone']], ['id']);
 
             // If the user already created, delete the user
             if ($user) $this->userInterface->deleteById($user->id);

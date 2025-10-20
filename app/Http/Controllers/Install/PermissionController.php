@@ -32,7 +32,7 @@ class PermissionController extends Controller
             return view('pages.install.permissions', $this->service->invoke());
         } catch (\Throwable $th) {
             $this->installationStep->markAsNotCompleted();
-            return back()->withErrors([
+            return to_route('install.requirements')->withErrors([
                 'permissions' => 'Failed to load permissions. Please check your server configuration and try again.',
             ]);
         }

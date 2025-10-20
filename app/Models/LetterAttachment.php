@@ -5,12 +5,11 @@ namespace App\Models;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use App\Concerns\MakeCacheable;
-use App\Concerns\UnIncreaseAble;
 use Illuminate\Database\Eloquent\Model;
 
 class LetterAttachment extends Model
 {
-    use HasUuid, UnIncreaseAble, Loggable, MakeCacheable;
+    use HasUuid, Loggable, MakeCacheable;
 
     /**
      * The attributes that are mass assignable.

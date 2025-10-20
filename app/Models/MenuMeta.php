@@ -5,13 +5,12 @@ namespace App\Models;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use App\Concerns\MakeCacheable;
-use App\Concerns\UnIncreaseAble;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MenuMeta extends Model
 {
-    use HasFactory, HasUuid, UnIncreaseAble, Loggable, MakeCacheable;
+    use HasFactory, HasUuid, Loggable, MakeCacheable;
 
     /**
      * The table associated with the model.

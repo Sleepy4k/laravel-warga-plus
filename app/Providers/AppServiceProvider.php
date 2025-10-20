@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
                 config()->set('app.timezone', $settings->value);
                 date_default_timezone_set($settings->value);
             }
+        } else {
+            Debugbar::disable();
         }
     }
 }

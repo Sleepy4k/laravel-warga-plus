@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Channels\WhatsappChannel;
+use App\Notifications\Messages\WhatsappMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -25,7 +27,7 @@ class EmailVerification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [WhatsappChannel::class];
     }
 
     /**
@@ -39,6 +41,16 @@ class EmailVerification extends Notification
             ->line("Please click the button below to verify your email address.")
             ->action("Verify Email", $this->url)
             ->line("If you did not create an account, no further action is required.");
+    }
+
+    /**
+     * Get the WhatsApp representation of the notification.
+     */
+    public function toWhatsApp(object $notifiable): WhatsappMessage
+    {
+        return (new WhatsappMessage)
+            ->phone($notifiable->phone)
+            ->message("👋 Hello {$this->fullname}!\n\nThank you for joining Warga Plus. Please verify your email to activate your account.\n\n🔗 Verify now: {$this->url}\n\nIf you didn't request this, please ignore this message.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

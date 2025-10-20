@@ -24,7 +24,7 @@ class DatabaseController extends Controller
 
             return to_route('install.user');
         } catch (\Throwable $th) {
-            return back()->withErrors([
+            return to_route('install.setup')->withErrors([
                 'database' => 'Failed to migrate the database. Please check your database connection settings and try again.',
             ]);
         }

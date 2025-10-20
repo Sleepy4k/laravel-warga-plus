@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Channels\WhatsappChannel;
+use App\Notifications\Messages\WhatsappMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -27,7 +29,7 @@ class RegisteredByAdmin extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [WhatsappChannel::class];
     }
 
     /**
@@ -39,7 +41,7 @@ class RegisteredByAdmin extends Notification
 
         return (new MailMessage)
             ->subject("Ready to start new journey?")
-            ->greeting("Hello Young Entrepreneur,")
+            ->greeting("Hello People,")
             ->line("Congratulations! Your account has been created by the admin.")
             ->line("Below are your login credentials:")
             ->line("• Username: {$this->username}")
@@ -48,6 +50,16 @@ class RegisteredByAdmin extends Notification
             ->line("For your security, please change your password after logging in for the first time.")
             ->action('Login Now', url(route('login')))
             ->line("Welcome aboard! We wish you success on your journey.");
+    }
+
+    /**
+     * Get the WhatsApp representation of the notification.
+     */
+    public function toWhatsApp(object $notifiable): WhatsappMessage
+    {
+        return (new WhatsappMessage)
+            ->phone($notifiable->phone)
+            ->message("👋 Hello People!\n\nCongratulations! Your account has been created by the admin.\n\nHere are your login credentials:\n• Username: {$this->username}\n• Email: {$this->email}\n• Temporary Password: {$this->generatedPassword}\n\nPlease change your password after logging in for the first time for security reasons.\n\n🔗 Login now: " . url(route('login')) . "\n\nWelcome aboard! We wish you success on your journey.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

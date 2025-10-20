@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Web\Auth;
 
-use App\Rules\EmailOrUsername;
+use App\Rules\PhoneOrIdentity;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email-username' => ['required', 'string', 'min:6', 'max:140', new EmailOrUsername],
+            'phone-identity' => ['required', 'string', 'min:10', 'max:20', new PhoneOrIdentity],
             'password' => ['required', 'string', 'min:8', 'max:20'],
         ];
     }

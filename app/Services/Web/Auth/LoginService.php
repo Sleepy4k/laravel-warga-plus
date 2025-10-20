@@ -33,10 +33,11 @@ class LoginService extends Service
      */
     public function store(array $request): mixed
     {
-        $identifier = $request['email-username'];
+        $identifier = $request['phone-identity'];
+        $phonePattern = '/^(\+62|62|0)8[1-9][0-9]{6,10}$/';
         $payload = [
             'password' => $request['password'],
-            filter_var($identifier, FILTER_VALIDATE_EMAIL) ? 'email' : 'username' => $identifier,
+            preg_match($phonePattern, $identifier) ? 'phone' : 'identity_number' => $identifier,
         ];
 
         $attempt = auth('web')->attempt($payload);

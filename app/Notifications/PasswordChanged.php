@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Channels\WhatsappChannel;
+use App\Notifications\Messages\WhatsappMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -25,7 +27,7 @@ class PasswordChanged extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [WhatsappChannel::class];
     }
 
     /**
@@ -39,7 +41,16 @@ class PasswordChanged extends Notification
             ->line("The password for your account ({$this->email}) has been changed successfully.")
             ->line('If you did not make this change or if you believe an unauthorized person has accessed your account, please contact support immediately.')
             ->line('If you have any questions or concerns, feel free to reach out to our support team.');
+    }
 
+    /**
+     * Get the WhatsApp representation of the notification.
+     */
+    public function toWhatsApp(object $notifiable): WhatsappMessage
+    {
+        return (new WhatsappMessage)
+            ->phone($notifiable->phone)
+            ->message("👋 Hello {$this->fullname}!\n\nWe wanted to inform you that the password for your account ({$this->email}) has been changed successfully. If you did not make this change or suspect any unauthorized access, please contact our support team immediately.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

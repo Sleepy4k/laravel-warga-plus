@@ -9,35 +9,14 @@ use Carbon\Carbon;
 class AnalyticService extends Service
 {
     /**
-     * Model contract constructor.
-     */
-    public function __construct(
-        private Models\ArticleInterface $articleInterface,
-        private Models\ProductInterface $productInterface,
-    ) {}
-
-    /**
      * Display a listing of the resource.
      *
      * @return array
      */
     public function invoke(): array
     {
-        $totalProducts = collect(
-            $this->productInterface->all(
-            ['id', 'created_at'],
-            [],
-            [['created_at', '>=', now()->startOfYear()], ['user_id', '=', auth('web')->id()]]
-            ) ?: []
-        );
-
-        $totalArticles = collect(
-            $this->articleInterface->all(
-                ['id', 'created_at'],
-                [],
-                [['created_at', '>=', now()->startOfYear()], ['author_id', '=', auth('web')->id()]]
-            ) ?: []
-        );
+        $totalProducts = collect();
+        $totalArticles = collect( );
 
         /**
          * @var \Illuminate\Database\Eloquent\Collection $totalProducts

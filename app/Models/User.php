@@ -6,7 +6,6 @@ use App\Actions\SendEmailVerification;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use App\Concerns\MakeCacheable;
-use App\Concerns\UnIncreaseAble;
 use App\Enums\UserOnlineStatus;
 use App\Notifications\ResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -17,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, HasUuid, UnIncreaseAble, Notifiable, HasRoles, Loggable, MakeCacheable;
+    use HasFactory, HasUuid, Notifiable, HasRoles, Loggable, MakeCacheable;
 
     /**
      * The attributes that are mass assignable.
@@ -113,6 +112,28 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification(): void
     {
         (new SendEmailVerification())->execute($this);
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail()
+    {
+        return !is_null($this->verified_at);
+    }
+
+    /**
+     * Mark the given user's email as verified.
+     *
+     * @return bool
+     */
+    public function markEmailAsVerified()
+    {
+        return $this->forceFill([
+            'verified_at' => $this->freshTimestamp(),
+        ])->save();
     }
 
     /**
