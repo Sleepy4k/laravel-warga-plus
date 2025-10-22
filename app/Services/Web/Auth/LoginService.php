@@ -42,10 +42,9 @@ class LoginService extends Service
         $isPhone = preg_match($phonePattern, $identifier) === 1;
 
         $key = $isPhone ? 'phone' : 'identity_number';
-        $value = $isPhone ? $identifier : AttributeEncryptor::encrypt($identifier);
 
         $payload = [
-            $key => $value,
+            $key => AttributeEncryptor::encrypt($identifier),
             'password' => $password,
         ];
 

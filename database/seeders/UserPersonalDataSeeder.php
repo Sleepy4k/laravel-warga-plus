@@ -52,6 +52,7 @@ class UserPersonalDataSeeder extends Seeder
 
         $payload = collect($payload)->map(function ($item) {
             $item['id'] = \Illuminate\Support\Str::uuid();
+            $item['birth_date'] = encrypt($item['birth_date']);
             $item['job'] = encrypt($item['job']);
             $item['address'] = encrypt($item['address']);
             return $item;
@@ -69,6 +70,7 @@ class UserPersonalDataSeeder extends Seeder
         $personals = UserPersonalData::factory()->count($users->count())->make();
         $personals->each(function ($personal, $index) use ($users) {
             $personal->user_id = $users[$index]['id'];
+            $personal->birth_date = encrypt($personal->birth_date);
             $personal->job = encrypt($personal->job);
             $personal->address = encrypt($personal->address);
         });

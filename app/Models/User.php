@@ -52,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return [
             'id' => 'string',
-            'phone' => 'string',
+            'phone' => ProtectedCast::class,
             'identity_number' => ProtectedCast::class,
             'verified_at' => 'datetime:Y-m-d',
             'password' => 'hashed',

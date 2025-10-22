@@ -25,7 +25,7 @@ class SidebarController extends Controller
             'store' => 'store',
             'update' => 'update',
             'destroy' => 'delete',
-            'saveOrder' => 'update',
+            'saveOrder' => 'saveOrder',
         ]
     ) {}
 

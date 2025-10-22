@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('first_name', 25);
             $table->string('last_name', 25);
             $table->enum('gender', Gender::toArray());
-            $table->date('birth_date');
+            $table->longText('birth_date');
             $table->longText('job')->nullable();
             $table->longText('address')->nullable();
             $table->timestamps();

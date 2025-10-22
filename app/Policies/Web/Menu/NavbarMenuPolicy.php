@@ -46,4 +46,12 @@ class NavbarMenuPolicy
     {
         return $user->can('menu.navbar.delete');
     }
+
+    /**
+     * Determine whether the user can save order of the model.
+     */
+    public function saveOrder(User $user): bool
+    {
+        return $user->can('menu.navbar.update');
+    }
 }

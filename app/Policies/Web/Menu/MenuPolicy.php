@@ -34,7 +34,7 @@ class MenuPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Menu $menu): bool
+    public function update(User $user, Menu $sidebar): bool
     {
         return $user->can('menu.sidebar.update');
     }
@@ -42,8 +42,16 @@ class MenuPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Menu $menu): bool
+    public function delete(User $user, Menu $sidebar): bool
     {
         return $user->can('menu.sidebar.delete');
+    }
+
+    /**
+     * Determine whether the user can save order of the model.
+     */
+    public function saveOrder(User $user): bool
+    {
+        return $user->can('menu.sidebar.update');
     }
 }

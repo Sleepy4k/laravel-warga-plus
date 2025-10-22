@@ -42,7 +42,7 @@ class UserPersonalData extends Model
             'first_name' => 'string',
             'last_name' => 'string',
             'gender' => 'string',
-            'birth_date' => 'date:Y-m-d',
+            'birth_date' => AsHash::class,
             'job' => AsHash::class,
             'address' => AsHash::class,
             'created_at' => 'datetime',

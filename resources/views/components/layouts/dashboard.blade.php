@@ -104,7 +104,7 @@
                             </div>
                         </div>
 
-                        <div id="loader" style="display: flex; justify-content: center; align-items: center; height: 75dvh;">
+                        <div id="loader" style="position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; height: 100dvh; width: 100dvw; z-index: 10;">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
