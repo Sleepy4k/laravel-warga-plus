@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <x-dashboard.canvas.wrapper canvasId="add-new-record" canvasPermission="article.create">
+        <x-dashboard.canvas.wrapper canvasId="add-new-record" canvasPermission="misc.sitemap.create">
             <x-dashboard.canvas.header title="New Record" />
             <x-dashboard.canvas.body>
                 <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="POST"
@@ -92,7 +92,7 @@
             <x-dashboard.canvas.footer type="create" />
         </x-dashboard.canvas.wrapper>
 
-        <x-dashboard.canvas.wrapper canvasId="show-record" canvasPermission="article.show">
+        <x-dashboard.canvas.wrapper canvasId="show-record" canvasPermission="misc.sitemap.show">
             <x-dashboard.canvas.header title="Show Record" />
             <x-dashboard.canvas.body>
                 <div class="row g-2">
@@ -140,7 +140,7 @@
             <x-dashboard.canvas.footer type="show" />
         </x-dashboard.canvas.wrapper>
 
-        <x-dashboard.canvas.wrapper canvasId="edit-record" canvasPermission="article.edit">
+        <x-dashboard.canvas.wrapper canvasId="edit-record" canvasPermission="misc.sitemap.edit">
             <x-dashboard.canvas.header title="Edit Record" />
             <x-dashboard.canvas.body>
                 <form class="add-new-record pt-0 row g-2" id="form-edit-record" method="PUT" action="#"

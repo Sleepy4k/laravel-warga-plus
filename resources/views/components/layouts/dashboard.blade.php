@@ -93,7 +93,7 @@
                             {{ $slot }}
                         </div>
 
-                        <div id="offline-message" class="top-0 start-0 w-100 h-100 d-none">
+                        <div id="offline-message" class="top-0 start-0 w-100 h-100" style="display: none;">
                             <div class="d-flex flex-column justify-content-center align-items-center h-100">
                                 <div class="text-center">
                                     <i class="bx bx-wifi-off display-1 text-warning mb-4"></i>
@@ -104,7 +104,7 @@
                             </div>
                         </div>
 
-                        <div id="loader" style="position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; height: 100dvh; width: 100dvw; z-index: 10;">
+                        <div id="loader" style="position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; height: 100dvh; width: 100dvw; z-index: 10; background-color: rgba(0, 0, 0, 0.25);">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
