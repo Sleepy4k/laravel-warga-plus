@@ -846,7 +846,6 @@
             }
         };
         return "undefined" != typeof window && (d.init(),
-        d.isMobileDevice() && window.chrome && document.documentElement.classList.add("layout-menu-100vh"),
         "complete" === document.readyState ? d.update() : document.addEventListener("DOMContentLoaded", (function e() {
             d.update(),
             document.removeEventListener("DOMContentLoaded", e)

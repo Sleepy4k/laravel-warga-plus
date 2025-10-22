@@ -27,14 +27,19 @@ $(document).ready(function () {
  * Handle change url when clicking navigation links
  */
 $(document).ready(function () {
-  $(
-    "[id^=sidebar-menu-page-], [id^=shortcut-link-], [id^=navbar-link-], [id^=profile-nav-], [id^=shortcut-add-button]"
-  ).on("click", function (e) {
+  $(document).on("click", "[data-route]", function (e) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.which === 2) return;
+
+    const route = $(this).data("route");
+    if (!route) return;
+
+    const baseUrl = window.location.origin + window.location.pathname;
+    const target = new URL(route, baseUrl).href;
+
+    if (target === baseUrl) return;
+
     e.preventDefault();
-    const url = $(this).data("route");
-    if (url && url !== window.location.href) {
-      window.location.href = url;
-    }
+    window.location.href = target;
   });
 });
 
@@ -42,15 +47,19 @@ $(document).ready(function () {
  * Handle online/offline status
  */
 $(document).ready(function () {
+  const $offlineMessage = $("#offline-message");
+  const $mainContent = $("#main-content");
+
   function updateOnlineStatus() {
     if (navigator.onLine) {
-      $("#main-content").fadeIn(300);
-      $("#offline-message").fadeOut(300, function() {
+      $offlineMessage.fadeOut(300, function () {
         $(this).addClass("d-none");
+        $mainContent.fadeIn(200);
       });
     } else {
-      $("#main-content").fadeOut(300);
-      $("#offline-message").removeClass("d-none").fadeIn(300);
+      $mainContent.fadeOut(200, function () {
+        $offlineMessage.removeClass("d-none").fadeIn(300);
+      });
     }
   }
 
