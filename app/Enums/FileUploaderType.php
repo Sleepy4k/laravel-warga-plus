@@ -9,9 +9,6 @@ enum FileUploaderType: string
     use Enum;
 
     // Case section started
-    case ARTICLE = 'article';
-    case ACTIVITY = 'activity';
-    case PRODUCT = 'product';
     case PROFILE = 'profile';
     case SETTING = 'setting';
     case DOCUMENT = 'document';

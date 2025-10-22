@@ -73,6 +73,17 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Set the loggable fields.
+     *
+     * @return array<string>
+     */
+    public function setLoggableField(): array {
+        return array_filter($this->fillable, function ($field) {
+            return !in_array($field, ['last_seen', 'password']);
+        });
+    }
+
+    /**
      * Get the user's online status based on the last seen timestamp.
      *
      * @return string

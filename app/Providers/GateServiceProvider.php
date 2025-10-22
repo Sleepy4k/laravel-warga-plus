@@ -24,9 +24,9 @@ class GateServiceProvider extends ServiceProvider
             $path = $dir . DIRECTORY_SEPARATOR . $item;
 
             if (is_dir($path)) {
-            $directories[] = $path;
+                $directories[] = $path;
             } elseif (is_file($path) && pathinfo($path, PATHINFO_EXTENSION) === 'php') {
-            $files[] = $path;
+                $files[] = $path;
             }
         }
 

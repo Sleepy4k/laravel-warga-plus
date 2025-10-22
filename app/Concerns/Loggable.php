@@ -27,8 +27,17 @@ trait Loggable
     private function parseDescription(string $eventName): string
     {
         $logName = ucfirst(static::$logName);
-        $table = $this->table ?? 'N/A';
+        $table = $this->table ? ucwords(str_replace(['-', '_'], ' ', $this->table)) : 'N/A';
         return "{$logName} {$table} has been {$eventName}";
+    }
+
+    /**
+     * Set the loggable fields.
+     *
+     * @return array<string>
+     */
+    protected function setLoggableField(): array {
+        return $this->fillable;
     }
 
     /**
@@ -39,9 +48,8 @@ trait Loggable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly($this->fillable)
+            ->logOnly($this->setLoggableField())
             ->useLogName(static::$logName)
-            ->setDescriptionForEvent(fn (string $eventName) => $this->parseDescription($eventName))
-            ->dontSubmitEmptyLogs();
+            ->setDescriptionForEvent(fn (string $eventName) => $this->parseDescription($eventName));
     }
 }
