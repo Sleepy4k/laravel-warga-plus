@@ -231,8 +231,7 @@
     padding-block-start:0}
 
 .landing-faq {
-    border-top-left-radius: 3.75rem;
-    border-top-right-radius: 3.75rem
+    border-radius: 3.75rem
 }
 
 .landing-faq .faq-image {

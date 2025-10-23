@@ -191,7 +191,8 @@ nav.layout-navbar .menu-text {
     --bs-footer-text: var(--bs-white);
     --bs-footer-bottom-text: #d3d4dc;
     --bs-footer-bottom-bg: #282c3e;
-    --bs-footer-top-bg: #241d31
+    --bs-footer-top-bg: #241d31;
+    background-color: var(--bs-paper-bg) !important
 }
 
 .landing-footer .footer-link,.landing-footer .footer-text {
