@@ -31,15 +31,15 @@ class Footer extends Component
             ],
             [
                 'name' => 'Tentang Kami',
-                'route' => 'cookie.policy',
+                'route' => 'landing.about',
             ],
             [
                 'name' => 'Laporan',
-                'route' => 'cookie.policy',
+                'route' => 'landing.report',
             ],
             [
                 'name' => 'Informasi RT',
-                'route' => 'cookie.policy',
+                'route' => 'landing.information',
             ],
         ];
 
