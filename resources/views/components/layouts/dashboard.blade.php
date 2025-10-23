@@ -122,27 +122,9 @@
             <div class="drag-target"></div>
         </div>
 
-        <noscript>
-            <style @cspNonce>
-                .noscript-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: #f8f9fa;z-index: 9999;display: flex;align-items: center;justify-content: center;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;}.noscript-container {text-align: center;max-width: 500px;padding: 40px 20px;background: white;border-radius: 8px;box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);}.noscript-icon {width: 60px;height: 60px;margin: 0 auto 20px;background-color: #dc3545;border-radius: 50%;display: flex;align-items: center;justify-content: center;color: white;font-size: 24px;font-weight: bold;}.noscript-title {color: #212529;margin: 0 0 16px;font-size: 24px;font-weight: 600;}.noscript-description {color: #6c757d;margin: 0 0 24px;font-size: 16px;line-height: 1.5;}.noscript-instructions {padding: 16px;background-color: #f8f9fa;border-radius: 4px;text-align: left;font-size: 14px;color: #495057;}
-            </style>
-
-            <div class="noscript-overlay">
-                <div class="noscript-container">
-                    <div class="noscript-icon">!</div>
-                    <h2 class="noscript-title">JavaScript Required</h2>
-                    <p class="noscript-description">This website requires JavaScript to function properly. Please enable JavaScript in your browser settings and reload the page.</p>
-                    <div class="noscript-instructions">
-                        <strong>How to enable JavaScript:</strong><br>
-                        • Chrome/Edge: Settings → Privacy and security → Site settings → JavaScript<br>
-                        • Firefox: about:config → javascript.enabled<br>
-                        • Safari: Preferences → Security → Enable JavaScript
-                    </div>
-                </div>
-            </div>
-        </noscript>
-
         <x-utils.toast />
+
+        <x-utils.noscript />
 
         <script type="text/javascript" src="{{ asset('vendor/js/core.js') }}" @cspNonce></script>
 

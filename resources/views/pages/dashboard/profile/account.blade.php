@@ -51,46 +51,14 @@
 
         <div class="row">
             <div class="col-xl-4 col-lg-5 col-md-5">
-                @canany(['product.index', 'article.index'])
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <small class="text-muted text-uppercase">Overview</small>
-                            <div class="d-flex justify-content-around flex-wrap my-1 py-1">
-                                @can('product.index')
-                                    <div class="d-flex align-items-start me-4 mt-3 gap-3">
-                                        <span class="badge bg-label-primary p-2 rounded">
-                                            <i class="bx bx-box bx-sm"></i>
-                                        </span>
-                                        <div>
-                                            <h5 class="mb-0">{{ $totalProducts }}</h5>
-                                            <span>{{ Str::plural('Product', $totalProducts) }}</span>
-                                        </div>
-                                    </div>
-                                @endcan
-                                @can('article.index')
-                                    <div class="d-flex align-items-start mt-3 gap-3">
-                                        <span class="badge bg-label-primary p-2 rounded">
-                                            <i class="bx bx-detail bx-sm"></i>
-                                        </span>
-                                        <div>
-                                            <h5 class="mb-0">{{ $totalArticles }}</h5>
-                                            <span>{{ Str::plural('Article', $totalArticles) }}</span>
-                                        </div>
-                                    </div>
-                                @endcan
-                            </div>
-                        </div>
-                    </div>
-                @endcanany
-
                 <div class="card mb-4">
                     <div class="card-body">
                         <small class="text-muted text-uppercase">About</small>
                         <ul class="list-unstyled mb-4 mt-3">
                             <li class="d-flex align-items-center mb-3">
-                                <i class="bx bx-user"></i><span class="fw-semibold mx-2">Username:</span>
+                                <i class="bx bx-user"></i><span class="fw-semibold mx-2">Identity Number:</span>
                                 <span>
-                                    {{ ucfirst($user->username) }}
+                                    {{ ucfirst($user->identity_number) }}
                                 </span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
@@ -117,7 +85,7 @@
                                 <i class="bx bx-phone"></i><span class="fw-semibold mx-2">Contact:</span>
                                 <span>
                                     @php
-                                        $parsedNumber = preg_replace('/\D/', '', $personal->whatsapp_number);
+                                        $parsedNumber = preg_replace('/\D/', '', $user->phone);
                                         $parsedNumber = '62' . ltrim($parsedNumber, '0');
                                     @endphp
                                     <a href="https://wa.me/{{ $parsedNumber }}"
@@ -125,14 +93,12 @@
                                 </span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <i class="bx bx-envelope"></i><span class="fw-semibold mx-2">Email:</span>
-                                <span>
-                                    <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
-                                </span>
+                                <i class="bx bx-chat"></i><span class="fw-semibold mx-2">Job:</span>
+                                <span>{{ $personal->job }}</span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <i class="bx bx-chat"></i><span class="fw-semibold mx-2">Telkom Batch:</span>
-                                <span>{{ $personal->telkom_batch }}</span>
+                                <i class="bx bx-map-pin"></i><span class="fw-semibold mx-2">Address:</span>
+                                <span>{{ $personal->address }}</span>
                             </li>
                         </ul>
                     </div>
@@ -144,30 +110,10 @@
                     <div class="card-datatable table-responsive">
                         <table class="datatables-projects border-top table">
                             <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Available</th>
-                                    <th>Rating</th>
-                                    <th>Category</th>
-                                </tr>
+
                             </thead>
                             <tbody>
-                                @foreach ($products as $product)
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex justify-content-left align-items-center">
-                                                <div class="d-flex flex-column">
-                                                    <span class="text-truncate fw-semibold">{{ $product->name }}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>${{ number_format($product->detail->price, 2) }}</td>
-                                        <td>{{ $product->detail->available ? 'Yes' : 'No' }}</td>
-                                        <td>{{ $product->detail->rating }} / 5</td>
-                                        <td>{{ $product->category->label }}</td>
-                                    </tr>
-                                @endforeach
+
                         </table>
                     </div>
                 </div>
@@ -181,56 +127,7 @@
 
     @pushOnce('page-scripts')
         <script @cspNonce>
-            $(document).ready(function() {
-                $('.datatables-projects').DataTable({
-                    responsive: true,
-                    columnDefs: [{
-                            orderable: false,
-                            targets: -1
-                        },
-                        {
-                            searchable: false,
-                            targets: -1
-                        }
-                    ],
-                    order: [
-                        [0, 'asc']
-                    ],
-                    dom: '<"card-header pb-0 pt-sm-0"<"head-label text-center"><"d-flex justify-content-center justify-content-md-end"f>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
-                    displayLength: 10,
-                    lengthMenu: [10, 25, 50, 75, 100],
-                    responsive: {
-                        details: {
-                            display: $.fn.dataTable.Responsive.display.modal({
-                                header: function(row) {
-                                    var data = row.data();
-                                    return 'Details of "' + data['project_name'] + '" Project';
-                                }
-                            }),
-                            type: 'column',
-                            renderer: function(api, rowIdx, columns) {
-                                var data = $.map(columns, function(col, i) {
-                                    return col.title !== '' ?
-                                        '<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' +
-                                        col.columnIndex + '">' +
-                                        '<td>' +
-                                        col.title + ':' +
-                                        '</td> ' +
-                                        '<td>' +
-                                        col.data +
-                                        '</td>' +
-                                        '</tr>' :
-                                        '';
-                                }).join('');
 
-                                return data ? $('<table class="table"/><tbody />').append(data) : false;
-                            }
-                        }
-                    }
-                });
-
-                $('div.head-label').html('<h5 class="card-title mb-0">Products</h5>');
-            });
         </script>
     @endPushOnce
 </x-layouts.dashboard>

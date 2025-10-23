@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <button class="app-brand-link" data-route="{{ route('dashboard.index') }}" id="sidebar-menu-page-main"
+        <button class="app-brand-link" data-route="{{ route('landing.home') }}" id="sidebar-menu-page-main"
             style="border: none; background: none; padding: 0;">
             <span class="app-brand-logo demo">
                 <img src="{{ $appSettings['sidebar_logo'] }}" alt="Logo" loading="lazy" width="25" />
