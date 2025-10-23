@@ -36,6 +36,9 @@ class ViewServiceProvider extends ServiceProvider
 
             'components.dashboard.sidebar',
             'components.dashboard.footer',
+
+            'components.landing.navbar',
+            'components.landing.footer',
         ], SettingComposer::class);
 
         View::composer('components.dashboard.breadcrumb', BreadcrumbComposer::class);

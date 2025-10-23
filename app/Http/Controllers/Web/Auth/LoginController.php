@@ -38,7 +38,7 @@ class LoginController extends Controller
             return back();
         }
 
-        // RateLimiter::hit($key, config('auth.defaults.throttle_seconds'));
+        RateLimiter::hit($key, config('auth.defaults.throttle_seconds'));
 
         $user = $this->service->store($request->validated());
 
@@ -59,6 +59,12 @@ class LoginController extends Controller
 
         Toast::primary('Success', 'You have successfully logged in.');
 
-        return redirect()->intended(route('dashboard.index', absolute: false));
+        $intendedUrl = redirect()->intended(route('dashboard.index', absolute: false))->getTargetUrl();
+
+        if (!in_array($intendedUrl, getDashboardRoutes(false))) {
+            return to_route('dashboard.index');
+        }
+
+        return redirect($intendedUrl);
     }
 }

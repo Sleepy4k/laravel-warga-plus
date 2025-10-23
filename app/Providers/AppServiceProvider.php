@@ -36,8 +36,16 @@ class AppServiceProvider extends ServiceProvider
                 config()->set('app.timezone', $settings->value);
                 date_default_timezone_set($settings->value);
             }
-        } else {
+        }
+
+        if (app()->environment('production')) {
             Debugbar::disable();
+        } else {
+            if (file_exists(storage_path('.installed'))) {
+                Debugbar::enable();
+            } else {
+                Debugbar::disable();
+            }
         }
     }
 }
