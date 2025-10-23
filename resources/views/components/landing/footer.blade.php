@@ -1,7 +1,7 @@
 <footer class="landing-footer bg-body footer-text">
     <div class="footer-top position-relative overflow-hidden z-1">
         <img src="{{ asset('img/front-pages/backgrounds/footer-bg.png') }}" alt="footer bg"
-            class="footer-bg banner-bg-img z-n1" />
+            class="footer-bg banner-bg-img z-n1" loading="lazy" />
         <div class="container">
             <div class="row gx-0 gy-6 g-lg-10">
                 <div class="col-lg-5">
@@ -15,7 +15,7 @@
                         <span class="app-brand-text demo text-white fw-bold ms-2 ps-1">{{ $appSettings['sidebar_name'] }}</span>
                     </a>
                     <p class="footer-text footer-logo-description mb-6">
-                        Most developer friendly &amp; highly customisable Admin Dashboard Template.
+                        Dengan satu platform, semua warga dapat secara terbuka menyampaikan pengaduan, ide, dan solusi untuk kemajuan bersama.
                     </p>
                 </div>
 
