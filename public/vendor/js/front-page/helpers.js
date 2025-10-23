@@ -237,9 +237,12 @@
             },
             _updateInlineStyle: function() {
                 var e = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : 0
-                  , t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0;
+                  , t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 0
+                  , n = document.querySelector('meta[property="csp-nonce"]')
+                  , i = n ? n.content : "";
                 this._styleEl || (this._styleEl = document.createElement("style"),
                 this._styleEl.type = "text/css",
+                i && this._styleEl.setAttribute("nonce", i),
                 document.head.appendChild(this._styleEl));
                 var n = "\n.layout-menu-fixed .layout-navbar-full .layout-menu,\n.layout-menu-fixed-offcanvas .layout-navbar-full .layout-menu {\n  top: {navbarHeight}px !important;\n}\n.layout-page {\n  padding-top: {navbarHeight}px !important;\n}\n.content-wrapper {\n  padding-bottom: {footerHeight}px !important;\n}".replace(/\{navbarHeight\}/gi, e).replace(/\{footerHeight\}/gi, t);
                 this._curStyle !== n && (this._curStyle = n,
@@ -511,8 +514,11 @@
                 var n = parseInt(e.slice(1, 3), 16)
                   , o = parseInt(e.slice(3, 5), 16)
                   , i = parseInt(e.slice(5, 7), 16)
-                  , r = document.getElementById("custom-css");
+                  , r = document.getElementById("custom-css")
+                  , n = document.querySelector('meta[property="csp-nonce"]')
+                  , i = n ? n.content : "";
                 r || ((r = document.createElement("style")).id = "custom-css",
+                i && r.setAttribute("nonce", i),
                 document.head.appendChild(r));
                 var a, s = (299 * n + 587 * o + 114 * i) / 1e3, u = 100 * getComputedStyle(document.documentElement).getPropertyValue("--bs-min-contrast-ratio").trim(), l = getComputedStyle(document.documentElement).getPropertyValue("--bs-bg-label-tint-amount").trim("%"), c = getComputedStyle(document.documentElement).getPropertyValue("--bs-border-subtle-amount").trim(), d = s >= u ? "#000" : "#fff";
                 t && (r.innerHTML = ":root, [data-bs-theme=light], [data-bs-theme=dark] {\n    --bs-primary: ".concat(e, ";\n    --bs-primary-rgb: ").concat(n, ", ").concat(o, ", ").concat(i, ";\n    --bs-primary-bg-subtle: color-mix(in sRGB, ").concat(window.config.colors.cardColor, " ").concat(l, ", ").concat(e, ");\n    --bs-primary-border-subtle: rgba(").concat(n, ", ").concat(o, ", ").concat(i, ", ").concat((a = c,
