@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html dir="ltr" data-assets-path="{{ config('app.url') }}/" class="layout-navbar-fixed"
+<html dir="ltr" data-assets-path="{{ config('app.url') }}/" class="layout-navbar-fixed layout-wide layout-menu-100vh"
     lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-theme="dark" data-template="front-pages" data-skin="default">
     <head>
         <meta charset="utf-8">

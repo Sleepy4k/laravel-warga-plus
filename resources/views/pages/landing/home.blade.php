@@ -1,7 +1,4 @@
 <x-layouts.landing>
-    @pushOnce('plugin-styles')
-    @endPushOnce
-
     <section id="hero-animation">
         <div id="landingHero" class="section-py landing-hero position-relative">
             <img src="{{ asset('img/front-pages/backgrounds/hero-bg.png') }}" alt="hero background"
@@ -40,7 +37,7 @@
             </p>
             <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
                 @php
-                    $items = [];
+                    $items = range(1, 6);
                 @endphp
 
                 @forelse ($items as $item)
@@ -140,7 +137,7 @@
                 Berikut beberapa informasi terbaru seputar RT kami.
             </p>
             <div class="row g-4">
-                @foreach(range(1, 5) as $index)
+                @forelse($items as $index)
                     @php
                         $types = ['Kegiatan', 'Pengumuman', 'Peraturan', 'Keuangan', 'Keamanan'];
                         $titles = [
@@ -201,12 +198,20 @@
                             </div>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="col-12 py-4">
+                        <div class="text-center p-4 bg-light-primary rounded-3">
+                            <h5 class="mb-0">Tidak ada informasi yang tersedia</h5>
+                        </div>
+                    </div>
+                @endforelse
             </div>
 
-            <div class="text-center mt-8">
-                <a href="{{ route('landing.information') }}" class="btn btn-primary">Lihat Semua Informasi RT</a>
-            </div>
+            @if (count($items) > 0)
+                <div class="text-center mt-8">
+                    <a href="{{ route('landing.information') }}" class="btn btn-primary">Lihat Semua Informasi RT</a>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -221,78 +226,62 @@
             </h4>
             <p class="text-center mb-md-11 pb-0 pb-xl-12">Who is behind these excellent services?</p>
             <div class="row gy-4 mt-2">
-                <div class="col">
-                    <div class="card mt-3 mt-lg-0 shadow-none">
-                        <div
-                            class="bg-label-primary border border-bottom-0 border-primary-subtle position-relative team-image-box">
-                            <img src="{{ asset('img/front-pages/teams/syabananta-faqih-m-l.png') }}"
-                                class="position-absolute card-img-position bottom-0 start-50" alt="human image" loading="lazy">
-                        </div>
-                        <div class="card-body border border-top-0 border-primary-subtle text-center py-5">
-                            <h5 class="card-title mb-0">Sya’bananta Faqih M L</h5>
-                            <p class="text-body-secondary mb-0">Project Manager</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mt-3 mt-lg-0 shadow-none">
-                        <div
-                            class="bg-label-info border border-bottom-0 border-info-subtle position-relative team-image-box">
-                            <img src="{{ asset('img/front-pages/teams/apri-pandu-w.png') }}"
-                                class="position-absolute card-img-position bottom-0 start-50" alt="human image" loading="lazy">
-                        </div>
-                        <div class="card-body border border-top-0 border-info-subtle text-center py-5">
-                            <h5 class="card-title mb-0">Apri Pandu Wicaksono</h5>
-                            <p class="text-body-secondary mb-0">Fullstack Developer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mt-3 mt-lg-0 shadow-none">
-                        <div
-                            class="bg-label-danger border border-bottom-0 border-danger-subtle position-relative team-image-box">
-                            <img src="{{ asset('img/front-pages/teams/warga-plus-member.png') }}"
-                                class="position-absolute card-img-position bottom-0 start-50" alt="human image" loading="lazy">
-                        </div>
-                        <div class="card-body border border-top-0 border-danger-subtle text-center py-5">
-                            <h5 class="card-title mb-0">Muhammad Zaki Fauzan</h5>
-                            <p class="text-body-secondary mb-0">UI/UX Designer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mt-3 mt-lg-0 shadow-none">
-                        <div
-                            class="bg-label-success border border-bottom-0 border-success-subtle position-relative team-image-box">
-                            <img src="{{ asset('img/front-pages/teams/warga-plus-member.png') }}"
-                                class="position-absolute card-img-position bottom-0 start-50" alt="human image" loading="lazy">
-                        </div>
-                        <div class="card-body border border-top-0 border-success-subtle text-center py-5">
-                            <h5 class="card-title mb-0">M Hamzah Haifan M</h5>
-                            <p class="text-body-secondary mb-0">UI/UX Designer</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card mt-3 mt-lg-0 shadow-none">
-                        <div
-                            class="bg-label-warning border border-bottom-0 border-warning-subtle position-relative team-image-box">
-                            <img src="{{ asset('img/front-pages/teams/alip.jpg') }}"
-                                class="position-absolute card-img-position bottom-0 start-50" alt="human image" loading="lazy">
-                        </div>
-                        <div class="card-body border border-top-0 border-warning-subtle text-center py-5">
-                            <h5 class="card-title mb-0">Alif Zaujati Randri</h5>
-                            <p class="text-body-secondary mb-0">QA Engineer</p>
+                @php
+                    $teams = [
+                        [
+                            'name' => 'Sya’bananta Faqih M L',
+                            'role' => 'Project Manager',
+                            'image' => 'img/front-pages/teams/syabananta-faqih-m-l.png',
+                            'bg_class' => 'bg-label-primary',
+                            'border_class' => 'border-primary-subtle',
+                        ],
+                        [
+                            'name' => 'Apri Pandu Wicaksono',
+                            'role' => 'Fullstack Developer',
+                            'image' => 'img/front-pages/teams/apri-pandu-w.png',
+                            'bg_class' => 'bg-label-info',
+                            'border_class' => 'border-info-subtle',
+                        ],
+                        [
+                            'name' => 'Muhammad Zaki Fauzan',
+                            'role' => 'UI/UX Designer',
+                            'image' => 'img/front-pages/teams/muhammad-zaki-f.png',
+                            'bg_class' => 'bg-label-danger',
+                            'border_class' => 'border-danger-subtle',
+                        ],
+                        [
+                            'name' => 'M Hamzah Haifan M',
+                            'role' => 'UI/UX Designer',
+                            'image' => 'img/front-pages/teams/muhammad-hamzah-h-m.png',
+                            'bg_class' => 'bg-label-success',
+                            'border_class' => 'border-success-subtle',
+                        ],
+                        [
+                            'name' => 'Alif Zaujati Randri',
+                            'role' => 'QA Engineer',
+                            'image' => 'img/front-pages/teams/alif-zaujati-r.png',
+                            'bg_class' => 'bg-label-warning',
+                            'border_class' => 'border-warning-subtle',
+                        ],
+                    ];
+                @endphp
+
+                @foreach ($teams as $team)
+                    <div class="col">
+                        <div class="card mt-3 mt-lg-0 shadow-none">
+                            <div
+                                class="{{ $team['bg_class'] }} border border-bottom-0 {{ $team['border_class'] }} position-relative team-image-box">
+                                <img src="{{ asset($team['image']) }}"
+                                    class="position-absolute card-img-position bottom-0 start-50" alt="Team {{ $team['name'] }}" loading="lazy">
+                            </div>
+                            <div class="card-body border border-top-0 {{ $team['border_class'] }} text-center py-5">
+                                <h5 class="card-title mb-0">{{ $team['name'] }}</h5>
+                                <p class="text-body-secondary mb-0">{{ $team['role'] }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
-
-    @pushOnce('plugin-scripts')
-    @endPushOnce
-
-    @pushOnce('page-scripts')
-    @endPushOnce
 </x-layouts.landing>
