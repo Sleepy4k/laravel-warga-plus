@@ -1,5 +1,5 @@
 <x-layouts.landing title="Tentang Kami">
-    <section id="hero-about" class="section-py landing-hero position-relative">
+    <section class="section-py landing-hero position-relative">
         <img src="{{ asset('img/front-pages/backgrounds/hero-bg.png') }}" alt="hero background"
             class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" loading="lazy" />
         <div class="container">
@@ -13,7 +13,7 @@
         </div>
     </section>
 
-    <section id="ourMission" class="section-py landing-features">
+    <section class="section-py landing-features">
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-12 col-lg-6 d-flex justify-content-center">
@@ -37,7 +37,7 @@
         </div>
     </section>
 
-    <section id="history" class="section-py bg-body" style="border-radius: 3.75rem;">
+    <section class="section-py bg-body" style="border-radius: 3.75rem;">
         <div class="container">
             <h4 class="text-center fw-extrabold mb-4">Sejarah Singkat</h4>
             <div class="card shadow-sm border-0 mx-auto" style="max-width:900px; max-height:140px; overflow:auto;">
@@ -50,12 +50,12 @@
         </div>
     </section>
 
-    <section id="values" class="section-py">
+    <section class="section-py">
         <div class="container">
             <h4 class="text-center fw-extrabold mb-3">Nilai Kami</h4>
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm p-3">
+                    <div class="card h-100 shadow-xl border-0 outline outline-primary outline-offset-3 outline-1 hover:outline-2 p-3">
                         <div class="card-body text-center">
                             <i class="bx bx-shield fs-1 text-primary"></i>
                             <h5 class="mt-3">Keamanan</h5>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm p-3">
+                    <div class="card h-100 shadow-xl border-0 outline outline-primary outline-offset-3 outline-1 hover:outline-2 p-3">
                         <div class="card-body text-center">
                             <i class="bx bx-conversation fs-1 text-success"></i>
                             <h5 class="mt-3">Kolaborasi</h5>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm p-3">
+                    <div class="card h-100 shadow-xl border-0 outline outline-primary outline-offset-3 outline-1 hover:outline-2 p-3">
                         <div class="card-body text-center">
                             <i class="bx bx-bulb fs-1 text-warning"></i>
                             <h5 class="mt-3">Inovasi</h5>
