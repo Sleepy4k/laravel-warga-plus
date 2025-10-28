@@ -2,18 +2,16 @@
 
 namespace App\Services\Web\Dashboard\Profile;
 
-use App\Contracts\Models\ArticleInterface;
+use App\Enums\Gender;
 use App\Foundations\Service;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class SettingService extends Service
 {
     /**
      * Model contract constructor.
      */
-    public function __construct(
-        private ArticleInterface $articleInterface,
-    ) {}
+    public function __construct() {}
 
     /**
      * Display a listing of the resource.
@@ -22,10 +20,12 @@ class SettingService extends Service
      */
     public function index(): array
     {
-        $user = auth('web')->user()->load('personal:user_id,first_name,last_name,whatsapp_number,address,avatar');
+        $genders = Gender::cases();
+        $user = auth('web')->user()->load('personal:user_id,first_name,last_name,job,address,gender,birth_date,avatar');
 
         return [
             'user' => $user,
+            'genders' => $genders,
             'personal' => $user->personal,
         ];
     }
@@ -43,7 +43,7 @@ class SettingService extends Service
         try {
             $userData = array_filter([
                 'password' => $request['password'] ?? null,
-                'email' => $request['email'] ?? null,
+                'phone' => $request['phone'] ?? null,
             ], fn($value) => !empty($value));
 
             if (!empty($userData)) {
@@ -54,7 +54,9 @@ class SettingService extends Service
             $personalData = [
                 'first_name' => $request['first_name'],
                 'last_name' => $request['last_name'],
-                'whatsapp_number' => $request['whatsapp_number'],
+                'birth_date' => $request['birth_date'],
+                'gender' => $request['gender'],
+                'job' => $request['job'],
                 'address' => $request['address'],
             ];
 
@@ -85,7 +87,7 @@ class SettingService extends Service
                 return false;
             }
 
-            auth('web')->logout();
+            Auth::logout();
             $user->delete();
 
             return true;

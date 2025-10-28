@@ -9,6 +9,6 @@ enum Gender: string
     use Enum;
 
     // Case section started
-    case MALE = 'pria';
-    case FEMALE = 'wanita';
+    case Male = 'pria';
+    case Female = 'wanita';
 }

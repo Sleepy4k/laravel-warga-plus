@@ -18,7 +18,7 @@ class RolePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Role $role): bool
+    public function view(User $user, string $role): bool
     {
         return $user->can('rbac.role.show');
     }
@@ -34,7 +34,7 @@ class RolePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Role $role): bool
+    public function update(User $user, string $role): bool
     {
         return $user->can('rbac.role.update');
     }
@@ -42,7 +42,7 @@ class RolePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Role $role): bool
+    public function delete(User $user, string $role): bool
     {
         return $user->can('rbac.role.delete');
     }

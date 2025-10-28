@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Web\Dashboard\User;
 
+use App\Enums\Gender;
 use App\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -26,10 +27,11 @@ class UpdateRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:25'],
             'last_name' => ['required', 'string', 'max:25'],
-            'telkom_batch' => ['required', 'string', 'max:5'],
+            'gender' => ['required', 'string', 'max:10', Rule::in(Gender::toArray())],
+            'birth_date' => ['required', 'date', 'before:today'],
+            'job' => ['required', 'string', 'max:100'],
             'is_active' => ['required', 'boolean'],
             'role' => ['required', 'string', 'max:255', Rule::exists(Role::class, 'name')],
-            'whatsapp_number' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255']
         ];
     }

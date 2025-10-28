@@ -117,6 +117,29 @@ class RoleService extends Service
     public function destroy(string $id): bool
     {
         try {
+            $role = $this->roleInterface->findById($id, ['*'], ['permissions', 'users']);
+
+            if ($role->permissions->isNotEmpty()) {
+                $role->permissions()->detach();
+            }
+
+            if ($role->users->isNotEmpty()) {
+                foreach ($role->users as $user) {
+                    $agreements = $user->agreement();
+                    if ($agreements->count() > 0) {
+                        $agreements->delete();
+                    }
+                    $personals = $user->personal();
+                    if ($personals->count() > 0) {
+                        $personals->delete();
+                    }
+                    if (!$user->is_active) {
+                        $user->temporaryRole()->delete();
+                    }
+                    $user->delete();
+                }
+            }
+
             $isSuccess = $this->roleInterface->deleteById($id);
 
             if (!$isSuccess) {

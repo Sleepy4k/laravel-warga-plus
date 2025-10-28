@@ -50,7 +50,7 @@ class EmailVerification extends Notification
     {
         return (new WhatsappMessage)
             ->phone($notifiable->phone)
-            ->message("👋 Hello {$this->fullname}!\n\nThank you for joining Warga Plus. Please verify your email to activate your account.\n\n🔗 Verify now: {$this->url}\n\nIf you didn't request this, please ignore this message.\n\nThank you,\nWarga Plus Team");
+            ->message("👋 Hello {$this->fullname}!\n\nThank you for joining Warga Plus. Please verify your phone to activate your account.\n\n🔗 Verify now: {$this->url}\n\nIf you didn't request this, please ignore this message.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

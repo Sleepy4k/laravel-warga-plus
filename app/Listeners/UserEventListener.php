@@ -99,8 +99,8 @@ class UserEventListener
                 $lastProperties['ip_address'] !== $properties['ip_address']
             ) {
                 $fullname = $user->personal->full_name;
-                $email = $user->email;
-                Notification::sendNow($user, new NewDeviceDetected($fullname, $email));
+                $phone = $user->phone;
+                Notification::sendNow($user, new NewDeviceDetected($fullname, $phone));
             }
         }
 

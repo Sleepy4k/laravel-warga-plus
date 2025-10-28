@@ -17,7 +17,7 @@ class VerificationController extends Controller
     public function index()
     {
         $user = auth('web')->user();
-        $key = 'send-verification-email:' . $user->id;
+        $key = 'send-verification-phone:' . $user->id;
         return view('pages.auth.verification', [
             'reset_at' => RateLimiter::availableIn($key),
             'remaining' => RateLimiter::remaining($key, 1),
@@ -35,21 +35,21 @@ class VerificationController extends Controller
             return to_route('login');
         }
 
-        if (RateLimiter::tooManyAttempts('send-verification-email:' . $user->id, 1)) {
+        if (RateLimiter::tooManyAttempts('send-verification-phone:' . $user->id, 1)) {
             Toast::error('System', 'You have exceeded the maximum number of verification link requests. Please try again later.');
             return back();
         }
 
-        RateLimiter::hit('send-verification-email:' . $user->id, 180);
+        RateLimiter::hit('send-verification-phone:' . $user->id, 180);
 
         if (!$action->execute($user)) {
             Toast::error('System', 'Failed to send verification link. Please try again later.');
             return back();
         }
 
-        Toast::info('System', 'A new verification link has been sent to your email address.');
+        Toast::info('System', 'A new verification link has been sent to your phone.');
 
-        return back()->with('status', 'Verification link sent to your email address.');
+        return back()->with('status', 'Verification link sent to your phone.');
     }
 
     /**
@@ -59,7 +59,7 @@ class VerificationController extends Controller
     {
         $request->fulfill();
 
-        Toast::primary('System', 'Email address verified successfully.');
+        Toast::primary('System', 'Phone number verified successfully.');
 
         return to_route('dashboard.index');
     }

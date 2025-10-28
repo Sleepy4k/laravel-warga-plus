@@ -2,6 +2,7 @@
 
 namespace App\View\Components\Auth\Register;
 
+use App\Enums\Gender;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -32,6 +33,7 @@ class PersonalInfo extends Component
     {
         return view('components.auth.register.personal-info', [
             'years' => $this->years,
+            'genders' => Gender::cases()
         ]);
     }
 }

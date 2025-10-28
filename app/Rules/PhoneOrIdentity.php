@@ -15,7 +15,7 @@ class PhoneOrIdentity implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $identityPattern = '/^[0-9]{12,16}$/';
-        $phonePattern = '/^(\+62|62|0)8[1-9][0-9]{6,10}$/';
+        $phonePattern = '/^8[1-9][0-9]{6,10}$/';
 
         if (!preg_match($phonePattern, $value) && !preg_match($identityPattern, $value)) {
             $fail('The :attribute must be a valid Indonesian phone number or identity number.');

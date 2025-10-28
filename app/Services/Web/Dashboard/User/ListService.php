@@ -3,6 +3,7 @@
 namespace App\Services\Web\Dashboard\User;
 
 use App\Contracts\Models;
+use App\Enums\Gender;
 use App\Enums\ReportLogType;
 use App\Foundations\Service;
 use App\Models\Role;
@@ -24,6 +25,7 @@ class ListService extends Service
      */
     public function index(): array
     {
+        $genders = Gender::cases();
         $roles = Role::select('name')->get();
         $users = $this->userInterface->all(['id', 'is_active']);
         $totalUsers = $users->count();
@@ -44,6 +46,7 @@ class ListService extends Service
         }
 
         return compact(
+            'genders',
             'assignableRoles',
             'totalUsers',
             'totalManagers',
@@ -61,16 +64,14 @@ class ListService extends Service
             $password = str()->random(16);
 
             $user = User::create([
-                'email' => $request['email'],
-                'username' => $request['username'],
+                'phone' => $request['phone'],
+                'identity_number' => $request['identity_number'],
                 'password' => $password,
                 'is_active' => true,
             ]);
 
             $user->assignRole($request['role'] ?? config('rbac.role.default'));
-
-            $otherEmail = $request['other-email'] ?? null;
-            $user->notify(new RegisteredByAdmin($request['username'], $request['email'], $password, $otherEmail));
+            $user->notify(new RegisteredByAdmin($request['phone'], $request['identity_number'], $password, null));
 
             return true;
         } catch (\Throwable $th) {
@@ -86,25 +87,16 @@ class ListService extends Service
      */
     public function show(User $user): array
     {
-        $currentUser = $user->loadMissing('personal:user_id,first_name,last_name,whatsapp_number,telkom_batch,address,avatar');
+        $genders = Gender::cases();
+        $roles = Role::select('name')->get();
+        $currentUser = $user->loadMissing('personal:user_id,first_name,last_name,birth_date,job,gender,address,avatar');
         $personal = $currentUser->personal;
-
-        $totalProducts = 0;
-        $totalArticles = 0;
-
-        if (canUserPerformAction('product.index')) {
-            $totalProducts = $currentUser->products()->count();
-        }
-
-        if (canUserPerformAction('article.index')) {
-            $totalArticles = $currentUser->articles()->count();
-        }
 
         $recentLogins = Activity::where('causer_id', $user->id)
             ->where('log_name', 'auth')
             ->where('event', 'login')
             ->orderBy('created_at', 'desc')
-            ->limit(6)
+            ->limit(11)
             ->get(['id', 'properties', 'created_at']);
 
         $recentLogins = $recentLogins->map(function ($login) {
@@ -132,15 +124,27 @@ class ListService extends Service
             'unknown' => 'bx-windows',
         ];
 
+        // set roles data for security, so admin can assign role but not above admin role
+        $userRole = getUserRole();
+        if ($userRole == config('rbac.role.default')) {
+            $assignableRoles = [config('rbac.role.default')];
+        } else if ($userRole == config('rbac.role.highest')) {
+            $assignableRoles = config('rbac.list.roles');
+        } else {
+            $assignableRoles = array_filter(config('rbac.assign'), fn($roles) => in_array($userRole, $roles));
+            $assignableRoles = array_keys($assignableRoles);
+            $assignableRoles = array_intersect($assignableRoles, $roles->pluck('name')->toArray());
+        }
+
         return [
+            'genders' => $genders,
             'uid' => $currentUser->id,
             'user' => $currentUser,
             'role' => $currentUser->getRoleNames()->first() ?? 'Guest',
             'personal' => $personal,
-            'totalProducts' => $totalProducts,
-            'totalArticles' => $totalArticles,
             'recentLogins' => $recentLogins,
             'deviceIcon' => $deviceIcon,
+            'assignableRoles' => $assignableRoles,
         ];
     }
 
@@ -188,16 +192,6 @@ class ListService extends Service
     public function destroy(User $user): bool
     {
         try {
-            $articles = $user->articles();
-            if ($articles->count() > 0) {
-                $articles->delete();
-            }
-
-            $products = $user->products();
-            if ($products->count() > 0) {
-                $products->delete();
-            }
-
             $agreements = $user->agreement();
             if ($agreements->count() > 0) {
                 $agreements->delete();

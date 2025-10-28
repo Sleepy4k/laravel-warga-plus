@@ -17,7 +17,7 @@ class PasswordChanged extends Notification
      */
     public function __construct(
         protected string $fullname,
-        protected string $email
+        protected string $phone
     ) {}
 
     /**
@@ -38,7 +38,7 @@ class PasswordChanged extends Notification
         return (new MailMessage)
             ->subject('Your Account password has been changed')
             ->greeting("Hello {$this->fullname},")
-            ->line("The password for your account ({$this->email}) has been changed successfully.")
+            ->line("The password for your account ({$this->phone}) has been changed successfully.")
             ->line('If you did not make this change or if you believe an unauthorized person has accessed your account, please contact support immediately.')
             ->line('If you have any questions or concerns, feel free to reach out to our support team.');
     }
@@ -50,7 +50,7 @@ class PasswordChanged extends Notification
     {
         return (new WhatsappMessage)
             ->phone($notifiable->phone)
-            ->message("👋 Hello {$this->fullname}!\n\nWe wanted to inform you that the password for your account ({$this->email}) has been changed successfully. If you did not make this change or suspect any unauthorized access, please contact our support team immediately.\n\nThank you,\nWarga Plus Team");
+            ->message("👋 Hello {$this->fullname}!\n\nWe wanted to inform you that the password for your account ({$this->phone}) has been changed successfully. If you did not make this change or suspect any unauthorized access, please contact our support team immediately.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

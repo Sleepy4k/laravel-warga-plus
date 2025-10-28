@@ -20,7 +20,7 @@ class VerificationEmailAccess
         }
 
         if (auth('web')->user()->hasVerifiedEmail()) {
-            return to_route('login')->with('error', 'Your email is already verified.');
+            return to_route('login')->with('error', 'Your account is already verified.');
         }
 
         return $next($request);

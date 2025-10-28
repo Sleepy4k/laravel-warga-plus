@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Web\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,7 +24,7 @@ class ForgotPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'max:100', Rule::exists('users', 'email')],
+            'phone' => ['required', 'string', 'min:6', 'max:50', 'regex:/^8[1-9][0-9]{6,10}$/', Rule::exists(User::class, 'phone')],
         ];
     }
 }

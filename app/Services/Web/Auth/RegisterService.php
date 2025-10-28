@@ -41,13 +41,13 @@ class RegisterService extends Service
     public function store(array $request): bool
     {
         $user = $this->userInterface->create([
-            'email' => $request['email'],
-            'username' => $request['username'],
+            'phone' => $request['phone'],
+            'identity_number' => $request['identity_number'],
             'password' => $request['password'],
         ]);
 
         if (!$user) {
-            Toast::danger('Error', 'The provided email or username is already registered.');
+            Toast::danger('Error', 'The provided phone number or identity number is already registered.');
             return false;
         }
 
@@ -55,8 +55,9 @@ class RegisterService extends Service
             'user_id' => $user->id,
             'first_name' => $request['first_name'] ?? null,
             'last_name' => $request['last_name'] ?? null,
-            'whatsapp_number' => $request['whatsapp_number'] ?? null,
-            'telkom_batch' => $request['telkom_batch'] ?? null,
+            'gender' => $request['gender'] ?? null,
+            'birth_date' => $request['birth_date'] ?? null,
+            'job' => $request['job'] ?? null,
             'address' => $request['address'] ?? null,
         ]);
 

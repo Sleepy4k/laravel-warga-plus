@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Web\Auth;
 
+use App\Enums\Gender;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -26,12 +27,13 @@ class RegisterRequest extends FormRequest
         $validRuleIn = ['on', 'off', true, false, '1', '0'];
 
         return [
-            'username' => ['required', 'string', 'min:6', 'max:50', 'regex:/^[a-zA-Z0-9]+$/', Rule::unique(User::class, 'username')],
-            'email' => ['required', 'email', 'max:100', Rule::unique(User::class, 'email')],
+            'phone' => ['required', 'string', 'min:6', 'max:50', 'regex:/^8[1-9][0-9]{6,10}$/', Rule::unique(User::class, 'phone')],
+            'identity_number' => ['required', 'string', 'min:12', 'max:16', 'regex:/^[0-9]{12,16}$/', Rule::unique(User::class, 'identity_number')],
             'first_name' => ['required', 'string', 'min:2', 'max:70'],
             'last_name' => ['required', 'string', 'min:2', 'max:70'],
-            'whatsapp_number' => ['required', 'string', 'max:15'],
-            'telkom_batch' => ['required', 'string', 'max:5'],
+            'gender' => ['required', 'string', 'max:10', Rule::in(Gender::toArray())],
+            'birth_date' => ['required', 'date', 'before:today'],
+            'job' => ['required', 'string', 'max:100'],
             'address' => ['required', 'string', 'max:255'],
             'agreement' => ['required', Rule::in($validRuleIn)],
             'privacy_policy' => ['required', Rule::in($validRuleIn)],
@@ -48,7 +50,8 @@ class RegisterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'username.regex' => 'Username can only consist of alphanumeric characters and numbers.',
+            'phone.regex' => 'Phone number must be a valid Indonesian phone number.',
+            'identity_number.regex' => 'Identity number must be numeric and contain 12 to 16 digits.',
         ];
     }
 }

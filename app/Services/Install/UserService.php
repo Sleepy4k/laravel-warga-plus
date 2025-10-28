@@ -77,7 +77,7 @@ class UserService extends Service
                 'user_id' => $user->id,
                 'first_name' => 'Admin',
                 'last_name' => 'Warga Plus',
-                'gender' => Gender::MALE->value,
+                'gender' => Gender::Male->value,
                 'birth_date' => now()->subYears(20)->toDateString(),
                 'job' => 'Administrator',
                 'address' => 'Jl. Hipmi No. 1',

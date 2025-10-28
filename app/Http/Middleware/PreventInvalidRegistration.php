@@ -22,7 +22,7 @@ class PreventInvalidRegistration
         $user = auth('web')->user();
         if (!$user->personal()->exists()) {
             return to_route('register.complete', [
-                'payload' => encrypt($user->id . '|' . $user->email)
+                'payload' => encrypt($user->id . '|' . $user->phone)
             ]);
         }
 

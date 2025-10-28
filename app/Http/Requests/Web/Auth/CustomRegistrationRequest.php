@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Web\Auth;
 
+use App\Enums\Gender;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,8 +28,9 @@ class CustomRegistrationRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'min:2', 'max:70'],
             'last_name' => ['required', 'string', 'min:2', 'max:70'],
-            'whatsapp_number' => ['required', 'string', 'max:15'],
-            'telkom_batch' => ['required', 'string', 'max:5'],
+            'gender' => ['required', 'string', 'max:10', Rule::in(Gender::toArray())],
+            'birth_date' => ['required', 'date', 'before:today'],
+            'job' => ['required', 'string', 'max:100'],
             'address' => ['required', 'string', 'max:255'],
             'agreement' => ['required', Rule::in($validRuleIn)],
             'privacy_policy' => ['required', Rule::in($validRuleIn)],

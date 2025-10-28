@@ -26,19 +26,19 @@ class ForgotController extends Controller
      */
     public function store(ForgotPasswordRequest $request)
     {
-        $email = filter_var($request->validated()['email'], FILTER_VALIDATE_EMAIL);
+        $phone = !preg_match('/^8[1-9][0-9]{6,10}$/', $request->validated()['phone']);
 
-        if (!$email) {
-            Toast::danger('Error', 'Invalid email address.');
+        if (!$phone) {
+            Toast::danger('Error', 'Invalid phone number.');
             return back();
         }
 
-        if (!User::where('email', $email)->exists()) {
+        if (!User::where('phone', $phone)->exists()) {
             Toast::danger('Error', __('passwords.user'));
             return back();
         }
 
-        switch (Password::sendResetLink(['email' => $email])) {
+        switch (Password::sendResetLink(['phone' => $phone])) {
         case Password::RESET_LINK_SENT:
             Toast::primary('Success', __('passwords.sent'));
             break;
@@ -64,25 +64,25 @@ class ForgotController extends Controller
      */
     public function show(Request $request, string $token)
     {
-        $email = $request->query('email');
-        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            Toast::danger('Error', 'Invalid email address.');
+        $phone = $request->query('phone');
+        if (!$phone || !preg_match('/^8[1-9][0-9]{6,10}$/', $phone)) {
+            Toast::danger('Error', 'Invalid phone number.');
             return back();
         }
 
-        if (!User::where('email', $email)->exists()) {
+        if (!User::where('phone', $phone)->exists()) {
             Toast::danger('Error', __('passwords.user'));
             return back();
         }
 
-        if (!Password::tokenExists(User::where('email', $email)->first(), $token)) {
+        if (!Password::tokenExists(User::where('phone', $phone)->first(), $token)) {
             Toast::danger('Error', __('passwords.token'));
             return back();
         }
 
         Toast::info('Info', 'Please enter your new password.');
 
-        return view('pages.auth.reset-password', compact('token', 'email'));
+        return view('pages.auth.reset-password', compact('token', 'phone'));
     }
 
     /**
@@ -107,16 +107,16 @@ class ForgotController extends Controller
             return to_route('login');
         case Password::INVALID_TOKEN:
             Toast::danger('Error', __('passwords.token'));
-            return back()->withErrors(['email' => __('passwords.token')]);
+            return back()->withErrors(['phone' => __('passwords.token')]);
         case Password::INVALID_USER:
             Toast::danger('Error', __('passwords.user'));
-            return back()->withErrors(['email' => __('passwords.user')]);
+            return back()->withErrors(['phone' => __('passwords.user')]);
         case Password::RESET_THROTTLED:
             Toast::danger('Error', __('passwords.throttled'));
-            return back()->withErrors(['email' => __('passwords.throttled')]);
+            return back()->withErrors(['phone' => __('passwords.throttled')]);
         default:
             Toast::danger('Error', __('passwords.user'));
-            return back()->withErrors(['email' => __('passwords.user')]);
+            return back()->withErrors(['phone' => __('passwords.user')]);
         }
     }
 }

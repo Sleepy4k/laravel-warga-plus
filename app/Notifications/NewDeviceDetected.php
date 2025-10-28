@@ -17,7 +17,7 @@ class NewDeviceDetected extends Notification
      */
     public function __construct(
         protected string $fullname,
-        protected string $email
+        protected string $phone
     ) {}
 
     /**
@@ -38,7 +38,7 @@ class NewDeviceDetected extends Notification
         return (new MailMessage)
             ->subject("New Device Detected Notification")
             ->greeting("Hello {$this->fullname},")
-            ->line("We have detected a new device used to access your account ({$this->email}).")
+            ->line("We have detected a new device used to access your account ({$this->phone}).")
             ->line("If this wasn't you, please change your password immediately.")
             ->action("View Activity", url(route('profile.security.index')))
             ->line("If this was a legitimate activity, no further action is required.");
@@ -51,7 +51,7 @@ class NewDeviceDetected extends Notification
     {
         return (new WhatsappMessage)
             ->phone($notifiable->phone)
-            ->message("👋 Hello {$this->fullname}!\n\nWe noticed a new device accessed your account ({$this->email}). If this wasn't you, please change your password immediately.\n\n🔗 View your account activity: " . url(route('profile.security.index')) . "\n\nIf this was you, no further action is needed.\n\nThank you,\nWarga Plus Team");
+            ->message("👋 Hello {$this->fullname}!\n\nWe noticed a new device accessed your account ({$this->phone}). If this wasn't you, please change your password immediately.\n\n🔗 View your account activity: " . url(route('profile.security.index')) . "\n\nIf this was you, no further action is needed.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

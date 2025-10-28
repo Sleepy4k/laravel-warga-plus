@@ -16,8 +16,8 @@ class RegisteredByAdmin extends Notification
      * Create a new notification instance.
      */
     public function __construct(
-        protected string $username,
-        protected string $email,
+        protected string $phone,
+        protected string $identity_number,
         protected string $generatedPassword,
         protected ?string $otherEmail = null
     ) {}
@@ -44,8 +44,8 @@ class RegisteredByAdmin extends Notification
             ->greeting("Hello People,")
             ->line("Congratulations! Your account has been created by the admin.")
             ->line("Below are your login credentials:")
-            ->line("• Username: {$this->username}")
-            ->line("• Email: {$this->email}")
+            ->line("• Phone: {$this->phone}")
+            ->line("• Identity Number: {$this->identity_number}")
             ->line("• Temporary Password: {$this->generatedPassword}")
             ->line("For your security, please change your password after logging in for the first time.")
             ->action('Login Now', url(route('login')))
@@ -59,7 +59,7 @@ class RegisteredByAdmin extends Notification
     {
         return (new WhatsappMessage)
             ->phone($notifiable->phone)
-            ->message("👋 Hello People!\n\nCongratulations! Your account has been created by the admin.\n\nHere are your login credentials:\n• Username: {$this->username}\n• Email: {$this->email}\n• Temporary Password: {$this->generatedPassword}\n\nPlease change your password after logging in for the first time for security reasons.\n\n🔗 Login now: " . url(route('login')) . "\n\nWelcome aboard! We wish you success on your journey.\n\nThank you,\nWarga Plus Team");
+            ->message("👋 Hello People!\n\nCongratulations! Your account has been created by the admin.\n\nHere are your login credentials:\n• Phone: {$this->phone}\n• Identity Number: {$this->identity_number}\n• Temporary Password: {$this->generatedPassword}\n\nPlease change your password after logging in for the first time for security reasons.\n\n🔗 Login now: " . url(route('login')) . "\n\nWelcome aboard! We wish you success on your journey.\n\nThank you,\nWarga Plus Team");
     }
 
     /**

@@ -14,7 +14,7 @@ class UserObserver
     public function updated(User $user): void
     {
         if ($user->wasChanged('password')) {
-            Notification::sendNow($user, new PasswordChanged($user->personal->full_name, $user->email));
+            Notification::sendNow($user, new PasswordChanged($user->personal->full_name, $user->phone));
         }
     }
 }

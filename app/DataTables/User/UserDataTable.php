@@ -124,7 +124,7 @@ class UserDataTable extends DataTable
     {
         return $model
             ->select('users.id', 'users.phone', 'users.identity_number', 'users.last_seen', 'users.is_active', 'users.created_at', 'users.updated_at')
-            ->with('personal:id,user_id,first_name,last_name,avatar,gender,job,address')
+            ->with('personal:id,user_id,first_name,last_name,avatar,gender,job,birth_date,address')
             ->whereHas('personal');
     }
 
