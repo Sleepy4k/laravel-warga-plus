@@ -120,7 +120,7 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">{{ ucfirst($user->username) }}</span>
+                                    <span class="fw-semibold d-block">{{ $personal->full_name }}</span>
                                     <small class="text-muted">{{ ucfirst($role) }}</small>
                                 </div>
                             </div>

@@ -47,20 +47,38 @@
                                     <x-input.error for="last_name" />
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="email" class="form-label">E-mail</label>
-                                    <input class="form-control" type="text" id="email" name="email"
-                                        value="{{ old('email', $user->email) }}" placeholder="john.doe@example.com">
-                                    <x-input.error for="email" />
+                                    <label for="job" class="form-label">Job</label>
+                                    <input class="form-control" type="text" id="job" name="job"
+                                        value="{{ old('job', $personal->job) }}">
+                                    <x-input.error for="job" />
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label class="form-label" for="whatsapp_number">Whatsapp Number</label>
+                                    <label class="form-label" for="phone">Phone</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text">IDN (+62)</span>
-                                        <input type="text" id="whatsapp_number" name="whatsapp_number"
+                                        <input type="text" id="phone" name="phone"
                                             class="form-control" placeholder="813 1234 5678"
-                                            value="{{ old('whatsapp_number', $personal->whatsapp_number) }}">
-                                        <x-input.error for="whatsapp_number" />
+                                            value="{{ old('phone', $user->phone) }}">
+                                        <x-input.error for="phone" />
                                     </div>
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="birth_date" class="form-label">Birth Date</label>
+                                    <input class="form-control" type="date" id="birth_date" name="birth_date"
+                                        value="{{ old('birth_date', $personal->birth_date) }}">
+                                    <x-input.error for="birth_date" />
+                                </div>
+                                <div class="mb-3 col-md-6">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select id="gender" name="gender" class="form-select">
+                                        @foreach ($genders as $genderOption)
+                                            <option value="{{ $genderOption->value }}"
+                                                {{ old('gender', $personal->gender) === $genderOption->value ? 'selected' : '' }}>
+                                                {{ $genderOption->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <x-input.error for="gender" />
                                 </div>
                                 <div class="mb-3 col-md-12">
                                     <label for="autosize-address" class="form-label">Address</label>

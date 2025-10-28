@@ -1,28 +1,22 @@
 <x-layouts.landing>
-    <section id="hero-animation">
-        <div id="landingHero" class="section-py landing-hero position-relative">
-            <img src="{{ asset('img/front-pages/backgrounds/hero-bg.png') }}" alt="hero background"
-                class="position-absolute top-0 start-50 translate-middle-x object-fit-cover w-100 h-100" loading="lazy" />
-            <div class="container">
-                <div class="hero-text-box text-center position-relative">
-                    <h1 class="text-primary hero-title display-6 fw-extrabold">
-                        Satu portal untuk suara warga dan aksi nyata
-                    </h1>
-                    <h2 class="hero-sub-title h6 mb-6">
-                        Warga<sup>+</sup> memudahkan warga untuk melapor, berpartisipasi, dan memantau tindak lanjut dari setiap laporan secara transparan dan cepat
-                    </h2>
-                    <div class="landing-hero-btn d-inline-block position-relative">
-                        <span class="hero-btn-item position-absolute d-none d-md-flex fw-medium">
-                            Memiliki kendala?
-                            <img src="{{ asset('img/front-pages/icons/Join-community-arrow.png') }}"
-                                alt="Join community arrow" class="scaleX-n1-rtl" loading="lazy" />
-                        </span>
-                        <a href="#landingPricing" class="btn btn-primary btn-lg">Laporkan Sekarang!</a>
-                    </div>
-                </div>
+    <x-landing.hero>
+        <div class="hero-text-box text-center position-relative">
+            <h1 class="text-primary hero-title display-6 fw-extrabold">
+                Satu portal untuk suara warga dan aksi nyata
+            </h1>
+            <h2 class="hero-sub-title h6 mb-6">
+                Warga<sup>+</sup> memudahkan warga untuk melapor, berpartisipasi, dan memantau tindak lanjut dari setiap laporan secara transparan dan cepat
+            </h2>
+            <div class="landing-hero-btn d-inline-block position-relative">
+                <span class="hero-btn-item position-absolute d-none d-md-flex fw-medium">
+                    Memiliki kendala?
+                    <img src="{{ asset('img/front-pages/icons/Join-community-arrow.png') }}"
+                        alt="Join community arrow" class="scaleX-n1-rtl" loading="lazy" />
+                </span>
+                <a href="#landingPricing" class="btn btn-primary btn-lg">Laporkan Sekarang!</a>
             </div>
         </div>
-    </section>
+    </x-landing.hero>
 
     <section id="landingFeatures" class="section-py landing-features">
         <div class="container">
@@ -38,71 +32,60 @@
             <div class="features-icon-wrapper row gx-0 gy-6 g-sm-12">
                 @php
                     $items = range(1, 6);
+                    $typeMap = ['Kehilangan','Sampah','Infrastruktur','Keamanan','Lainnya'];
                 @endphp
 
                 @forelse ($items as $item)
+                    @php
+                        $reportType = $typeMap[$item % count($typeMap)];
+                        $title = match($reportType) {
+                            'Kehilangan' => 'Motor hilang di parkiran',
+                            'Sampah' => 'Sampah berserakan di gang A',
+                            'Infrastruktur' => 'Papan jalan rusak di perempatan',
+                            'Keamanan' => 'Lampu jalan mati di blok B',
+                            default => 'Laporan umum warga',
+                        };
+                        $statusMap = [
+                            0 => ['text'=>'Selesai','bg'=>'success','icon'=>'bx bx-check-circle'],
+                            1 => ['text'=>'Dalam Proses','bg'=>'warning','icon'=>'bx bx-time-five'],
+                            2 => ['text'=>'Menunggu','bg'=>'secondary','icon'=>'bx bx-hourglass'],
+                        ];
+                        $status = $statusMap[$item % 3];
+                    @endphp
+
                     <div class="col-lg-4 col-sm-6">
                         <div
                             class="card h-100 shadow-xl border-0 outline outline-primary outline-offset-3 outline-1 hover:outline-2">
-                            <div class="card-body">
+                            <div class="card-body d-flex flex-column">
                                 <div class="d-flex align-items-center mb-3">
                                     <div class="avatar avatar-sm me-2">
                                         <img src="{{ asset('img/avatars/1.png') }}" alt="Avatar"
-                                            class="rounded-circle">
+                                            class="rounded-circle" loading="lazy">
                                     </div>
                                     <div>
-                                        <h6 class="mb-0">John Doe</h6>
+                                        <h6 class="mb-0">Nama Pelapor {{ $item }}</h6>
                                         <small class="text-muted">
-                                            {{ $item % 2 == 0 ? 'Warga' : 'Pengurus' }} RT
+                                            {{ $reportType }} • {{ date('d M Y', strtotime('-' . $item . ' days')) }}
                                         </small>
                                     </div>
                                     <div class="ms-auto">
-                                        <span
-                                            class="badge bg-label-primary">{{ date('d M Y', strtotime('-' . $item . ' days')) }}</span>
+                                        <span class="badge bg-label-{{ $status['bg'] }} d-flex align-items-center gap-1">
+                                            <i class="{{ $status['icon'] }}"></i>
+                                            <span>{{ $status['text'] }}</span>
+                                        </span>
                                     </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <span class="badge bg-label-info">
-                                        {{ $item % 2 == 0 ? 'Infrastruktur' : 'Lingkungan' }}
-                                    </span>
-                                </div>
+                                <h5 class="mb-2">{{ $title }}</h5>
+                                <p class="mb-3 text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Deskripsi singkat masalah dilaporkan untuk memberi konteks kepada petugas.</p>
 
-                                <h5 class="mb-2">Jalan Rusak di Perumahan Blok C</h5>
-                                <p class="mb-3">Jalan di sekitar perumahan blok C mengalami kerusakan parah yang
-                                    membahayakan pengendara, terutama pada malam hari. Mohon segera diperbaiki.</p>
-
-                                <div class="d-flex justify-content-between align-items-center">
+                                <div class="mt-auto d-flex justify-content-between align-items-center">
                                     <div>
-                                        <div class="d-flex align-items-center">
-                                            @php
-                                                $statusMap = [
-                                                    0 => [
-                                                        'text' => 'Selesai',
-                                                        'bg' => 'success',
-                                                        'icon' => 'bx bx-check-circle',
-                                                    ],
-                                                    1 => [
-                                                        'text' => 'Dalam Proses',
-                                                        'bg' => 'warning',
-                                                        'icon' => 'bx bx-time-five',
-                                                    ],
-                                                    2 => [
-                                                        'text' => 'Menunggu',
-                                                        'bg' => 'secondary',
-                                                        'icon' => 'bx bx-hourglass',
-                                                    ],
-                                                ];
-                                                $status = $statusMap[$item % 3];
-                                            @endphp
-                                            <span
-                                                class="badge bg-label-{{ $status['bg'] }} d-flex align-items-center gap-1">
-                                                <i class="{{ $status['icon'] }}"></i>
-                                                <span>{{ $status['text'] }}</span>
-                                            </span>
-                                        </div>
+                                        <span class="badge bg-label-info">{{ $reportType  }}</span>
                                     </div>
-                                    <a href="#" class="btn btn-sm btn-primary">Lihat Detail</a>
+                                    <div>
+                                        <a href="#" class="btn btn-sm btn-primary">Lihat Detail</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +93,7 @@
                 @empty
                     <div class="col-12 py-4">
                         <div class="text-center p-4 bg-light-primary rounded-3">
-                            <h5>Belum Ada Laporan Terbaru</h5>
+                            <h5 class="mb-0">Belum ada laporan terbaru</h5>
                         </div>
                     </div>
                 @endforelse
@@ -154,7 +137,7 @@
                             now()->addDay()->format('d M Y'),
                             now()->addDays(5)->format('d M Y'),
                         ];
-                        $icons = ['bx-calendar', 'bx-megaphone', 'bx-book', 'bx-money', 'bx-shield'];
+                        $icons = ['bx-calendar', 'bx-phone', 'bx-book', 'bx-money', 'bx-shield'];
                         $colors = ['primary', 'success', 'danger', 'warning', 'info'];
 
                         $type = $types[$index % 5];
@@ -168,8 +151,8 @@
                         <div class="card shadow-sm border-0 hover:shadow-lg transition-all">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar avatar-sm bg-label-{{ $color }} rounded me-3">
-                                        <i class="bx {{ $icon }} fs-4"></i>
+                                    <div class="avatar avatar-sm d-flex align-items-center justify-content-center bg-label-{{ $color }} rounded me-3 mt-1">
+                                    <i class="bx {{ $icon }} fs-4"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <h5 class="mb-1">{{ $title }}</h5>

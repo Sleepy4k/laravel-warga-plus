@@ -85,7 +85,7 @@
             </div>
         </div>
 
-        <x-dashboard.canvas.wrapper canvasId="add-new-record" canvasPermission="product.category.create">
+        <x-dashboard.canvas.wrapper canvasId="add-new-record" canvasPermission="user.create">
             <x-dashboard.canvas.header title="New Record" />
             <x-dashboard.canvas.body>
                 <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="POST"
@@ -148,7 +148,7 @@
             <x-dashboard.canvas.footer type="create" />
         </x-dashboard.canvas.wrapper>
 
-        <x-dashboard.canvas.wrapper canvasId="edit-record" canvasPermission="product.category.edit">
+        <x-dashboard.canvas.wrapper canvasId="edit-record" canvasPermission="user.edit">
             <x-dashboard.canvas.header title="Edit Record" />
             <x-dashboard.canvas.body>
                 <form class="add-new-record pt-0 row g-2" id="form-edit-record" method="PUT" action="#">
@@ -171,12 +171,16 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label class="form-label" for="edit-telkom_batch">Telkom Batch</label>
+                        <label class="form-label" for="edit-gender">Gender</label>
                         <div class="input-group input-group-merge">
-                            <input type="number" id="edit-telkom_batch"
-                                class="form-control dt-telkom_batch @error('telkom_batch') is-invalid @enderror"
-                                name="telkom_batch" placeholder="{{ date('Y') }}"
-                                aria-label="{{ date('Y') }}" aria-describedby="telkom_batch" />
+                            <select id="edit-gender" name="gender"
+                                class="form-select dt-gender select2 @error('gender') is-invalid @enderror">
+                                @foreach ($genders as $genderOption)
+                                    <option value="{{ $genderOption->value }}">
+                                        {{ $genderOption->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -189,7 +193,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label class="form-label" for="edit-role">Role</label>
                         <div class="input-group input-group-merge">
                             <select id="edit-role" name="role"
@@ -202,14 +206,22 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-12">
-                        <label class="form-label" for="edit-whatsapp_number">Whatsapp Number</label>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="edit-birth_date">Birth Date</label>
                         <div class="input-group input-group-merge">
-                            <span class="input-group-text">IDN (+62)</span>
-                            <input type="text" id="edit-whatsapp_number"
-                                class="form-control dt-whatsapp_number @error('whatsapp_number') is-invalid @enderror"
-                                name="whatsapp_number" placeholder="8123456789" aria-label="8123456789"
-                                aria-describedby="whatsapp_number" />
+                            <input type="date" id="edit-birth_date"
+                                class="form-control dt-birth_date @error('birth_date') is-invalid @enderror"
+                                name="birth_date" placeholder="YYYY-MM-DD" aria-label="YYYY-MM-DD"
+                                aria-describedby="birth_date" />
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="form-label" for="edit-job">Job</label>
+                        <div class="input-group input-group-merge">
+                            <input type="text" id="edit-job"
+                                class="form-control dt-job @error('job') is-invalid @enderror"
+                                name="job" placeholder="Software Engineer" aria-label="Software Engineer"
+                                aria-describedby="job" />
                         </div>
                     </div>
                     <div class="col-sm-12">
@@ -290,10 +302,11 @@
                                 fieldMap: {
                                     first_name: '#edit-first_name',
                                     last_name: '#edit-last_name',
-                                    telkom_batch: '#edit-telkom_batch',
+                                    job: '#edit-job',
+                                    gender: '#edit-gender',
+                                    birth_date: '#edit-birth_date',
                                     is_active: '#edit-is_active',
                                     role: '#edit-role',
-                                    whatsapp_number: '#edit-whatsapp_number',
                                     address: '#edit-address'
                                 },
                                 fieldMapBehavior: {
@@ -303,17 +316,20 @@
                                     last_name: function(el, data, rowData) {
                                         el.val(rowData.personal.last_name);
                                     },
-                                    telkom_batch: function(el, data, rowData) {
-                                        el.val(rowData.personal.telkom_batch);
+                                    job: function(el, data, rowData) {
+                                        el.val(rowData.personal.job);
+                                    },
+                                    gender: function(el, data, rowData) {
+                                        el.val(rowData.personal.gender.toLowerCase()).trigger('change');
+                                    },
+                                    birth_date: function(el, data, rowData) {
+                                        el.val(rowData.personal.birth_date);
                                     },
                                     is_active: function(el, data, rowData) {
                                         el.val(data.toLowerCase() == "no" ? 0 : 1).trigger('change');
                                     },
                                     role: function(el, data, rowData) {
                                         el.val(data.toLowerCase()).trigger('change');
-                                    },
-                                    whatsapp_number: function(el, data, rowData) {
-                                        el.val(rowData.personal.whatsapp_number);
                                     },
                                     address: function(el, data, rowData) {
                                         el.val(rowData.personal.address);

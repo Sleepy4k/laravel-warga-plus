@@ -35,32 +35,6 @@
                                 </div>
                             </div>
                         </div>
-                        @canany(['product.index', 'article.index'])
-                            <div class="d-flex justify-content-around flex-wrap my-4 py-3">
-                                @can('product.index')
-                                    <div class="d-flex align-items-start me-4 mt-3 gap-3">
-                                        <span class="badge bg-label-primary p-2 rounded">
-                                            <i class="bx bx-box bx-sm"></i>
-                                        </span>
-                                        <div>
-                                            <h5 class="mb-0">{{ $totalProducts }}</h5>
-                                            <span>{{ Str::plural('Product', $totalProducts) }}</span>
-                                        </div>
-                                    </div>
-                                @endcan
-                                @can('article.index')
-                                    <div class="d-flex align-items-start mt-3 gap-3">
-                                        <span class="badge bg-label-primary p-2 rounded">
-                                            <i class="bx bx-detail bx-sm"></i>
-                                        </span>
-                                        <div>
-                                            <h5 class="mb-0">{{ $totalArticles }}</h5>
-                                            <span>{{ Str::plural('Article', $totalArticles) }}</span>
-                                        </div>
-                                    </div>
-                                @endcan
-                            </div>
-                        @endcanany
                     </div>
                 </div>
 
@@ -69,45 +43,41 @@
                         <small class="text-muted text-uppercase">About</small>
                         <ul class="list-unstyled mb-4 mt-3">
                             <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Username:</span>
-                                <span>{{ $user->username }}</span>
+                                <i class="bx bx-user"></i><span class="fw-bold mx-2">Identity Number:</span>
+                                <span>{{ $user->identity_number }}</span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Status:</span>
+                                <i class="bx bx-check"></i><span class="fw-bold mx-2">Status:</span>
                                 <span
                                     class="badge bg-label-{{ $user->is_active ? 'primary' : 'secondary' }}">{{ $user->is_active ? 'Active' : 'Inactive' }}</span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Role:</span>
+                                <i class="bx bx-star"></i><span class="fw-bold mx-2">Role:</span>
                                 <span>{{ ucfirst($role) }}</span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Country:</span>
+                                <i class="bx bx-flag"></i><span class="fw-bold mx-2">Country:</span>
                                 <span>Indonesia</span>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Language:</span>
+                                <i class="bx bx-detail"></i><span class="fw-bold mx-2">Language:</span>
                                 <span>English</span>
                             </li>
                         </ul>
                         <small class="text-muted text-uppercase">Contacts</small>
                         <ul class="list-unstyled mb-4 mt-3">
                             <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Contact:</span>
+                                <i class="bx bx-phone"></i><span class="fw-bold mx-2">Phone:</span>
                                 @php
-                                    $parsedNumber = preg_replace('/\D/', '', $personal->whatsapp_number);
+                                    $parsedNumber = preg_replace('/\D/', '', $user->phone);
                                     $parsedNumber = '62' . ltrim($parsedNumber, '0');
                                 @endphp
                                 <a href="https://wa.me/{{ $parsedNumber }}"
                                     target="_blank">wa.me/{{ $parsedNumber }}</a>
                             </li>
                             <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Email:</span>
-                                <a href="mailto:{{ $user->email }}">{{ $user->email }}</a>
-                            </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <span class="fw-bold me-2">Telkom Batch:</span>
-                                <span>{{ $personal->telkom_batch }}</span>
+                                <i class="bx bx-chat"></i><span class="fw-bold mx-2">Job:</span>
+                                <span>{{ $personal->job }}</span>
                             </li>
                         </ul>
                         <div class="d-flex justify-content-center pt-3">
@@ -144,7 +114,7 @@
                 <div class="tab-content mb-4" style="padding: 0; padding-top: 1rem;">
                     <div class="tab-pane fade" id="account-settings" role="tabpanel" aria-labelledby="account-tab">
                         <div class="card mb-4">
-                            <h5 class="card-header">User Products</h5>
+                            <h5 class="card-header">User Reports</h5>
                             <div class="card-body table-responsive">
                                 {{ $dataTable->table() }}
                             </div>
@@ -232,11 +202,11 @@
                                         </thead>
                                         <tbody>
                                             @forelse ($recentLogins as $index => $data)
-                                                @if (count($recentLogins) > 5 && $index >= 5)
+                                                @if (count($recentLogins) > 10 && $index >= 10)
                                                     <tr>
                                                         <td colspan="4" class="text-center text-muted">
                                                             <small>
-                                                                We only show the 5 latest devices for security reasons.
+                                                                We only show the 10 latest devices for security reasons.
                                                                 <br>
                                                                 If you need to see more, please look up the user's
                                                                 activity log.
@@ -330,13 +300,16 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="form-label" for="edit-telkom_batch">Telkom Batch</label>
+                                    <label class="form-label" for="edit-gender">Gender</label>
                                     <div class="input-group input-group-merge">
-                                        <input type="number" id="edit-telkom_batch"
-                                            class="form-control dt-telkom_batch @error('telkom_batch') is-invalid @enderror"
-                                            name="telkom_batch" placeholder="{{ date('Y') }}"
-                                            aria-label="{{ date('Y') }}" aria-describedby="telkom_batch"
-                                            value="{{ $personal->telkom_batch }}" />
+                                        <select id="edit-gender" name="gender"
+                                            class="form-select dt-gender select2 @error('gender') is-invalid @enderror">
+                                            @foreach ($genders as $gender)
+                                                <option value="{{ $gender->value }}" @selected($personal->gender == $gender->value)>
+                                                    {{ $gender->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -349,15 +322,36 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-12">
-                                    <label class="form-label" for="edit-whatsapp_number">Whatsapp Number</label>
+                                <div class="col-sm-6">
+                                    <label class="form-label" for="edit-role">Role</label>
                                     <div class="input-group input-group-merge">
-                                        <span class="input-group-text">IDN (+62)</span>
-                                        <input type="text" id="edit-whatsapp_number"
-                                            class="form-control dt-whatsapp_number @error('whatsapp_number') is-invalid @enderror"
-                                            name="whatsapp_number" placeholder="8123456789" aria-label="8123456789"
-                                            aria-describedby="whatsapp_number"
-                                            value="{{ $personal->whatsapp_number }}" />
+                                        <select id="edit-role" name="role"
+                                            class="form-select dt-role select2 @error('role') is-invalid @enderror">
+                                            @foreach ($assignableRoles as $role)
+                                                <option value="{{ $role }}" @selected($user->hasRole($role))>
+                                                    {{ ucfirst($role) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label" for="edit-birth_date">Birth Date</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="date" id="edit-birth_date"
+                                            class="form-control dt-birth_date @error('birth_date') is-invalid @enderror"
+                                            name="birth_date" placeholder="YYYY-MM-DD" aria-label="YYYY-MM-DD"
+                                            aria-describedby="birth_date"
+                                            value="{{ $personal->birth_date }}" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="form-label" for="edit-job">Job</label>
+                                    <div class="input-group input-group-merge">
+                                        <input type="text" id="edit-job"
+                                            class="form-control dt-job @error('job') is-invalid @enderror"
+                                            name="job" placeholder="Software Engineer" aria-label="Software Engineer"
+                                            aria-describedby="job" value="{{ $personal->job }}" />
                                     </div>
                                 </div>
                                 <div class="col-sm-12">

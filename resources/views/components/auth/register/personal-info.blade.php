@@ -25,8 +25,11 @@
             <label class="form-label" for="gender">Gender</label>
             <select id="gender" name="gender" class="form-select select2"
                 data-placeholder="Select your gender">
-                <option value="male" @selected(old('gender') == 'male')>Male</option>
-                <option value="female" @selected(old('gender') == 'female')>Female</option>
+                @foreach ($genders as $gender)
+                    <option value="{{ $gender->value }}" @selected(old('gender') == $gender->value)>
+                        {{ $gender->name }}
+                    </option>
+                @endforeach
             </select>
 
             <x-input.error for="gender" />

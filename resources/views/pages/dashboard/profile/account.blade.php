@@ -96,10 +96,6 @@
                                 <i class="bx bx-chat"></i><span class="fw-semibold mx-2">Job:</span>
                                 <span>{{ $personal->job }}</span>
                             </li>
-                            <li class="d-flex align-items-center mb-3">
-                                <i class="bx bx-map-pin"></i><span class="fw-semibold mx-2">Address:</span>
-                                <span>{{ $personal->address }}</span>
-                            </li>
                         </ul>
                     </div>
                 </div>
