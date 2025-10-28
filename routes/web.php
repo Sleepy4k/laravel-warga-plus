@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('prevent_invalid_registration')->group(function () {
-        Route::middleware('verification_email_access')->prefix('email')->group(function () {
+        Route::middleware('verification_email_access')->prefix('account')->group(function () {
             Route::controller(Auth\VerificationController::class)->group(function () {
                 Route::get('verify', 'index')->name('verification.notice');
                 Route::get('verify/{id}/{hash}', 'show')->middleware('signed')->name('verification.verify');
