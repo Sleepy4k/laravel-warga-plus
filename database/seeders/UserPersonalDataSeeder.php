@@ -34,7 +34,7 @@ class UserPersonalDataSeeder extends Seeder
                 'user_id' => $users[0]['id'],
                 'first_name' => 'Admin',
                 'last_name' => 'Warga+',
-                'gender' => Gender::MALE->value,
+                'gender' => Gender::Male->value,
                 'birth_date' => date('Y-m-d', '1985-01-01'),
                 'job' => 'Administrator',
                 'address' => 'Jl. Di Panjaitan No. 1'
@@ -43,7 +43,7 @@ class UserPersonalDataSeeder extends Seeder
                 'user_id' => $users[1]['id'],
                 'first_name' => 'Pengurus',
                 'last_name' => 'Warga+',
-                'gender' => Gender::FEMALE->value,
+                'gender' => Gender::Female->value,
                 'birth_date' => date('Y-m-d', '1990-01-01'),
                 'job' => 'Pengurus',
                 'address' => 'Jl. Di Panjaitan No. 1'
