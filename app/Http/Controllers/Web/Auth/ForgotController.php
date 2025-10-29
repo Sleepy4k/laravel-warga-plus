@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Web\Auth;
 
+use App\Actions\SendRequestResetPassword;
 use App\Facades\Toast;
 use App\Foundations\Controller;
 use App\Http\Requests\Web\Auth\ForgotPasswordRequest;
 use App\Http\Requests\Web\Auth\UpdatePasswordRequest;
 use App\Models\User;
-use Illuminate\Auth\Events\PasswordReset;
+use App\Support\AttributeEncryptor;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ForgotController extends Controller
 {
@@ -26,34 +29,43 @@ class ForgotController extends Controller
      */
     public function store(ForgotPasswordRequest $request)
     {
-        $phone = !preg_match('/^8[1-9][0-9]{6,10}$/', $request->validated()['phone']);
+        $phone = $request->validated()['phone'];
+        $isValid = preg_match('/^8[1-9][0-9]{6,10}$/', $phone);
 
-        if (!$phone) {
+        if (!$isValid) {
             Toast::danger('Error', 'Invalid phone number.');
             return back();
         }
 
-        if (!User::where('phone', $phone)->exists()) {
+        $phone = AttributeEncryptor::encrypt($phone);
+
+        $user = User::where('phone', $phone)->first();
+
+        if (!$user) {
             Toast::danger('Error', __('passwords.user'));
             return back();
         }
 
-        switch (Password::sendResetLink(['phone' => $phone])) {
-        case Password::RESET_LINK_SENT:
-            Toast::primary('Success', __('passwords.sent'));
-            break;
-        case Password::INVALID_USER:
-            Toast::danger('Error', __('passwords.user'));
-            break;
-        case Password::RESET_THROTTLED:
-            Toast::danger('Error', __('passwords.throttled'));
-            break;
-        case Password::INVALID_TOKEN:
-            Toast::danger('Error', __('passwords.token'));
-            break;
-        default:
-            Toast::danger('Error', __('passwords.user'));
-            break;
+        try {
+            DB::table('password_reset_tokens')->where('phone', $phone)->delete();
+
+            $token = Str::random(64);
+
+            DB::table('password_reset_tokens')->insert([
+                'phone' => $phone,
+                'token' => AttributeEncryptor::encrypt($token),
+                'created_at' => now()
+            ]);
+
+            $status = app(SendRequestResetPassword::class)->execute($user, $token);
+
+            if ($status) {
+                Toast::primary('Success', __('passwords.sent'));
+            } else {
+                Toast::danger('Error', 'Failed to send WhatsApp message.');
+            }
+        } catch (\Throwable $e) {
+            Toast::danger('Error', 'Failed to send WhatsApp message.');
         }
 
         return back();
@@ -70,17 +82,37 @@ class ForgotController extends Controller
             return back();
         }
 
+        $phone = AttributeEncryptor::encrypt($phone);
+
         if (!User::where('phone', $phone)->exists()) {
             Toast::danger('Error', __('passwords.user'));
             return back();
         }
 
-        if (!Password::tokenExists(User::where('phone', $phone)->first(), $token)) {
+        $isTokenExists = DB::table('password_reset_tokens')
+            ->where('phone', $phone)
+            ->first();
+
+        if (!$isTokenExists) {
             Toast::danger('Error', __('passwords.token'));
             return back();
         }
 
-        Toast::info('Info', 'Please enter your new password.');
+        $descryptedToken = AttributeEncryptor::decrypt($isTokenExists->token);
+
+        if ($descryptedToken !== $token) {
+            Toast::danger('Error', __('passwords.token'));
+            return back();
+        }
+
+        $expiryMinutes = config('auth.passwords.users.expire', 60);
+        $tokenCreationTime = $isTokenExists->created_at;
+        if (Carbon::parse($tokenCreationTime)->addMinutes($expiryMinutes)->isPast()) {
+            Toast::danger('Error', __('passwords.token'));
+            return back();
+        }
+
+        Toast::primary('Info', 'Please enter your new password.');
 
         return view('pages.auth.reset-password', compact('token', 'phone'));
     }
@@ -90,33 +122,60 @@ class ForgotController extends Controller
      */
     public function update(UpdatePasswordRequest $request, string $token)
     {
-        $credentials = $request->validated();
-        $status = Password::reset(
-            array_merge($credentials, ['token' => $token]),
-            function ($user) use ($credentials) {
-                $user->password = bcrypt($credentials['password']);
-                $user->save();
+        try {
+            $credentials = $request->validated();
+            $phone = $credentials['phone'];
+            $password = $credentials['password'];
 
-                event(new PasswordReset($user));
+            $decryptedPhone = AttributeEncryptor::decrypt($phone);
+
+            if (!$decryptedPhone || !preg_match('/^8[1-9][0-9]{6,10}$/', $decryptedPhone)) {
+                Toast::danger('Error', 'Invalid phone number.');
+                return back();
             }
-        );
 
-        switch ($status) {
-        case Password::PASSWORD_RESET:
+            $user = User::where('phone', $phone)->first();
+
+            if (!$user) {
+                Toast::danger('Error', __('passwords.user'));
+                return back();
+            }
+
+            $isTokenExists = DB::table('password_reset_tokens')
+                ->where('phone', $phone)
+                ->first();
+
+            if (!$isTokenExists) {
+                Toast::danger('Error', __('passwords.token'));
+                return back();
+            }
+
+            $descryptedToken = AttributeEncryptor::decrypt($isTokenExists->token);
+
+            if ($descryptedToken !== $token) {
+                Toast::danger('Error', __('passwords.token'));
+                return back();
+            }
+
+            $expiryMinutes = config('auth.passwords.users.expire', 60);
+            $tokenCreationTime = $isTokenExists->created_at;
+            if (Carbon::parse($tokenCreationTime)->addMinutes($expiryMinutes)->isPast()) {
+                Toast::danger('Error', __('passwords.token'));
+                return back();
+            }
+
+            $user->password = $password;
+            $user->save();
+
+            DB::table('password_reset_tokens')->where('phone', $phone)->delete();
+
             Toast::primary('Success', __('passwords.reset'));
-            return to_route('login');
-        case Password::INVALID_TOKEN:
-            Toast::danger('Error', __('passwords.token'));
-            return back()->withErrors(['phone' => __('passwords.token')]);
-        case Password::INVALID_USER:
-            Toast::danger('Error', __('passwords.user'));
-            return back()->withErrors(['phone' => __('passwords.user')]);
-        case Password::RESET_THROTTLED:
-            Toast::danger('Error', __('passwords.throttled'));
-            return back()->withErrors(['phone' => __('passwords.throttled')]);
-        default:
-            Toast::danger('Error', __('passwords.user'));
-            return back()->withErrors(['phone' => __('passwords.user')]);
+
+            return redirect()->route('login');
+        } catch (\Throwable $th) {
+            dd($th);
+            Toast::danger('Error', 'Failed to reset password.');
+            return back();
         }
     }
 }

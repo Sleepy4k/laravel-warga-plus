@@ -47,7 +47,7 @@ class VerificationController extends Controller
             return back();
         }
 
-        Toast::info('System', 'A new verification link has been sent to your phone.');
+        Toast::primary('System', 'A new verification link has been sent to your phone.');
 
         return back()->with('status', 'Verification link sent to your phone.');
     }

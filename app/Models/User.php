@@ -106,6 +106,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the phone number where password reset links are sent.
+     *
+     * @return string
+     */
+    public function getEmailForPasswordReset(): string
+    {
+        return $this->phone;
+    }
+
+    /**
      * Send a password reset notification to the user.
      *
      * @param  string  $token
@@ -115,7 +125,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendPasswordResetNotification($token): void
     {
         $fullname = $this->personal->full_name;
-        $url = url(route('password.reset', ['token' => $token, 'email' => $this->email], false));
+        $url = url(route('password.reset', ['token' => $token, 'phone' => $this->phone], false));
         $this->notify(new ResetPassword($fullname, $url));
     }
 
