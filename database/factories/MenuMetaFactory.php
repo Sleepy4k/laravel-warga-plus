@@ -29,6 +29,23 @@ class MenuMetaFactory extends Factory
                 'active_routes' => 'dashboard.index',
             ],
             [
+                'permissions'   => ['dashboard.menu'],
+            ],
+            [
+                'permissions'   => ['report.menu'],
+                'icon'          => 'info-circle',
+            ],
+            [
+                'route'         => 'dashboard.report.index',
+                'permissions'   => ['report.index'],
+                'active_routes' => 'dashboard.report.index',
+            ],
+            [
+                'route'         => 'dashboard.report.index',
+                'permissions'   => ['report.category.index'],
+                'active_routes' => 'dashboard.report.index',
+            ],
+            [
                 'permissions'   => ['letter_transaction.menu', 'book_agenda.menu', 'document.menu', 'letter_references.menu'],
             ],
             [

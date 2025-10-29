@@ -19,6 +19,8 @@ class MenuFactory extends Factory
     {
         $parentMenus = [
             'dashboard'             => ['name' => 'Dashboard'],
+            'spacer_resident'       => ['name' => 'Resident'],
+            'reports'               => ['name' => 'Reports'],
             'spacer_secretary'      => ['name' => 'Administration'],
             'documents'             => ['name' => 'Documents'],
             'letter_transaction'    => ['name' => 'Letter Transactions'],
@@ -26,7 +28,7 @@ class MenuFactory extends Factory
             'letter_references'     => ['name' => 'Letter References'],
             'spacer_admin'          => ['name' => 'User Management'],
             'user'                  => ['name' => 'Users'],
-            'rbac'                  => ['name' => 'Roles & Permissions'],
+            'rbac'                  => ['name' => 'RBAC'],
             'spacer_control'        => ['name' => 'Control Panel'],
             'settings'              => ['name' => 'Settings'],
             'menu'                  => ['name' => 'Menus'],
@@ -53,6 +55,27 @@ class MenuFactory extends Factory
                 'name'      => 'Home',
                 'order'     => 1,
                 'parent_id' => $parentMenus['dashboard']['id'],
+            ],
+            [
+                'id'        => $parentMenus['spacer_resident']['id'],
+                'name'      => $parentMenus['spacer_resident']['name'],
+                'order'     => $parentMenus['spacer_resident']['order'],
+                'is_spacer' => true,
+            ],
+            [
+                'id'        => $parentMenus['reports']['id'],
+                'name'      => $parentMenus['reports']['name'],
+                'order'     => $parentMenus['reports']['order'],
+            ],
+            [
+                'name'      => 'Reports',
+                'order'     => 1,
+                'parent_id' => $parentMenus['reports']['id'],
+            ],
+            [
+                'name'      => 'Report Categories',
+                'order'     => 2,
+                'parent_id' => $parentMenus['reports']['id'],
             ],
             [
                 'id'        => $parentMenus['spacer_secretary']['id'],
