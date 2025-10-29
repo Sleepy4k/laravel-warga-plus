@@ -114,7 +114,8 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
-    /*|--------------------------------------------------------------------------
+    /*
+    |--------------------------------------------------------------------------
     | Email Verification
     |--------------------------------------------------------------------------
     || This option controls the expiration time for signed email verification
