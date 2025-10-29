@@ -14,9 +14,9 @@ return [
     */
 
     'reset' => 'Kata sandi Anda telah disetel ulang!',
-    'sent' => 'Kami telah mengirim email link reset password Anda!',
+    'sent' => 'Kami telah mengirim pesan berisikan link reset password Anda!',
     'throttled' => 'Harap tunggu sebelum mencoba lagi.',
     'token' => 'Token pengaturan ulang kata sandi ini tidak valid.',
-    'user' => "Kami tidak dapat menemukan pengguna dengan alamat email tersebut.",
+    'user' => "Kami tidak dapat menemukan pengguna dengan nomor handphone tersebut.",
 
 ];
