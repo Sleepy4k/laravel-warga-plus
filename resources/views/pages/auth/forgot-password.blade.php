@@ -4,6 +4,13 @@
             <div class="authentication-inner py-4">
                 <div class="card">
                     <div class="card-body">
+                        <a href="{{ route('login') }}" class="d-inline-flex align-items-center text-muted text-decoration-none mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="me-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                            </svg>
+                            Back to Login
+                        </a>
+
                         <h4 class="mb-2">Forgot Password? 🔒</h4>
                         <p class="mb-4">Enter your phone and we'll send you instructions to reset your password</p>
                         <form id="formForgotPassword" class="mb-3" action="{{ route('password.email') }}"
@@ -16,12 +23,6 @@
                             </div>
                             <button class="btn btn-primary d-grid w-100">Send Reset Link</button>
                         </form>
-                        <div class="text-center">
-                            <a href="{{ route('login') }}" class="d-flex align-items-center justify-content-center">
-                                <i class="bx bx-chevron-left scaleX-n1-rtl bx-sm"></i>
-                                Back to login
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

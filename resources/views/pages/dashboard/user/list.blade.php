@@ -91,44 +91,44 @@
                 <form class="add-new-record pt-0 row g-2" id="form-add-new-record" method="POST"
                     action="{{ route('dashboard.user.store') }}">
                     <div class="col-sm-12">
-                        <label class="form-label" for="username">Username</label>
+                        <label class="form-label" for="identity_number">Identity Number</label>
                         <div class="input-group input-group-merge">
-                            <input type="text" id="username"
-                                class="form-control dt-username @error('username') is-invalid @enderror" name="username"
-                                placeholder="benjamin4k" aria-label="benjamin4k" aria-describedby="username"
-                                value="{{ old('username') }}" />
+                            <input type="text" id="identity_number"
+                                class="form-control dt-identity_number @error('identity_number') is-invalid @enderror" name="identity_number"
+                                placeholder="330xxxxxxxxxxx" aria-label="330xxxxxxxxxxx" aria-describedby="identity_number"
+                                value="{{ old('identity_number') }}" />
                         </div>
                         <small class="text-muted">Make sure it's correct, user can't change it later.</small>
                     </div>
                     <div class="col-sm-12">
-                        <label class="form-label" for="email">Email</label>
+                        <label class="form-label" for="phone">Phone</label>
                         <div class="input-group input-group-merge">
-                            <input type="email" id="email"
-                                class="form-control dt-email @error('email') is-invalid @enderror" name="email"
-                                placeholder="benjamin4k@example.com" aria-label="benjamin4k@example.com"
-                                aria-describedby="email" value="{{ old('email') }}" />
+                            <input type="text" id="phone"
+                                class="form-control dt-phone @error('phone') is-invalid @enderror" name="phone"
+                                placeholder="813123456789" aria-label="813123456789"
+                                aria-describedby="phone" value="{{ old('phone') }}" />
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <label class="form-label" for="send-to">Send Email To</label>
+                        <label class="form-label" for="send-to">Send Phone To</label>
                         <div class="input-group input-group-merge">
                             <select id="send-to" name="send-to"
                                 class="form-control dt-send-to select2 @error('send-to') is-invalid @enderror">
-                                <option value="inputed">Inputted Email</option>
-                                <option value="other">Different Email</option>
+                                <option value="inputed">Inputted Phone</option>
+                                <option value="other">Different Phone</option>
                             </select>
                         </div>
                         <small class="text-muted">Choose where to send notifications.</small>
                     </div>
-                    <div class="col-sm-12" id="other-email-group" style="display:none;">
-                        <label class="form-label" for="other-email">Other Email</label>
+                    <div class="col-sm-12" id="other-phone-group" style="display:none;">
+                        <label class="form-label" for="other-phone">Other Phone</label>
                         <div class="input-group input-group-merge">
-                            <input type="email" id="other-email"
-                                class="form-control dt-other-email @error('other-email') is-invalid @enderror"
-                                name="other-email" placeholder="other@example.com" aria-label="other@example.com"
-                                aria-describedby="other-email" value="{{ old('other-email') }}" />
+                            <input type="text" id="other-phone"
+                                class="form-control dt-other-phone @error('other-phone') is-invalid @enderror"
+                                name="other-phone" placeholder="813123456789" aria-label="813123456789"
+                                aria-describedby="other-phone" value="{{ old('other-phone') }}" />
                         </div>
-                        <small class="text-muted">Enter a different email address to send notifications.</small>
+                        <small class="text-muted">Enter a different phone number to send notifications.</small>
                     </div>
                     <div class="col-sm-12">
                         <label class="form-label" for="role">Role</label>
@@ -252,12 +252,12 @@
         {{ $dataTable->scripts(attributes: ['type' => 'module', 'nonce' => app('csp-nonce')]) }}
         <script @cspNonce>
             $(document).ready(function() {
-                const otherEmailGroup = $('#other-email-group');
+                const otherPhoneGroup = $('#other-phone-group');
                 $('#send-to').change(function() {
                     if ($(this).val() === 'other') {
-                        otherEmailGroup.show();
+                        otherPhoneGroup.show();
                     } else {
-                        otherEmailGroup.hide();
+                        otherPhoneGroup.hide();
                     }
                 });
             });
