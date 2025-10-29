@@ -12,7 +12,7 @@
                         <form id="formResetPassword" class="mb-3" action="{{ route('password.update', $token) }}"
                             method="POST">
                             @csrf
-                            <input type="hidden" name="email" value="{{ old('email', $email) }}" />
+                            <input type="hidden" name="phone" value="{{ old('phone', $phone) }}" />
                             <div class="mb-3 form-password-toggle">
                                 <label class="form-label" for="password">New Password</label>
                                 <div class="input-group input-group-merge">
