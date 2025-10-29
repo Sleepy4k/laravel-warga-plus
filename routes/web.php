@@ -120,6 +120,8 @@ Route::middleware('auth')->group(function () {
             Route::name('dashboard.')->prefix('dashboard')->group(function () {
                 Route::get('/', AnalyticController::class)->name('index');
 
+                Route::get('/report', AnalyticController::class)->name('report.index');
+
                 Route::resource('user', User\ListController::class)
                     ->except(['create', 'edit']);
 
