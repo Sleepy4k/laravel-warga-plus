@@ -35,9 +35,10 @@ class ListService extends Service
 
         // set roles data for security, so admin can assign role but not above admin role
         $userRole = getUserRole();
+        $isRoleHighest = $userRole == config('rbac.role.highest');
         if ($userRole == config('rbac.role.default')) {
             $assignableRoles = [config('rbac.role.default')];
-        } else if ($userRole == config('rbac.role.highest')) {
+        } else if ($isRoleHighest) {
             $assignableRoles = config('rbac.list.roles');
         } else {
             $assignableRoles = array_filter(config('rbac.assign'), fn($roles) => in_array($userRole, $roles));
@@ -71,7 +72,10 @@ class ListService extends Service
             ]);
 
             $user->assignRole($request['role'] ?? config('rbac.role.default'));
-            $user->notify(new RegisteredByAdmin($request['phone'], $request['identity_number'], $password, null));
+
+            $otherPhone = $request['other-phone'] ?? null;
+
+            $user->notify(new RegisteredByAdmin($request['phone'], $request['identity_number'], $password, $otherPhone));
 
             return true;
         } catch (\Throwable $th) {

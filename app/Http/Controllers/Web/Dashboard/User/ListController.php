@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web\Dashboard\User;
 
-use App\DataTables\User\ProductDataTable;
+use App\DataTables\User\ReportDataTable;
 use App\DataTables\User\UserDataTable;
 use App\Foundations\Controller;
 use App\Http\Requests\Web\Dashboard\User\StoreRequest;
@@ -53,7 +53,7 @@ class ListController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductDataTable $dataTable, User $user)
+    public function show(ReportDataTable $dataTable, User $user)
     {
         return $dataTable->render('pages.dashboard.user.detail', $this->service->show($user));
     }

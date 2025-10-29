@@ -25,9 +25,9 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'string', 'max:25', Rule::unique(User::class, 'username')],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class, 'email')],
-            'other-email' => ['nullable', 'string', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:25', 'regex:/^8[1-9][0-9]{6,10}$/'],
+            'identity_number' => ['required', 'string', 'max:25', 'regex:/^[0-9]{12,16}$/'],
+            'other-phone' => ['nullable', 'string', 'max:25', 'regex:/^8[1-9][0-9]{6,10}$/'],
             'role' => ['required', 'string', 'max:255', Rule::exists(Role::class, 'name')],
         ];
     }

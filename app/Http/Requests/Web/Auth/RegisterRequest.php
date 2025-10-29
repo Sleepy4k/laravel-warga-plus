@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Web\Auth;
 
 use App\Enums\Gender;
-use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,8 +26,8 @@ class RegisterRequest extends FormRequest
         $validRuleIn = ['on', 'off', true, false, '1', '0'];
 
         return [
-            'phone' => ['required', 'string', 'min:6', 'max:50', 'regex:/^8[1-9][0-9]{6,10}$/', Rule::unique(User::class, 'phone')],
-            'identity_number' => ['required', 'string', 'min:12', 'max:16', 'regex:/^[0-9]{12,16}$/', Rule::unique(User::class, 'identity_number')],
+            'phone' => ['required', 'string', 'min:6', 'max:50', 'regex:/^8[1-9][0-9]{6,10}$/'],
+            'identity_number' => ['required', 'string', 'min:12', 'max:16', 'regex:/^[0-9]{12,16}$/'],
             'first_name' => ['required', 'string', 'min:2', 'max:70'],
             'last_name' => ['required', 'string', 'min:2', 'max:70'],
             'gender' => ['required', 'string', 'max:10', Rule::in(Gender::toArray())],

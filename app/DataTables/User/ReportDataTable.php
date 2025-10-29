@@ -2,7 +2,7 @@
 
 namespace App\DataTables\User;
 
-use App\Models\Product;
+use App\Models\Report;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -10,7 +10,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
-class ProductDataTable extends DataTable
+class ReportDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -20,30 +20,23 @@ class ProductDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->addColumn('image', function ($query) {
-                if (is_null($query->detail->image_url)) {
-                    return '<span>-</span>';
-                }
-
-                return '<a href="'.$query->detail->image_url.'" class="d-block" data-lightbox="poster" data-title="'.$query->name.'">'
-                    . '<img src="'.$query->detail->image_url.'" alt="'.$query->name.'" class="product-image img-table-lightbox" loading="lazy" height=150 />'
-                    . '</a>';
+            ->editColumn('content', function ($query) {
+                return strlen($query->content) > 50 ? substr($query->content, 0, 50) . '...' : $query->content;
             })
-            ->editColumn('detail.is_available', function ($query) {
-                return $query->detail->is_available ? 'Ya' : 'Tidak';
+            ->editColumn('created_at', function ($query) {
+                return $query->created_at->format('d M Y H:i:s');
             })
-            ->rawColumns(['image'])
             ->addIndexColumn();
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Product $model): QueryBuilder
+    public function query(Report $model): QueryBuilder
     {
         return $model
-            ->select('products.id', 'products.name', 'category_id', 'detail_id', 'user_id', 'products.created_at', 'products.updated_at')
-            ->with('detail:id,price,rating,is_available,image_url', 'category:id,label');
+            ->select('reports.id', 'reports.title', 'reports.content', 'reports.location', 'reports.status', 'reports.category_id', 'reports.created_at', 'reports.updated_at')
+            ->with('category:id,name');
     }
 
     /**
@@ -89,29 +82,23 @@ class ProductDataTable extends DataTable
             Column::computed('DT_RowIndex')
                 ->title('No')
                 ->addClass('text-center'),
-            Column::make('name')
-                ->title('Nama')
+            Column::make('title')
+                ->title('Judul')
                 ->addClass('text-center'),
-            Column::computed('image')
-                ->exportable(false)
-                ->title('Foto')
+            Column::make('content')
+                ->title('Isi Laporan')
                 ->addClass('text-center'),
-            Column::computed('detail.image_url')
-                ->printable(false)
-                ->title('Link Foto')
-                ->addClass('text-center')
-                ->hidden(),
-            Column::make('detail.price')
-                ->title('Harga')
+            Column::make('location')
+                ->title('Lokasi')
                 ->addClass('text-center'),
-            Column::make('detail.rating')
-                ->title('Rating')
+            Column::make('status')
+                ->title('Status')
                 ->addClass('text-center'),
-            Column::make('detail.is_available')
-                ->title('Tersedia')
+            Column::make('category.name')
+                ->title('Kategori')
                 ->addClass('text-center'),
-            Column::make('category.label')
-                ->title('Categori')
+            Column::make('created_at')
+                ->title('Dibuat Pada')
                 ->addClass('text-center'),
         ];
     }
@@ -121,6 +108,6 @@ class ProductDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Product_' . date('YmdHis');
+        return 'Report_' . date('YmdHis');
     }
 }
