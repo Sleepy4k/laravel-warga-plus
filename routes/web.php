@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\Dashboard\RBAC;
 use App\Http\Controllers\Web\Dashboard\Log;
 use App\Http\Controllers\Web\Dashboard\Misc;
 use App\Http\Controllers\Web\Dashboard\Menu;
+use App\Http\Controllers\Web\Dashboard\Report;
 use App\Http\Controllers\Web\Dashboard\Setting;
 use App\Http\Controllers\Web\Dashboard\Administration\Agenda;
 use App\Http\Controllers\Web\Dashboard\Administration\Document;
@@ -121,6 +122,13 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', AnalyticController::class)->name('index');
 
                 Route::get('/report', AnalyticController::class)->name('report.index');
+                Route::resource('report/category', Report\ReportCategoryController::class)
+                    ->names('report.category')
+                    ->except(['create', 'show', 'edit']);
+
+                Route::get('/information', AnalyticController::class)->name('information.index');
+                Route::get('/information/category', AnalyticController::class)
+                    ->name('information.category.index');
 
                 Route::resource('user', User\ListController::class)
                     ->except(['create', 'edit']);
