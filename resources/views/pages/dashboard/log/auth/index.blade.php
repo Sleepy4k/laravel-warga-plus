@@ -30,14 +30,14 @@
             <x-dashboard.canvas.header title="Show Record" />
             <x-dashboard.canvas.body>
                 <div class="row g-2" id="show-record-body">
-                    <div class="col-sm-12">
-                        <label class="form-label" for="show-name">Name</label>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="show-name">Log Type</label>
                         <div class="input-group input-group-merge">
                             <input type="text" id="show-name" class="form-control dt-name" placeholder="Auth"
                                 aria-label="Auth" aria-describedby="show-name" disabled />
                         </div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label class="form-label" for="show-event">Event</label>
                         <div class="input-group input-group-merge">
                             <input type="text" id="show-event" class="form-control dt-event" placeholder="Login"
@@ -52,8 +52,8 @@
                                 disabled />
                         </div>
                     </div>
-                    <div class="col-sm-12">
-                        <label class="form-label" for="show-causer">Causer</label>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="show-causer">Causer Name</label>
                         <div class="input-group input-group-merge">
                             <input type="text" id="show-causer" class="form-control dt-causer" placeholder="John Doe"
                                 aria-label="John Doe" aria-describedby="show-causer" disabled />
@@ -67,10 +67,8 @@
     </div>
 
     @pushOnce('plugin-scripts')
-        <script type="text/javascript" src="{{ asset('vendor/datatables/datatables.min.js') }}" @cspNonce>
-        </script>
-        <script type="text/javascript" src="{{ asset('vendor/datatables/buttons.server-side.js') }}"
-            @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/datatables/datatables.min.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/datatables/buttons.server-side.js') }}" @cspNonce></script>
     @endPushOnce
 
     @pushOnce('page-scripts')
@@ -166,10 +164,26 @@
                                         const showRecordBody = canvasBody.find('#show-record-body');
                                         if (showRecordBody.length === 0) return;
 
-                                        if (Object.keys(properties).length > 0) {
-                                            Object.keys(properties).forEach(key => {
+                                        const propertyKeys = Object.keys(properties);
+
+                                        if (propertyKeys.length > 0) {
+                                            const fullWidthType = ['login_at', 'logout_at', 'registered_at',
+                                                'verified_at'
+                                            ];
+
+                                            propertyKeys.sort((a, b) => {
+                                                const aFullWidth = fullWidthType.includes(a) ? 1 : 0;
+                                                const bFullWidth = fullWidthType.includes(b) ? 1 : 0;
+                                                return aFullWidth - bFullWidth;
+                                            });
+
+                                            propertyKeys.forEach(key => {
+                                                if (key === 'user_agent') return;
+
                                                 const group = $('<div>', {
-                                                    class: 'col-sm-12 mb-2 dt-properties-rendered'
+                                                    class: `col-sm-` + (fullWidthType.includes(
+                                                            key) ? '12' : '6') +
+                                                        ' mb-2 dt-properties-rendered'
                                                 });
                                                 const label = $('<label>', {
                                                     class: 'form-label',

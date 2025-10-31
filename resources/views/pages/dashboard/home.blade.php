@@ -14,10 +14,12 @@
                                 <h5 class="card-title text-primary mb-2">Welcome to WARGA PLUS! 🚀</h5>
                                 <p class="mb-3 text-muted">
                                     You have been actively participating in community reports. Keep up!<br>
-                                    Click the button below to create a new report and contribute further to our community.
+                                    Click the button below to create a new report and contribute further to our
+                                    community.
                                 </p>
-                                <a href="#"
-                                    class="btn btn-primary btn-sm rounded-pill px-4">Write a Report</a>
+                                <button data-route="{{ route('dashboard.report.index') }}"
+                                    id="dashboard-write-report-button"
+                                    class="btn btn-primary btn-sm rounded-pill px-4">Write a Report</button>
                             </div>
                         </div>
                         <div class="col-sm-4 text-center">
@@ -38,7 +40,8 @@
                         <div class="mb-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="mb-0 fw-semibold">My Reports</h6>
-                                <span class="badge bg-warning text-black rounded-pill">Year {{ now()->format('Y') }}</span>
+                                <span class="badge bg-warning text-black rounded-pill">Year
+                                    {{ now()->format('Y') }}</span>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -57,7 +60,8 @@
                         <div class="col-md-12">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Total Report Created</h5>
-                                <small class="card-subtitle">Yearly report overview about residents report being created and processed on our website</small>
+                                <small class="card-subtitle">Yearly report overview about residents report being created
+                                    and processed on our website</small>
                             </div>
                             <div class="card-body" style="position: relative;">
                                 <div id="totalProductEl" style="min-height: 50%;"></div>

@@ -1,4 +1,10 @@
 <x-layouts.dashboard title="User Setting">
+    @pushOnce('plugin-styles')
+        <link rel="stylesheet" href="{{ asset('vendor/libs/select2/select2.css') }}" @cspNonce />
+        <link rel="stylesheet" href="{{ asset('vendor/libs/flatpickr/flatpickr.css') }}" @cspNonce />
+        <link rel="stylesheet" href="{{ asset('vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" @cspNonce />
+    @endPushOnce
+
     <div class="container-xxl flex-grow-1 container-p-y">
         <x-dashboard.breadcrumb />
 
@@ -9,15 +15,14 @@
                 <div class="card mb-4">
                     <h5 class="card-header">Profile Details</h5>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('profile.setting.update') }}"
-                            id="formAccountSettings" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('profile.setting.update') }}" id="formAccountSettings"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
 
                             <div class="d-flex align-items-start align-items-sm-center gap-4 mb-4">
-                                <img src="{{ $personal->userAvatar() }}"
-                                    alt="user-avatar" class="d-block rounded" height="100" width="100"
-                                    id="uploadedAvatar" loading="lazy" />
+                                <img src="{{ $personal->userAvatar() }}" alt="user-avatar" class="d-block rounded"
+                                    height="100" width="100" id="uploadedAvatar" loading="lazy" />
                                 <div class="button-wrapper">
                                     <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                         <span class="d-none d-sm-block">Upload new photo</span>
@@ -56,21 +61,23 @@
                                     <label class="form-label" for="phone">Phone</label>
                                     <div class="input-group input-group-merge">
                                         <span class="input-group-text">IDN (+62)</span>
-                                        <input type="text" id="phone" name="phone"
-                                            class="form-control" placeholder="813 1234 5678"
-                                            value="{{ old('phone', $user->phone) }}">
+                                        <input type="text" id="phone" name="phone" class="form-control"
+                                            placeholder="813 1234 5678" value="{{ old('phone', $user->phone) }}">
                                         <x-input.error for="phone" />
                                     </div>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="birth_date" class="form-label">Birth Date</label>
-                                    <input class="form-control" type="date" id="birth_date" name="birth_date"
-                                        value="{{ old('birth_date', $personal->birth_date) }}">
+                                    <input type="text" id="birth_date"
+                                        class="form-control @error('birth_date') is-invalid @enderror"
+                                        placeholder="YYYY-MM-DD" aria-label="YYYY-MM-DD" aria-label="Birth Date"
+                                        aria-describedby="birth_date" name="birth_date"
+                                        value="{{ old('birth_date', $personal->birth_date) }}" />
                                     <x-input.error for="birth_date" />
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="gender" class="form-label">Gender</label>
-                                    <select id="gender" name="gender" class="form-select">
+                                    <select id="gender" name="gender" class="form-select select2">
                                         @foreach ($genders as $genderOption)
                                             <option value="{{ $genderOption->value }}"
                                                 {{ old('gender', $personal->gender) === $genderOption->value ? 'selected' : '' }}>
@@ -130,16 +137,44 @@
     </div>
 
     @pushOnce('plugin-scripts')
-        <script src="{{ asset('vendor/libs/cleavejs/cleave.js') }}" @cspNonce></script>
-        <script src="{{ asset('vendor/libs/cleavejs/cleave-phone.js') }}" @cspNonce></script>
-        <script src="{{ asset('vendor/libs/autosize/autosize.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/libs/autosize/autosize.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/libs/select2/select2.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}" @cspNonce></script>
     @endPushOnce
 
     @pushOnce('page-scripts')
-        <script src="{{ asset('js/pages/profile-setting.min.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('js/pages/profile-setting.min.js') }}" @cspNonce></script>
         <script @cspNonce>
             $(document).ready(function() {
                 autosize($('#autosize-address'));
+            });
+        </script>
+        <script @cspNonce>
+            $(document).ready(function() {
+                var select2 = $('.select2');
+                select2.length && select2.each(function() {
+                    var e = $(this);
+                    e.select2({
+                        dropdownParent: e.parent(),
+                        placeholder: 'Select an option',
+                        allowClear: false,
+                    });
+                });
+            });
+        </script>
+        <script @cspNonce>
+            $(document).ready(function() {
+                var flatpickr = $('#birth_date');
+                flatpickr.length && flatpickr.each(function() {
+                    var e = $(this);
+                    e.flatpickr({
+                        enableTime: false,
+                        dateFormat: 'Y-m-d',
+                        allowInput: false,
+                        altInput: true,
+                        altFormat: 'j F, Y'
+                    });
+                });
             });
         </script>
     @endPushOnce

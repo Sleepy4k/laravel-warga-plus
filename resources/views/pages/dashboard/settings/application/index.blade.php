@@ -257,23 +257,6 @@
                                     font size.
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="sidebar_logo">Logo</label>
-                                <div class="mt-2">
-                                    <img id="sidebar-logo-preview" src="{{ $settings['sidebar_logo'] ?? '' }}"
-                                        alt="Logo Preview" loading="lazy"
-                                        style="width: 160px; height: 80px; object-fit: contain; display: {{ empty($settings['sidebar_logo']) ? 'none' : 'inline-block' }};">
-                                </div>
-                                <div class="input-group input-group-merge mt-3">
-                                    <input type="file"
-                                        class="form-control @error('sidebar_logo') is-invalid @enderror"
-                                        id="sidebar_logo" name="sidebar_logo" accept="image/*" />
-                                </div>
-                                <x-input.error for="sidebar_logo" />
-                                <div class="form-text">
-                                    Recommended resolution: <strong>80x80px</strong>
-                                </div>
-                            </div>
                         </div>
 
                         @can('setting.update')
@@ -325,12 +308,15 @@
                             @foreach ($settings as $key => $value)
                                 @if (str_starts_with($key, 'footer_') && strpos($key, 'copyright') === false && str_ends_with($key, '_url'))
                                     <div class="row g-3 align-items-end mb-2" data-repeater-item>
-                                        <input type="hidden" name="link[{{ $loop->index }}][key]" value="{{ Str::between($key, 'footer_', '_url') }}" id="link_key_{{ $loop->index }}" />
+                                        <input type="hidden" name="link[{{ $loop->index }}][key]"
+                                            value="{{ Str::between($key, 'footer_', '_url') }}"
+                                            id="link_key_{{ $loop->index }}" />
                                         <div class="col-md-5">
                                             <label class="form-label">Link Title</label>
                                             <input type="text"
                                                 class="form-control @error("link[{{ $loop->index }}][title]") is-invalid @enderror"
-                                                name="link[{{ $loop->index }}][title]" value="{{ $settings[str_replace('_url', '_title', $key)] ?? '' }}" />
+                                                name="link[{{ $loop->index }}][title]"
+                                                value="{{ $settings[str_replace('_url', '_title', $key)] ?? '' }}" />
                                             <x-input.error for="link[{{ $loop->index }}][title]" />
                                         </div>
                                         <div class="col-md-5">
@@ -341,7 +327,8 @@
                                             <x-input.error for="link[{{ $loop->index }}][url]" />
                                         </div>
                                         <div class="col-md-2 d-flex align-items-end">
-                                            <button type="button" class="btn btn-outline-danger w-100" data-repeater-delete>
+                                            <button type="button" class="btn btn-outline-danger w-100"
+                                                data-repeater-delete>
                                                 <i class="bx bx-trash"></i> Delete
                                             </button>
                                         </div>
@@ -458,7 +445,8 @@
                                 }
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    const fieldKey = $(this).find('input[name^="link"]').attr('value');
+                                    const fieldKey = $(this).find('input[name^="link"]').attr(
+                                        'value');
                                     $(this).slideUp();
 
                                     if (!fieldKey || fieldKey === '') return;
@@ -466,7 +454,8 @@
                                     $(this).remove();
 
                                     $.ajax({
-                                        url: "{{ route('dashboard.settings.application.destroy', ':id') }}".replace(':id', fieldKey),
+                                        url: "{{ route('dashboard.settings.application.destroy', ':id') }}"
+                                            .replace(':id', fieldKey),
                                         type: 'DELETE',
                                         data: {
                                             _token: '{{ csrf_token() }}'

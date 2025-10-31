@@ -2,7 +2,8 @@
     <x-landing.hero>
         <div class="hero-text-box text-center position-relative">
             <h1 class="text-primary hero-title display-6 fw-extrabold">Informasi RT</h1>
-            <h2 class="hero-sub-title h6">Semua informasi kegiatan dan pengumuman RT terkumpul di sini — kerja bakti, ronda malam, pengumuman penting, dan lain-lain.</h2>
+            <h2 class="hero-sub-title h6">Semua informasi kegiatan dan pengumuman RT terkumpul di sini — kerja bakti,
+                ronda malam, pengumuman penting, dan lain-lain.</h2>
         </div>
     </x-landing.hero>
 
@@ -12,30 +13,30 @@
                 <div class="col-12">
                     <form id="filterForm" class="row g-2 align-items-center">
                         <div class="col-12 col-md">
-                            <input
-                                type="search"
-                                name="q"
-                                class="form-control"
-                                placeholder="Cari informasi..."
-                                value="{{ request('q') }}"
-                                aria-label="Cari informasi"
-                            >
+                            <input type="search" name="q" class="form-control" placeholder="Cari informasi..."
+                                value="{{ request('q') }}" aria-label="Cari informasi">
                         </div>
 
                         <div class="col-6 col-md-auto">
                             <select name="type" class="form-select" aria-label="Filter tipe">
                                 <option value="">Semua Tipe</option>
-                                <option value="Kegiatan" {{ request('type') == 'Kegiatan' ? 'selected' : '' }}>Kegiatan</option>
-                                <option value="Pengumuman" {{ request('type') == 'Pengumuman' ? 'selected' : '' }}>Pengumuman</option>
-                                <option value="Peraturan" {{ request('type') == 'Peraturan' ? 'selected' : '' }}>Peraturan</option>
-                                <option value="Keuangan" {{ request('type') == 'Keuangan' ? 'selected' : '' }}>Keuangan</option>
-                                <option value="Keamanan" {{ request('type') == 'Keamanan' ? 'selected' : '' }}>Keamanan</option>
+                                <option value="Kegiatan" {{ request('type') == 'Kegiatan' ? 'selected' : '' }}>Kegiatan
+                                </option>
+                                <option value="Pengumuman" {{ request('type') == 'Pengumuman' ? 'selected' : '' }}>
+                                    Pengumuman</option>
+                                <option value="Peraturan" {{ request('type') == 'Peraturan' ? 'selected' : '' }}>
+                                    Peraturan</option>
+                                <option value="Keuangan" {{ request('type') == 'Keuangan' ? 'selected' : '' }}>Keuangan
+                                </option>
+                                <option value="Keamanan" {{ request('type') == 'Keamanan' ? 'selected' : '' }}>Keamanan
+                                </option>
                             </select>
                         </div>
 
                         <div class="col-6 col-md-auto d-flex gap-2">
                             <button type="submit" class="btn btn-primary w-100 w-md-auto">Filter</button>
-                            <button type="button" class="btn btn-outline-secondary w-100 w-md-auto" id="resetFilters">Reset</button>
+                            <button type="button" class="btn btn-outline-secondary w-100 w-md-auto"
+                                id="resetFilters">Reset</button>
                         </div>
                     </form>
                 </div>
@@ -65,26 +66,32 @@
                     <div class="col-12">
                         <div class="card shadow-sm border-0 bg-body">
                             <div class="card-body d-flex align-items-start gap-3">
-                                <div class="avatar avatar-sm d-flex align-items-center justify-content-center bg-label-{{ ['primary','success','danger','warning','info'][$index % 5] }} rounded me-3 mt-1">
-                                    <i class="bx {{ ['bx-calendar','bx-phone','bx-book','bx-money','bx-shield'][$index % 5] }} fs-4"></i>
+                                <div
+                                    class="avatar avatar-sm d-flex align-items-center justify-content-center bg-label-{{ ['primary', 'success', 'danger', 'warning', 'info'][$index % 5] }} rounded me-3 mt-1">
+                                    <i
+                                        class="bx {{ ['bx-calendar', 'bx-phone', 'bx-book', 'bx-money', 'bx-shield'][$index % 5] }} fs-4"></i>
                                 </div>
                                 <div class="flex-grow-1">
                                     <h5 class="mb-1">{{ $title }}</h5>
                                     <p class="mb-1 text-muted">
-                                        @if($type == 'Kegiatan')
-                                            Kerja bakti pembersihan selokan dan pemangkasan ranting yang menghalangi jalan.
+                                        @if ($type == 'Kegiatan')
+                                            Kerja bakti pembersihan selokan dan pemangkasan ranting yang menghalangi
+                                            jalan.
                                         @elseif($type == 'Pengumuman')
                                             Rapat penting akan dilaksanakan di Balai RT; mohon hadir tepat waktu.
                                         @elseif($type == 'Peraturan')
                                             Ditetapkan jam tenang mulai pukul 22.00 sampai 05.00 setiap hari.
                                         @elseif($type == 'Keuangan')
-                                            Pengumpulan iuran keamanan bulan ini telah dibuka. Silakan konfirmasi kepada pengurus.
+                                            Pengumpulan iuran keamanan bulan ini telah dibuka. Silakan konfirmasi kepada
+                                            pengurus.
                                         @else
-                                            Ronda malam akan dimulai pada pukul 20.00; warga diharapkan mendaftar petugas ronda.
+                                            Ronda malam akan dimulai pada pukul 20.00; warga diharapkan mendaftar
+                                            petugas ronda.
                                         @endif
                                     </p>
                                     <div class="d-flex align-items-center">
-                                        <span class="badge bg-label-{{ ['primary','success','danger','warning','info'][$index % 5] }} me-2">{{ $type }}</span>
+                                        <span
+                                            class="badge bg-label-{{ ['primary', 'success', 'danger', 'warning', 'info'][$index % 5] }} me-2">{{ $type }}</span>
                                         <small class="text-muted">{{ $date }}</small>
                                         <div class="ms-auto">
                                             <a href="#" class="btn btn-sm btn-primary">Detail</a>

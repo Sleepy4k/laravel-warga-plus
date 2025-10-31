@@ -3,7 +3,7 @@
         <button class="app-brand-link" data-route="{{ route('landing.home') }}" id="sidebar-menu-page-main"
             style="border: none; background: none; padding: 0;">
             <span class="app-brand-logo demo">
-                <img src="{{ $appSettings['sidebar_logo'] }}" alt="Logo" loading="lazy" width="25" />
+                <img src="{{ $appSettings['app_logo'] }}" alt="Logo" loading="lazy" width="35" />
             </span>
             <span class="app-brand-text demo menu-text fw-bolder ms-2"
                 style="font-size: {{ $appSettings['sidebar_name_size'] }}rem;">{{ $appSettings['sidebar_name'] }}</span>

@@ -6,15 +6,13 @@
         </div>
     @else
         <div class="d-flex ms-3 mb-3 mt-3">
-            @if ($type === 'create')
-                <button type="submit" id="add-new-record-submit-btn"
-                    class="btn btn-primary data-submit me-sm-3 me-1">Submit</button>
-                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-            @else
-                <button type="submit" id="edit-record-submit-btn"
-                    class="btn btn-primary data-submit me-sm-3 me-1">Submit</button>
-                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
-            @endif
+            <button type="submit" id="{{ $isCreate ? 'add-new' : 'edit' }}-record-submit-btn"
+                class="btn btn-primary data-submit me-sm-3 me-1">
+                {{ $isCreate ? 'Create Record' : 'Save Changes' }}
+            </button>
+            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">
+                Cancel
+            </button>
         </div>
     @endif
 </div>

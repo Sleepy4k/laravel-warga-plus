@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="{{ asset('vendor/libs/bootstrap-select/bootstrap-select.css') }}" @cspNonce />
         <link rel="stylesheet" href="{{ asset('vendor/libs/select2/select2.css') }}" @cspNonce />
         <link rel="stylesheet" href="{{ asset('vendor/libs/formvalidation/dist/css/formValidation.min.css') }}" @cspNonce />
+        <link rel="stylesheet" href="{{ asset('vendor/libs/flatpickr/flatpickr.css') }}" @cspNonce />
     @endPushOnce
 
     <div class="authentication-wrapper authentication-cover">
@@ -43,10 +44,9 @@
     </div>
 
     @pushOnce('plugin-scripts')
-        <script type="text/javascript" src="{{ asset('vendor/libs/cleavejs/cleave.js') }}" @cspNonce></script>
-        <script type="text/javascript" src="{{ asset('vendor/libs/cleavejs/cleave-phone.js') }}" @cspNonce></script>
         <script type="text/javascript" src="{{ asset('vendor/libs/bs-stepper/bs-stepper.js') }}" @cspNonce></script>
         <script type="text/javascript" src="{{ asset('vendor/libs/select2/select2.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/libs/flatpickr/flatpickr.js') }}" @cspNonce></script>
     @endPushOnce
 
     @pushOnce('page-scripts')
@@ -54,14 +54,32 @@
         <script type="text/javascript" @cspNonce>
             window.Helpers.initCustomOptionCheck();
         </script>
-        <script type="text/javascript" @cspNonce>
+        <script @cspNonce>
             $(document).ready(function() {
-                $('#telkom_batch').select2({
-                    dropdownParent: $('#multiStepsValidation'),
-                    placeholder: 'Select an option',
-                    allowClear: false,
-                    width: '100%',
-                    closeOnSelect: true,
+                var select2 = $('.select2');
+                select2.length && select2.each(function() {
+                    var e = $(this);
+                    e.select2({
+                        dropdownParent: e.parent(),
+                        placeholder: 'Select an option',
+                        allowClear: false,
+                    });
+                });
+            });
+        </script>
+        <script @cspNonce>
+            $(document).ready(function() {
+                var flatpickr = $('#birth_date');
+                flatpickr.length && flatpickr.each(function() {
+                    var e = $(this);
+                    e.flatpickr({
+                        enableTime: false,
+                        dateFormat: 'Y-m-d',
+                        allowInput: false,
+                        defaultDate: 'today',
+                        altInput: true,
+                        altFormat: 'j F, Y'
+                    });
                 });
             });
         </script>

@@ -23,8 +23,7 @@
 
         <div class="col-sm-6">
             <label class="form-label" for="gender">Gender</label>
-            <select id="gender" name="gender" class="form-select select2"
-                data-placeholder="Select your gender">
+            <select id="gender" name="gender" class="form-select select2" data-placeholder="Select your gender">
                 @foreach ($genders as $gender)
                     <option value="{{ $gender->value }}" @selected(old('gender') == $gender->value)>
                         {{ $gender->name }}
@@ -37,7 +36,8 @@
 
         <div class="col-sm-6">
             <label class="form-label" for="birth_date">Birth Date</label>
-            <input type="date" id="birth_date" name="birth_date" class="form-control"
+            <input type="text" id="birth_date" class="form-control" placeholder="YYYY-MM-DD" aria-label="YYYY-MM-DD"
+                aria-label="Birth Date" aria-describedby="birth_date" name="birth_date"
                 value="{{ old('birth_date') }}" />
 
             <x-input.error for="birth_date" />

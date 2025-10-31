@@ -10,11 +10,11 @@
                 <a href="{{ route('landing.home') }}" class="app-brand-link">
                     <span class="app-brand-logo demo">
                         <span class="text-primary">
-                            <img src="{{ $appSettings['sidebar_logo'] }}" alt="Logo" loading="lazy"
-                                width="25" />
+                            <img src="{{ $appSettings['app_logo'] }}" alt="Logo" loading="lazy" width="35" />
                         </span>
                     </span>
-                    <span class="app-brand-text demo menu-text fw-bolder ms-2">{{ $appSettings['sidebar_name'] }}</span>
+                    <span class="app-brand-text demo menu-text fw-bolder ms-2"
+                        style="font-size: {{ $appSettings['sidebar_name_size'] - 0.2 }}rem;">{{ $appSettings['sidebar_name'] }}</span>
                 </a>
             </div>
 

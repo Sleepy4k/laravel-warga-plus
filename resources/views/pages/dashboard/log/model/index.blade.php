@@ -14,8 +14,8 @@
         </div>
 
         <p class="mb-4">
-            Every time a model is created, updated, or deleted, a log entry is created.<br/>
-            This allows you to track changes made to your models over time.<br/>
+            Every time a model is created, updated, or deleted, a log entry is created.<br />
+            This allows you to track changes made to your models over time.<br />
             You can clear the model logs that more than {{ config('activitylog.delete_records_older_than_days', 60) }}
             days by clicking the button above.
         </p>
@@ -30,18 +30,48 @@
             <x-dashboard.canvas.header title="Show Record" />
             <x-dashboard.canvas.body>
                 <div class="row g-2" id="show-record-body">
-                    <div class="col-sm-12">
-                        <label class="form-label" for="show-name">Name</label>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="show-name">Log Type</label>
                         <div class="input-group input-group-merge">
                             <input type="text" id="show-name" class="form-control dt-name" placeholder="Auth"
                                 aria-label="Auth" aria-describedby="show-name" disabled />
                         </div>
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label class="form-label" for="show-event">Event</label>
                         <div class="input-group input-group-merge">
                             <input type="text" id="show-event" class="form-control dt-event" placeholder="Login"
                                 aria-label="Login" aria-describedby="show-event" disabled />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="show-subject_type">Subject Type</label>
+                        <div class="input-group input-group-merge">
+                            <input type="text" id="show-subject_type" class="form-control dt-subject_type"
+                                placeholder="Product" aria-label="Product" aria-describedby="show-subject_type"
+                                disabled />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="show-subject_id">Subject ID</label>
+                        <div class="input-group input-group-merge">
+                            <input type="text" id="show-subject_id" class="form-control dt-subject_id"
+                                placeholder="1" aria-label="1" aria-describedby="show-subject_id" disabled />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="show-causer_type">Causer Type</label>
+                        <div class="input-group input-group-merge">
+                            <input type="text" id="show-causer_type" class="form-control dt-causer_type"
+                                placeholder="John Doe" aria-label="John Doe" aria-describedby="show-causer_type"
+                                disabled />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label" for="show-causer_id">Causer ID</label>
+                        <div class="input-group input-group-merge">
+                            <input type="text" id="show-causer_id" class="form-control dt-causer_id" placeholder="1"
+                                aria-label="1" aria-describedby="show-causer_id" disabled />
                         </div>
                     </div>
                     <div class="col-sm-12">
@@ -52,20 +82,6 @@
                                 disabled />
                         </div>
                     </div>
-                    <div class="col-sm-12">
-                        <label class="form-label" for="show-subject">Subject</label>
-                        <div class="input-group input-group-merge">
-                            <input type="text" id="show-subject" class="form-control dt-subject" placeholder="Product # 1"
-                                aria-label="Product # 1" aria-describedby="show-subject" disabled />
-                        </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <label class="form-label" for="show-causer">Causer</label>
-                        <div class="input-group input-group-merge">
-                            <input type="text" id="show-causer" class="form-control dt-causer" placeholder="John Doe"
-                                aria-label="John Doe" aria-describedby="show-causer" disabled />
-                        </div>
-                    </div>
                     <input type="hidden" id="show-properties" class="form-control dt-properties" />
                 </div>
             </x-dashboard.canvas.body>
@@ -74,10 +90,8 @@
     </div>
 
     @pushOnce('plugin-scripts')
-        <script type="text/javascript" src="{{ asset('vendor/datatables/datatables.min.js') }}" @cspNonce>
-        </script>
-        <script type="text/javascript" src="{{ asset('vendor/datatables/buttons.server-side.js') }}"
-            @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/datatables/datatables.min.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/datatables/buttons.server-side.js') }}" @cspNonce></script>
     @endPushOnce
 
     @pushOnce('page-scripts')
@@ -157,8 +171,10 @@
                                     log_name: '#show-name',
                                     event: '#show-event',
                                     description: '#show-description',
-                                    subject: '#show-subject',
-                                    causer: '#show-causer',
+                                    subject_type: '#show-subject_type',
+                                    subject_id: '#show-subject_id',
+                                    causer_type: '#show-causer_type',
+                                    causer_id: '#show-causer_id',
                                     properties: '#show-properties',
                                     created_at: '#show-created-at',
                                     updated_at: '#show-last-updated'
@@ -184,11 +200,13 @@
                                                     text: key.replace(/[-_]/g, ' ').replace(
                                                         /^./, str => str.toUpperCase())
                                                 });
+                                                const prettyJson = JSON.stringify(properties[key], null,
+                                                    2);
                                                 const textarea = $('<textarea>', {
                                                     class: 'form-control',
-                                                    rows: Math.min(15, Math.ceil(JSON.stringify(properties[key], null, 2).length / 13)),
-                                                    readonly: true,
-                                                    text: JSON.stringify(properties[key], null, 2)
+                                                    rows: prettyJson.split('\n').length,
+                                                    disabled: true,
+                                                    text: prettyJson
                                                 });
                                                 group.append(label).append(
                                                     $('<div>', {

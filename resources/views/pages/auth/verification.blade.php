@@ -32,7 +32,7 @@
                             const seconds = timeRemaining % 60;
                             $button.text(
                                 `Resend in ${minutes} minute${minutes !== 1 ? 's' : ''}${seconds > 0 ? ' ' + seconds + ' second' + (seconds !== 1 ? 's' : '') : ''}`
-                                );
+                            );
                         }
                         timeRemaining--;
                     }, 1000);

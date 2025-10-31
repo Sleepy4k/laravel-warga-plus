@@ -2,7 +2,8 @@
     <x-landing.hero>
         <div class="hero-text-box text-center position-relative">
             <h1 class="text-primary hero-title display-6 fw-extrabold">Laporan Warga</h1>
-            <h2 class="hero-sub-title h6 mb-6">Lihat semua laporan yang dibuat warga — kehilangan, sampah, kerusakan, keamanan, dan lainnya.
+            <h2 class="hero-sub-title h6 mb-6">Lihat semua laporan yang dibuat warga — kehilangan, sampah, kerusakan,
+                keamanan, dan lainnya.
                 Kita bersama-sama membangun lingkungan yang lebih baik dengan transparansi dan kolaborasi.
             </h2>
         </div>
@@ -14,38 +15,38 @@
                 <div class="col-md-12">
                     <form id="filterForm" class="row g-2 align-items-center">
                         <div class="col-12 col-md">
-                            <input
-                                type="search"
-                                name="q"
-                                class="form-control"
-                                placeholder="Cari laporan (lokasi, judul, deskripsi)..."
-                                value="{{ request('q') }}"
-                                aria-label="Cari laporan"
-                            >
+                            <input type="search" name="q" class="form-control"
+                                placeholder="Cari laporan (lokasi, judul, deskripsi)..." value="{{ request('q') }}"
+                                aria-label="Cari laporan">
                         </div>
 
                         <div class="col-6 col-md-auto">
                             <select name="type" class="form-select" aria-label="Filter tipe">
                                 <option value="">Semua Tipe</option>
-                                <option value="Kehilangan" {{ request('type')=='Kehilangan' ? 'selected' : '' }}>Kehilangan</option>
-                                <option value="Sampah" {{ request('type')=='Sampah' ? 'selected' : '' }}>Sampah</option>
-                                <option value="Infrastruktur" {{ request('type')=='Infrastruktur' ? 'selected' : '' }}>Infrastruktur</option>
-                                <option value="Keamanan" {{ request('type')=='Keamanan' ? 'selected' : '' }}>Keamanan</option>
+                                <option value="Kehilangan" {{ request('type') == 'Kehilangan' ? 'selected' : '' }}>
+                                    Kehilangan</option>
+                                <option value="Sampah" {{ request('type') == 'Sampah' ? 'selected' : '' }}>Sampah</option>
+                                <option value="Infrastruktur" {{ request('type') == 'Infrastruktur' ? 'selected' : '' }}>
+                                    Infrastruktur</option>
+                                <option value="Keamanan" {{ request('type') == 'Keamanan' ? 'selected' : '' }}>Keamanan
+                                </option>
                             </select>
                         </div>
 
                         <div class="col-6 col-md-auto">
                             <select name="status" class="form-select">
                                 <option value="">Semua Status</option>
-                                <option value="0" {{ request('status')=='0' ? 'selected' : '' }}>Selesai</option>
-                                <option value="1" {{ request('status')=='1' ? 'selected' : '' }}>Dalam Proses</option>
-                                <option value="2" {{ request('status')=='2' ? 'selected' : '' }}>Menunggu</option>
+                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Selesai</option>
+                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Dalam Proses
+                                </option>
+                                <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Menunggu</option>
                             </select>
                         </div>
 
                         <div class="col-12 col-md-auto d-flex gap-2">
                             <button type="submit" class="btn btn-primary w-100 w-md-auto">Cari</button>
-                            <button type="button" class="btn btn-outline-secondary w-100 w-md-auto" id="resetFilters">Reset</button>
+                            <button type="button" class="btn btn-outline-secondary w-100 w-md-auto"
+                                id="resetFilters">Reset</button>
                         </div>
                     </form>
                 </div>
@@ -54,14 +55,14 @@
             @php
                 // contoh data sementara — ganti dengan data nyata dari controller
                 $items = range(1, 9);
-                $typeMap = ['Kehilangan','Sampah','Infrastruktur','Keamanan','Lainnya'];
+                $typeMap = ['Kehilangan', 'Sampah', 'Infrastruktur', 'Keamanan', 'Lainnya'];
             @endphp
 
             <div class="row g-4">
                 @forelse($items as $item)
                     @php
                         $reportType = $typeMap[$item % count($typeMap)];
-                        $title = match($reportType) {
+                        $title = match ($reportType) {
                             'Kehilangan' => 'Motor hilang di parkiran',
                             'Sampah' => 'Sampah berserakan di gang A',
                             'Infrastruktur' => 'Papan jalan rusak di perempatan',
@@ -69,9 +70,9 @@
                             default => 'Laporan umum warga',
                         };
                         $statusMap = [
-                            0 => ['text'=>'Selesai','bg'=>'success','icon'=>'bx bx-check-circle'],
-                            1 => ['text'=>'Dalam Proses','bg'=>'warning','icon'=>'bx bx-time-five'],
-                            2 => ['text'=>'Menunggu','bg'=>'secondary','icon'=>'bx bx-hourglass'],
+                            0 => ['text' => 'Selesai', 'bg' => 'success', 'icon' => 'bx bx-check-circle'],
+                            1 => ['text' => 'Dalam Proses', 'bg' => 'warning', 'icon' => 'bx bx-time-five'],
+                            2 => ['text' => 'Menunggu', 'bg' => 'secondary', 'icon' => 'bx bx-hourglass'],
                         ];
                         $status = $statusMap[$item % 3];
                     @endphp
@@ -81,14 +82,17 @@
                             <div class="card-body d-flex flex-column">
                                 <div class="d-flex align-items-center mb-3">
                                     <div class="avatar avatar-sm me-2">
-                                        <img src="{{ asset('img/avatars/1.png') }}" alt="Avatar" class="rounded-circle" loading="lazy">
+                                        <img src="{{ asset('img/avatars/1.png') }}" alt="Avatar"
+                                            class="rounded-circle" loading="lazy">
                                     </div>
                                     <div>
                                         <h6 class="mb-0">Nama Pelapor {{ $item }}</h6>
-                                        <small class="text-muted">{{ $reportType }} • {{ date('d M Y', strtotime('-' . $item . ' days')) }}</small>
+                                        <small class="text-muted">{{ $reportType }} •
+                                            {{ date('d M Y', strtotime('-' . $item . ' days')) }}</small>
                                     </div>
                                     <div class="ms-auto">
-                                        <span class="badge bg-label-{{ $status['bg'] }} d-flex align-items-center gap-1">
+                                        <span
+                                            class="badge bg-label-{{ $status['bg'] }} d-flex align-items-center gap-1">
                                             <i class="{{ $status['icon'] }}"></i>
                                             <span>{{ $status['text'] }}</span>
                                         </span>
@@ -96,7 +100,8 @@
                                 </div>
 
                                 <h5 class="mb-2">{{ $title }}</h5>
-                                <p class="mb-3 text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Deskripsi singkat masalah dilaporkan untuk memberi konteks kepada petugas.</p>
+                                <p class="mb-3 text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                    Deskripsi singkat masalah dilaporkan untuk memberi konteks kepada petugas.</p>
 
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
                                     <div>
