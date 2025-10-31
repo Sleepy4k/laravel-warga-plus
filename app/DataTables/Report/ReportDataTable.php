@@ -19,9 +19,52 @@ class ReportDataTable extends DataTable
      */
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
+        $buttons = [
+            'edit' => [
+                'permission' => 'document.edit',
+                'class' => 'btn-warning edit-record',
+                'icon' => 'fa-pen-to-square',
+                'target' => '#edit-record',
+            ],
+            'delete' => [
+                'permission' => 'document.delete',
+                'class' => 'btn-danger delete-record',
+                'icon' => 'fa-trash',
+                'target' => null,
+            ],
+        ];
+
         return (new EloquentDataTable($query))
-            ->addColumn('action', 'report.action')
-            ->setRowId('id');
+            ->addColumn('action', function ($query) use ($buttons) {
+                $actions = '';
+
+                if (canUserPerformAction('report.show')) {
+                    $actions .= sprintf(
+                        '<a class="btn btn-info btn-sm me-1 mb-1" href="%s"><i class="fa-solid fa-circle-info"></i></a>',
+                        route('dashboard.report.show', $query->id)
+                    );
+                }
+
+                foreach ($buttons as $btn) {
+                    if (canUserPerformAction($btn['permission'])) {
+                        $actions .= sprintf(
+                            '<button class="btn %s btn-sm me-1 mb-1" data-id="%s"%s><i class="fa-solid %s"></i></button>',
+                            $btn['class'],
+                            $query->id,
+                            $btn['target'] ? ' data-target="' . $btn['target'] . '"' : '',
+                            $btn['icon']
+                        );
+                    }
+                }
+
+                return $actions ?: '-';
+            })
+            ->addColumn('content_display', function ($query) {
+                $content = $query->content ?: '-';
+                return strlen($content) > 50 ? substr($content, 0, 47) . '...' : $content;
+            })
+            ->rawColumns(['action'])
+            ->addIndexColumn();
     }
 
     /**
@@ -31,7 +74,9 @@ class ReportDataTable extends DataTable
      */
     public function query(Report $model): QueryBuilder
     {
-        return $model->newQuery();
+        return $model
+            ->select('reports.id', 'reports.title', 'reports.content', 'reports.location', 'reports.status', 'reports.category_id', 'reports.user_id', 'reports.created_at', 'reports.updated_at')
+            ->with('category:id,name', 'user:id', 'user.person:id,first_name,last_name');
     }
 
     /**
@@ -40,19 +85,26 @@ class ReportDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('report-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->buttons([
-                        Button::make('excel'),
-            Button::make('csv'),
-            Button::make('pdf'),
-            Button::make('print'),
-            Button::make('reset'),
-            Button::make('reload')
-                    ]);
+            ->setTableId('report-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->orderBy(0, 'desc')
+            ->lengthChange(true)
+            ->pageLength(10)
+            ->autoWidth(true)
+            ->responsive(true)
+            ->selectStyleSingle()
+            ->layout([
+                'top1Start' => "buttons",
+                'bottomStart' => "info",
+                'bottomEnd' => "paging",
+            ])
+            ->buttons([
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reload'),
+                Button::make('copy'),
+            ]);
     }
 
     /**
@@ -61,15 +113,35 @@ class ReportDataTable extends DataTable
     public function getColumns(): array
     {
         return [
+            Column::computed('updated_at')
+                ->exportable(false)
+                ->orderable(true)
+                ->printable(false)
+                ->addClass('text-center')
+                ->hidden(),
+            Column::computed('DT_RowIndex')
+                ->title('No')
+                ->addClass('text-center'),
+            Column::make('title')
+                ->title('Title')
+                ->addClass('text-center'),
+            Column::make('content')
+                ->title('Content')
+                ->addClass('text-center')
+                ->hidden(),
+            Column::computed('content_display')
+                ->exportable(false)
+                ->printable(false)
+                ->title('Content')
+                ->addClass('text-center'),
+            Column::make('category.name')
+                ->title('Category')
+                ->addClass('text-center'),
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+                ->title('Action')
+                ->exportable(false)
+                ->printable(false)
+                ->addClass('text-center'),
         ];
     }
 

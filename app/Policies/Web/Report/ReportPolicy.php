@@ -4,7 +4,6 @@ namespace App\Policies\Web\Report;
 
 use App\Models\Report;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ReportPolicy
 {
@@ -13,7 +12,7 @@ class ReportPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->can('report.index');
     }
 
     /**
@@ -21,7 +20,13 @@ class ReportPolicy
      */
     public function view(User $user, Report $report): bool
     {
-        return false;
+        $isAllowed = $user->can('report.show');
+
+        if (!isUserHasRole(config('rbac.role.default'))) {
+            return $isAllowed;
+        }
+
+        return $report->user_id === $user->id && $isAllowed;
     }
 
     /**
@@ -29,7 +34,7 @@ class ReportPolicy
      */
     public function store(User $user): bool
     {
-        return false;
+        return $user->can('report.store');
     }
 
     /**
@@ -37,7 +42,13 @@ class ReportPolicy
      */
     public function update(User $user, Report $report): bool
     {
-        return false;
+        $isAllowed = $user->can('report.update');
+
+        if (!isUserHasRole(config('rbac.role.default'))) {
+            return $isAllowed;
+        }
+
+        return $report->user_id === $user->id && $isAllowed;
     }
 
     /**
@@ -45,6 +56,12 @@ class ReportPolicy
      */
     public function delete(User $user, Report $report): bool
     {
-        return false;
+        $isAllowed = $user->can('report.delete');
+
+        if (!isUserHasRole(config('rbac.role.default'))) {
+            return $isAllowed;
+        }
+
+        return $report->user_id === $user->id && $isAllowed;
     }
 }
