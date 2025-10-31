@@ -58,7 +58,7 @@
                 $typeMap = ['Kehilangan', 'Sampah', 'Infrastruktur', 'Keamanan', 'Lainnya'];
             @endphp
 
-            <div class="row g-4">
+            <div class="row g-4" id="reportsContainer">
                 @forelse($items as $item)
                     @php
                         $reportType = $typeMap[$item % count($typeMap)];
@@ -146,4 +146,23 @@
             </div>
         </div>
     </section>
+
+    @pushOnce('page-scripts')
+        <script @cspNonce>
+            document.addEventListener('DOMContentLoaded', function () {
+                gsap.from("#reportsContainer .card", {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    ease: "power3.out",
+                    stagger: 0.2,
+                    scrollTrigger: {
+                        trigger: "#reportsContainer",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+        </script>
+    @endPushOnce
 </x-layouts.landing>

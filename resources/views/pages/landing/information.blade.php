@@ -47,7 +47,7 @@
                 $items = range(1, 8);
             @endphp
 
-            <div class="row g-4">
+            <div class="row g-4" id="informationContainer">
                 @forelse($items as $index)
                     @php
                         $types = ['Kegiatan', 'Pengumuman', 'Peraturan', 'Keuangan', 'Keamanan'];
@@ -169,6 +169,22 @@
                         window.location.href = BASE_URL;
                     });
                 }
+            });
+        </script>
+        <script @cspNonce>
+            document.addEventListener('DOMContentLoaded', function () {
+                gsap.from("#informationContainer .card", {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    ease: "power3.out",
+                    stagger: 0.2,
+                    scrollTrigger: {
+                        trigger: "#informationContainer",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
             });
         </script>
     @endPushOnce

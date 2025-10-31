@@ -15,7 +15,7 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="user-profile-header-banner">
-                        <img src="{{ asset('img/backgrounds/hipmi.jpg') }}" alt="Banner image" class="rounded-top"
+                        <img src="{{ asset('img/backgrounds/banner.png') }}" alt="Banner image" class="rounded-top"
                             loading="lazy">
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">

@@ -11,7 +11,7 @@
         </div>
     </x-landing.hero>
 
-    <section class="section-py landing-features" id="dfgdfhdfh">
+    <section class="section-py landing-features" id="landingFeatures">
         <div class="container">
             <div class="row g-5 align-items-center">
                 <div class="col-12 col-lg-6 d-flex justify-content-center">
@@ -102,7 +102,7 @@
         </div>
     </section>
 
-    <section class="section-py">
+    <section class="section-py" id="landingValues">
         <div class="container">
             <h4 class="text-center fw-extrabold mb-3">Nilai Kami</h4>
             <div class="row g-4">
@@ -148,11 +148,79 @@
             document.addEventListener('DOMContentLoaded', () => {
                 const button = document.querySelector('.landing-hero-btn button');
                 button.addEventListener('click', () => {
-                    const ourMissionSection = document.getElementById('dfgdfhdfh');
+                    const ourMissionSection = document.getElementById('landingFeatures');
                     if (ourMissionSection) {
                         ourMissionSection.scrollIntoView({
                             behavior: 'smooth'
                         });
+                    }
+                });
+            });
+        </script>
+        <script @cspNonce>
+            document.addEventListener('DOMContentLoaded', function () {
+                gsap.from("#landingFeatures img", {
+                    opacity: 0,
+                    x: -100,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: "#landingFeatures img",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+
+                gsap.from("#landingFeatures .col-lg-6:nth-child(2) > div", {
+                    opacity: 0,
+                    x: 100,
+                    duration: 1,
+                    ease: "power3.out",
+                    delay: 0.3,
+                    scrollTrigger: {
+                        trigger: "#landingFeatures .col-lg-6:nth-child(2)",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+
+                gsap.from("#landingCTA .cta-title", {
+                    opacity: 0,
+                    x: -50,
+                    duration: 1,
+                    ease: "power3.out",
+                    delay: 0.1,
+                    scrollTrigger: {
+                        trigger: "#landingCTA .cta-title",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+
+                gsap.from("#landingCTA .card", {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    ease: "power3.out",
+                    delay: 0.2,
+                    scrollTrigger: {
+                        trigger: "#landingCTA .card",
+                        start: "top 85%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+
+                gsap.from("#landingValues .card", {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1,
+                    ease: "power3.out",
+                    stagger: 0.3,
+                    delay: 0.2,
+                    scrollTrigger: {
+                        trigger: "#landingValues",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
                     }
                 });
             });

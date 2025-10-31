@@ -60,6 +60,7 @@
         <link rel="stylesheet" href="{{ asset('vendor/css/front-pages/core.css') }}" class="template-customizer-core-css"
             @cspNonce />
         <link rel="stylesheet" href="{{ asset('css/demo.min.css') }}" @cspNonce />
+        <link rel="stylesheet" href="{{ asset('css/scrollbar.min.css') }}" @cspNonce />
         <link rel="stylesheet" href="{{ asset('vendor/css/front-pages/pages/front.css') }}" class="template-customizer-theme-css"
             @cspNonce />
 
@@ -71,6 +72,9 @@
         <script type="text/javascript" src="{{ asset('vendor/js/front-page/helpers.js') }}" @cspNonce></script>
         <script type="text/javascript" src="{{ asset('vendor/js/front-page/template-customizer.js') }}" @cspNonce></script>
         <script type="text/javascript" src="{{ asset('js/front-config.js') }}" @cspNonce></script>
+
+        <script type="text/javascript" src="{{ asset('vendor/gsap/gsap.min.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/gsap/ScrollTrigger.min.js') }}" @cspNonce></script>
     </head>
     <body>
         <x-landing.navbar />
@@ -94,6 +98,34 @@
         @stack('plugin-scripts')
 
         <script type="text/javascript" src="{{ asset('js/pages/layout-landing.js') }}" @cspNonce></script>
+
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                    gsap.registerPlugin(ScrollTrigger);
+                }
+
+                gsap.from(".hero-text-box > *", {
+                    opacity: 0,
+                    y: 50,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    stagger: 0.2
+                });
+
+                const navbarMenu = document.querySelectorAll('.landing-navbar .nav-link');
+
+                navbarMenu.forEach((item, index) => {
+                    gsap.from(item, {
+                        opacity: 0,
+                        y: -30,
+                        duration: 1,
+                        delay: 0.2 + index * 0.1,
+                        ease: "power3.out"
+                    });
+                });
+            });
+        </script>
 
         @stack('page-scripts')
     </body>

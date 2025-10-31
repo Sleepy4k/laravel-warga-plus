@@ -278,4 +278,46 @@
             </div>
         </div>
     </section>
+
+    @pushOnce('page-scripts')
+        <script @cspNonce>
+            document.addEventListener('DOMContentLoaded', function () {
+                gsap.from(".features-icon-wrapper .card", {
+                    opacity: 0,
+                    y: 100,
+                    duration: 1,
+                    stagger: 0.1,
+                    scrollTrigger: {
+                        trigger: "#landingFeatures",
+                        start: "top 70%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+
+                gsap.from(".landing-faq .card", {
+                    opacity: 0,
+                    y: 100,
+                    duration: 1,
+                    stagger: 0.1,
+                    scrollTrigger: {
+                        trigger: "#landingFAQ",
+                        start: "top 70%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+
+                gsap.from(".landing-team .card", {
+                    opacity: 0,
+                    y: 100,
+                    duration: 1,
+                    stagger: 0.2,
+                    scrollTrigger: {
+                        trigger: "#landingTeam",
+                        start: "top 70%",
+                        toggleActions: "play none none reverse"
+                    }
+                });
+            });
+        </script>
+    @endPushOnce
 </x-layouts.landing>
