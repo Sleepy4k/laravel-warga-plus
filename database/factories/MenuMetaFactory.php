@@ -33,7 +33,7 @@ class MenuMetaFactory extends Factory
             ],
             [
                 'permissions'   => ['report.menu'],
-                'icon'          => 'info-circle',
+                'icon'          => 'comment-add',
             ],
             [
                 'route'         => 'dashboard.report.index',
@@ -41,9 +41,23 @@ class MenuMetaFactory extends Factory
                 'active_routes' => 'dashboard.report.index',
             ],
             [
-                'route'         => 'dashboard.report.index',
+                'route'         => 'dashboard.report.category.index',
                 'permissions'   => ['report.category.index'],
-                'active_routes' => 'dashboard.report.index',
+                'active_routes' => 'dashboard.report.category.index',
+            ],
+            [
+                'permissions'   => ['information.menu'],
+                'icon'          => 'info-circle',
+            ],
+            [
+                'route'         => 'dashboard.information.index',
+                'permissions'   => ['information.index'],
+                'active_routes' => 'dashboard.information.index',
+            ],
+            [
+                'route'         => 'dashboard.information.category.index',
+                'permissions'   => ['information.category.index'],
+                'active_routes' => 'dashboard.information.category.index',
             ],
             [
                 'permissions'   => ['letter_transaction.menu', 'book_agenda.menu', 'document.menu', 'letter_references.menu'],

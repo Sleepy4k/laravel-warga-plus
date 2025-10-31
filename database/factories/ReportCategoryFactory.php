@@ -44,6 +44,7 @@ class ReportCategoryFactory extends Factory
 
         foreach ($data as $index => &$item) {
             $item['id'] = $uuids[$index];
+            $item['name'] = ucwords($item['name']);
             $item['created_at'] = $currentTime;
             $item['updated_at'] = $currentTime;
         }

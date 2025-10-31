@@ -35,7 +35,7 @@ class UserPersonalDataSeeder extends Seeder
                 'first_name' => 'Admin',
                 'last_name' => 'Warga+',
                 'gender' => Gender::Male->value,
-                'birth_date' => date('Y-m-d', '1985-01-01'),
+                'birth_date' => date('Y-m-d', strtotime('1990-01-01')),
                 'job' => 'Administrator',
                 'address' => 'Jl. Di Panjaitan No. 1'
             ],
@@ -44,7 +44,7 @@ class UserPersonalDataSeeder extends Seeder
                 'first_name' => 'Pengurus',
                 'last_name' => 'Warga+',
                 'gender' => Gender::Female->value,
-                'birth_date' => date('Y-m-d', '1990-01-01'),
+                'birth_date' => date('Y-m-d', strtotime('1992-02-02')),
                 'job' => 'Pengurus',
                 'address' => 'Jl. Di Panjaitan No. 1'
             ]

@@ -19,28 +19,42 @@ class SitemapDataFactory extends Factory
         $baseUrl = config('app.url');
         $data = [
             [
-                'url' => $baseUrl.'/',
-                'last_modified' => now()->toDateTimeString(),
+                'url' => '/',
                 'change_frequency' => 'daily',
-                'priority' => 0.8,
-            ],
-            [
-                'url' => $baseUrl.'/login',
-                'last_modified' => now()->subDays(2)->toDateTimeString(),
-                'change_frequency' => 'monthly',
                 'priority' => 1.0,
             ],
             [
-                'url' => $baseUrl.'/dashboard',
-                'last_modified' => now()->subDays(1)->toDateTimeString(),
+                'url' => '/about-us',
+                'change_frequency' => 'yearly',
+                'priority' => 1.0,
+            ],
+            [
+                'url' => '/report',
                 'change_frequency' => 'daily',
+                'priority' => 1.0,
+            ],
+            [
+                'url' => '/information',
+                'change_frequency' => 'daily',
+                'priority' => 1.0,
+            ],
+            [
+                'url' => '/login',
+                'last_modified' => now()->subDays(2)->toDateTimeString(),
+                'change_frequency' => 'monthly',
                 'priority' => 0.9,
             ],
             [
-                'url' => $baseUrl.'/register',
+                'url' => '/register',
                 'last_modified' => now()->subDays(3)->toDateTimeString(),
                 'change_frequency' => 'monthly',
-                'priority' => 0.95,
+                'priority' => 0.9,
+            ],
+            [
+                'url' => '/dashboard',
+                'last_modified' => now()->subDays(1)->toDateTimeString(),
+                'change_frequency' => 'daily',
+                'priority' => 0.8,
             ],
         ];
 
@@ -49,8 +63,10 @@ class SitemapDataFactory extends Factory
         foreach ($data as &$item) {
             $item = array_merge([
                 'status' => 'active',
+                'last_modified' => $currentTime->toDateTimeString(),
             ], $item);
 
+            $item['url'] = $baseUrl . $item['url'];
             $item['created_at'] = $currentTime;
             $item['updated_at'] = $currentTime;
         }

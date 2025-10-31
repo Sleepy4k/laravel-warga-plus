@@ -88,15 +88,8 @@ class SettingFactory extends Factory
             [
                 'group' => 'sidebar',
                 'key' => 'name_size',
-                'value' => 1.5,
+                'value' => 1.35,
                 'type' => 'float',
-            ],
-            [
-                'group' => 'sidebar',
-                'key' => 'logo',
-                'value' => $defaultLogo,
-                'is_required' => false,
-                'is_file' => true,
             ],
             [
                 'group' => 'footer',

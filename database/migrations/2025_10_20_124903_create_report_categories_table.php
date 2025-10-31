@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('report_categories', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
+            $table->string('name', 50)->unique();
             $table->timestamps();
         });
     }

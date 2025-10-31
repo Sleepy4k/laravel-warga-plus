@@ -21,6 +21,7 @@ class MenuFactory extends Factory
             'dashboard'             => ['name' => 'Dashboard'],
             'spacer_resident'       => ['name' => 'Resident'],
             'reports'               => ['name' => 'Reports'],
+            'informations'          => ['name' => 'Informations'],
             'spacer_secretary'      => ['name' => 'Administration'],
             'documents'             => ['name' => 'Documents'],
             'letter_transaction'    => ['name' => 'Letter Transactions'],
@@ -76,6 +77,21 @@ class MenuFactory extends Factory
                 'name'      => 'Report Categories',
                 'order'     => 2,
                 'parent_id' => $parentMenus['reports']['id'],
+            ],
+            [
+                'id'        => $parentMenus['informations']['id'],
+                'name'      => $parentMenus['informations']['name'],
+                'order'     => $parentMenus['informations']['order'],
+            ],
+            [
+                'name'      => 'Informations',
+                'order'     => 1,
+                'parent_id' => $parentMenus['informations']['id'],
+            ],
+            [
+                'name'      => 'Information Categories',
+                'order'     => 2,
+                'parent_id' => $parentMenus['informations']['id'],
             ],
             [
                 'id'        => $parentMenus['spacer_secretary']['id'],
