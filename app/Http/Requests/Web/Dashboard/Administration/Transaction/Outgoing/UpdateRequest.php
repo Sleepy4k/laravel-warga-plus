@@ -6,6 +6,7 @@ use App\Enums\FileUploaderType;
 use App\Facades\FileUploader;
 use App\Models\Letter;
 use App\Models\LetterClassification;
+use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,7 +25,7 @@ class UpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(#[RouteParameter('letter')] Letter $letter): array
     {
         $fileUploader = FileUploader::init(FileUploaderType::LETTER_TRANSACTION);
         $fileType = $fileUploader->get('type', 'file');
@@ -32,7 +33,7 @@ class UpdateRequest extends FormRequest
         $fileMaxSize = $fileUploader->get('max_size', 8192);
 
         return [
-            'reference_number' => ['required', 'string', 'max:100', Rule::unique(Letter::class, 'reference_number')->ignore($this->route('letter')->id)],
+            'reference_number' => ['required', 'string', 'max:100', Rule::unique(Letter::class, 'reference_number')->ignoreModel($letter)],
             'agenda_number' => ['required', 'string', 'max:100'],
             'to' => ['required', 'string', 'max:100'],
             'letter_date' => ['required', 'date'],

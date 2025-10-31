@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web\Dashboard\Administration\Reference\Classification;
 
 use App\Models\LetterClassification;
+use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,10 +22,10 @@ class UpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(#[RouteParameter('classification')] LetterClassification $classification): array
     {
         return [
-            'name' => ['required', 'string', 'max:150', Rule::unique(LetterClassification::class, 'name')->ignore($this->route('classification')->id)],
+            'name' => ['required', 'string', 'max:150', Rule::unique(LetterClassification::class, 'name')->ignoreModel($classification)],
             'description' => ['nullable', 'string', 'max:1000'],
         ];
     }

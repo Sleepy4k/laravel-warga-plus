@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web\Dashboard\Setting;
 
 use App\Models\Setting;
+use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ApplicationRequest extends FormRequest
@@ -20,9 +21,8 @@ class ApplicationRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(#[RouteParameter('appSettingType')] string $settingType): array
     {
-        $settingType = $this->route('appSettingType');
         $validationData = Setting::getValidationData();
         $rules = [];
 

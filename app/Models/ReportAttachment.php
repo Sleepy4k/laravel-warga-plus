@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Casts\AsHash;
 use App\Concerns\HasUuid;
 use App\Concerns\Loggable;
 use App\Concerns\MakeCacheable;
 use Illuminate\Database\Eloquent\Model;
 
-class Report extends Model
+class ReportAttachment extends Model
 {
     use HasUuid, Loggable, MakeCacheable;
 
@@ -18,12 +17,12 @@ class Report extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'title',
-        'content',
-        'location',
-        'status',
-        'category_id',
+        'path',
+        'report_id',
         'user_id',
+        'file_name',
+        'file_size',
+        'extension',
     ];
 
     /**
@@ -35,12 +34,11 @@ class Report extends Model
     {
         return [
             'id' => 'string',
-            'title' => AsHash::class,
-            'content' => AsHash::class,
-            'location' => AsHash::class,
-            'status' => 'string',
-            'category_id' => 'integer',
-            'user_id' => 'integer',
+            'report_id' => 'string',
+            'user_id' => 'string',
+            'file_name' => 'string',
+            'file_size' => 'string',
+            'extension' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
@@ -52,30 +50,22 @@ class Report extends Model
      * @return string
      */
     public function setCachePrefix(): string {
-        return 'report.cache';
+        return 'report.attachment.cache';
     }
 
     /**
-     * Get the category that owns the report.
+     * Get the report that owns the attachment.
      */
-    public function category()
+    public function report()
     {
-        return $this->belongsTo(ReportCategory::class, 'category_id');
+        return $this->belongsTo(Report::class, 'report_id');
     }
 
     /**
-     * Get the user that owns the report.
+     * Get the user that owns the attachment.
      */
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * Get the attachments for the report.
-     */
-    public function attachments()
-    {
-        return $this->hasMany(ReportAttachment::class, 'report_id');
     }
 }

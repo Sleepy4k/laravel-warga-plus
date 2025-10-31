@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Web\Dashboard\User;
+namespace App\Http\Requests\Web\Dashboard\Report\Category;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Models\ReportCategory;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,10 +24,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'string', 'max:25', 'regex:/^8[1-9][0-9]{6,15}$/'],
-            'identity_number' => ['required', 'string', 'max:25', 'regex:/^[0-9]{12,16}$/'],
-            'other-phone' => ['nullable', 'string', 'max:25', 'regex:/^8[1-9][0-9]{6,15}$/'],
-            'role' => ['required', 'string', 'max:255', Rule::exists(Role::class, 'name')],
+            'name' => ['required', 'string', 'max:50', Rule::unique(ReportCategory::class, 'name')],
         ];
     }
 }

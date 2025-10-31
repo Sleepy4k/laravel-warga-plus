@@ -20,7 +20,7 @@ class HeartbeatService extends Service
 
         if ($user) {
             if (($data['isFocused'] ?? false) && (!$user->last_seen || $user->last_seen->diffInMinutes(now()) > 2)) {
-                $user->update(['last_seen' => now()]);
+                $user->forceFill(['last_seen' => now()])->saveQuietly();
             }
         }
     }

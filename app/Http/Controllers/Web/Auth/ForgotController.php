@@ -30,7 +30,7 @@ class ForgotController extends Controller
     public function store(ForgotPasswordRequest $request)
     {
         $phone = $request->validated()['phone'];
-        $isValid = preg_match('/^8[1-9][0-9]{6,10}$/', $phone);
+        $isValid = preg_match('/^8[1-9][0-9]{6,15}$/', $phone);
 
         if (!$isValid) {
             Toast::danger('Error', 'Invalid phone number.');
@@ -77,7 +77,7 @@ class ForgotController extends Controller
     public function show(Request $request, string $token)
     {
         $phone = $request->query('phone');
-        if (!$phone || !preg_match('/^8[1-9][0-9]{6,10}$/', $phone)) {
+        if (!$phone || !preg_match('/^8[1-9][0-9]{6,15}$/', $phone)) {
             Toast::danger('Error', 'Invalid phone number.');
             return back();
         }
@@ -129,7 +129,7 @@ class ForgotController extends Controller
 
             $decryptedPhone = AttributeEncryptor::decrypt($phone);
 
-            if (!$decryptedPhone || !preg_match('/^8[1-9][0-9]{6,10}$/', $decryptedPhone)) {
+            if (!$decryptedPhone || !preg_match('/^8[1-9][0-9]{6,15}$/', $decryptedPhone)) {
                 Toast::danger('Error', 'Invalid phone number.');
                 return back();
             }

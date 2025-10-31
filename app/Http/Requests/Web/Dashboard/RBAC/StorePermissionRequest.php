@@ -29,7 +29,7 @@ class StorePermissionRequest extends FormRequest
         $guardList = array_map(fn($guard) => $guard['value'], $this->getGuardNameList());
 
         return [
-            'name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[a-z.]+$/', 'not_in:all,administrator,admin', Rule::unique(Permission::class, 'name')],
+            'name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^[a-z.]+$/', Rule::notIn(['all', 'administrator', 'admin']), Rule::unique(Permission::class, 'name')],
             'guard_name' => ['required', 'string', 'min:2', 'max:255', Rule::in($guardList)],
         ];
     }

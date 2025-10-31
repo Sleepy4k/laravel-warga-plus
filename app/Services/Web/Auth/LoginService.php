@@ -38,7 +38,7 @@ class LoginService extends Service
         $identifier = (string) trim($request['phone-identity'] ?? '');
         $password = $request['password'] ?? '';
 
-        $phonePattern = '/^(\+62|62|0)8[1-9][0-9]{6,10}$/';
+        $phonePattern = '/^8[1-9][0-9]{6,15}$/';
         $isPhone = preg_match($phonePattern, $identifier) === 1;
 
         $key = $isPhone ? 'phone' : 'identity_number';

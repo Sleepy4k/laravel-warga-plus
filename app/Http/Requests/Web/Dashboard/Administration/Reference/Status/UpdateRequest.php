@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web\Dashboard\Administration\Reference\Status;
 
 use App\Models\LetterStatus;
+use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -21,10 +22,10 @@ class UpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules(#[RouteParameter('status')] LetterStatus $status): array
     {
         return [
-            'status' => ['required', 'string', 'max:100', Rule::unique(LetterStatus::class, 'status')->ignore($this->route('status')->id)]
+            'status' => ['required', 'string', 'max:100', Rule::unique(LetterStatus::class, 'status')->ignoreModel($status)]
         ];
     }
 }

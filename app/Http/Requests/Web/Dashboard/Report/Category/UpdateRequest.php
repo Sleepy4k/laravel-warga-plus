@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Requests\Web\Dashboard\Administration\Document;
+namespace App\Http\Requests\Web\Dashboard\Report\Category;
 
-use App\Models\Document;
-use App\Models\DocumentCategory;
+use App\Models\ReportCategory;
 use Illuminate\Container\Attributes\RouteParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -23,13 +22,10 @@ class UpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(#[RouteParameter('document')] Document $document): array
+    public function rules(#[RouteParameter('category')] ReportCategory $category): array
     {
         return [
-            'title' => ['required', 'string', 'max:100', Rule::unique(Document::class, 'title')->ignoreModel($document)],
-            'category_id' => ['required', 'string', 'max:36', Rule::exists(DocumentCategory::class, 'id')],
-            'description' => ['nullable', 'string', 'max:1000'],
-            'is_archived' => ['required', 'boolean'],
+            'name' => ['required', 'string', 'max:50', Rule::unique(ReportCategory::class, 'name')->ignoreModel($category)],
         ];
     }
 }

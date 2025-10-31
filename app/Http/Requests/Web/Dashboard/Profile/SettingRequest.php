@@ -32,7 +32,7 @@ class SettingRequest extends FormRequest
         $fileMaxSize = $fileUploader->get('max_size', 8192);
 
         return [
-            'phone' => ['required', 'string', 'min:6', 'max:50', 'regex:/^8[1-9][0-9]{6,10}$/', Rule::unique(User::class, 'phone')->ignore(auth('web')->id())],
+            'phone' => ['required', 'string', 'min:6', 'max:50', 'regex:/^8[1-9][0-9]{6,15}$/', Rule::unique(User::class, 'phone')->ignore(auth('web')->id())],
             'first_name' => ['required', 'string', 'min:2', 'max:70'],
             'last_name' => ['required', 'string', 'min:2', 'max:70'],
             'birth_date' => ['required', 'date', 'before:today'],

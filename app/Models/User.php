@@ -39,7 +39,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $hidden = [
-        'identity_number',
         'password',
     ];
 
@@ -79,7 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function setLoggableField(): array {
         return array_filter($this->fillable, function ($field) {
-            return !in_array($field, ['last_seen', 'password']);
+            return !in_array($field, $this->hidden);
         });
     }
 

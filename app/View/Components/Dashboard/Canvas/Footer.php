@@ -45,6 +45,7 @@ class Footer extends Component
     {
         return view('components.dashboard.canvas.footer', [
             'type' => $this->footerType,
+            'isCreate' => $this->footerType === 'create',
         ]);
     }
 }

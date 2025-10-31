@@ -31,7 +31,7 @@ class UserStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => ['required', 'string', 'regex:/^(\+62|62|0)8[1-9][0-9]{6,10}$/', Rule::unique(User::class, 'phone')],
+            'phone' => ['required', 'string', 'regex:/^(\+62|62|0)8[1-9][0-9]{6,15}$/', Rule::unique(User::class, 'phone')],
             'identity_number' => ['required', 'string', 'regex:/^[1-9][0-9]{15,19}$/', Rule::unique(User::class, 'identity_number')],
             'password' => ['required', 'string', 'min:8', 'max:65', 'confirmed'],
         ];

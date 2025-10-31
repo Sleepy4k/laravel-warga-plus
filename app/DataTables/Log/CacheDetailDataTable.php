@@ -38,6 +38,10 @@ class CacheDetailDataTable extends DataTable
             ->editColumn('timestamp', function ($query) {
                 return $query['timestamp'] ? date('d M Y H:i:s', strtotime($query['timestamp'])) : 'N/A';
             })
+            ->editColumn('message', function ($query) {
+                return nl2br(e($query['message'] ?? 'N/A'));
+            })
+            ->rawColumns(['message'])
             ->setRowId('id');
     }
 
@@ -86,7 +90,6 @@ class CacheDetailDataTable extends DataTable
                 ->addClass('text-center'),
             Column::make('message')
                 ->title('Message')
-                ->addClass('text-center')
         ];
     }
 

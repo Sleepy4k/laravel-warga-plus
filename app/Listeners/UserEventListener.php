@@ -56,7 +56,7 @@ class UserEventListener
         }
 
         return array_merge([
-            'email' => $user?->email ?? '',
+            'identity_number' => $user?->identity_number ?? '',
             'verified_at' => $user?->verified_at
                 ? date('d F Y H:i:s', strtotime($user->verified_at))
                 : null,
@@ -80,7 +80,7 @@ class UserEventListener
         if (!$user) return;
 
         $properties = $this->getUserProperties($user, [
-            'login_at' => now()->toDateTimeString(),
+            'login_at' => now()->format('d F Y H:i:s'),
         ]);
 
         $lastActivity = Activity::select('properties')
@@ -108,7 +108,7 @@ class UserEventListener
             ->event(ActivityEventType::LOGIN->value)
             ->causedBy($user?->id ?? 1)
             ->withProperties($properties)
-            ->log("User {$properties['email']} successfully logged in");
+            ->log("User successfully logged in");
     }
 
     /**
@@ -123,14 +123,14 @@ class UserEventListener
         if (!$user) return;
 
         $properties = $this->getUserProperties($user, [
-            'logout_at' => now()->toDateTimeString(),
+            'logout_at' => now()->format('d F Y H:i:s'),
         ]);
 
         activity('auth')
             ->event(ActivityEventType::LOGOUT->value)
             ->causedBy($user->id ?? 1)
             ->withProperties($properties)
-            ->log("User {$properties['email']} successfully logged out");
+            ->log("User successfully logged out");
     }
 
     /**
@@ -145,14 +145,14 @@ class UserEventListener
         if (!$user) return;
 
         $properties = $this->getUserProperties($user, [
-            'registered_at' => now()->toDateTimeString(),
+            'registered_at' => now()->format('d F Y H:i:s'),
         ]);
 
         activity('auth')
             ->event(ActivityEventType::REGISTER->value)
             ->causedBy($user->id)
             ->withProperties($properties)
-            ->log("User {$properties['email']} successfully registered");
+            ->log("User successfully registered");
     }
 
     /**

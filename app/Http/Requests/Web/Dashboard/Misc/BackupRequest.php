@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Web\Dashboard\Misc;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BackupRequest extends FormRequest
 {
@@ -22,7 +23,7 @@ class BackupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', 'string', 'min:3', 'max:25', 'in:backup,cleanup'],
+            'type' => ['required', 'string', 'min:3', 'max:25', Rule::in(['backup', 'cleanup'])],
         ];
     }
 }
