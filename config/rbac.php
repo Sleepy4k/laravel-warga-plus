@@ -24,6 +24,42 @@ return [
             'dashboard.menu',
             'dashboard.index',
 
+            'report.menu',
+
+            'report.index',
+            'report.create',
+            'report.store',
+            'report.show',
+            'report.edit',
+            'report.update',
+            'report.delete',
+
+            'report.category.index',
+            'report.category.create',
+            'report.category.store',
+            'report.category.show',
+            'report.category.edit',
+            'report.category.update',
+            'report.category.delete',
+
+            'information.menu',
+
+            'information.index',
+            'information.create',
+            'information.store',
+            'information.show',
+            'information.edit',
+            'information.update',
+            'information.delete',
+
+            'information.category.index',
+            'information.category.create',
+            'information.category.store',
+            'information.category.show',
+            'information.category.edit',
+            'information.category.update',
+            'information.category.delete',
+
             'letter_transaction.menu',
 
             'letter_transaction.incoming.index',
@@ -207,7 +243,9 @@ return [
 
     /* Roles that can assign other roles */
     'assign' => [
-
+        'admin' => ['admin'],
+        'pengurus' => ['pengurus', 'user'],
+        'user' => ['pengurus', 'user'],
     ],
 
     /* Permissions for each role */
@@ -216,6 +254,40 @@ return [
         'pengurus' => [
             'dashboard.menu',
             'dashboard.index',
+
+            'report.menu',
+
+            'report.index',
+            'report.store',
+            'report.show',
+            'report.edit',
+            'report.update',
+
+            'report.category.index',
+            'report.category.create',
+            'report.category.store',
+            'report.category.show',
+            'report.category.edit',
+            'report.category.update',
+            'report.category.delete',
+
+            'information.menu',
+
+            'information.index',
+            'information.create',
+            'information.store',
+            'information.show',
+            'information.edit',
+            'information.update',
+            'information.delete',
+
+            'information.category.index',
+            'information.category.create',
+            'information.category.store',
+            'information.category.show',
+            'information.category.edit',
+            'information.category.update',
+            'information.category.delete',
 
             'letter_transaction.menu',
 
@@ -306,6 +378,24 @@ return [
         'user' => [
             'dashboard.menu',
             'dashboard.index',
+
+            'report.menu',
+
+            'report.index',
+            'report.create',
+            'report.store',
+            'report.show',
+            'report.edit',
+            'report.update',
+            'report.delete',
+
+            'report.category.index',
+            'report.category.create',
+            'report.category.store',
+            'report.category.show',
+            'report.category.edit',
+            'report.category.update',
+            'report.category.delete',
         ],
     ],
 ];
