@@ -2,11 +2,11 @@
  * Account Security - Account
  */
 
-'use strict';
+"use strict";
 
-document.addEventListener('DOMContentLoaded', function (e) {
+document.addEventListener("DOMContentLoaded", function (e) {
   (function () {
-    const formChangePassword = document.querySelector('#formChangePassword');
+    const formChangePassword = document.querySelector("#formChangePassword");
 
     // Form validation for Change Password
     if (formChangePassword) {
@@ -15,58 +15,62 @@ document.addEventListener('DOMContentLoaded', function (e) {
           current_password: {
             validators: {
               notEmpty: {
-                message: 'Please enter your current password'
+                message: "Please enter your current password",
               },
               stringLength: {
                 min: 6,
                 max: 20,
-                message: 'Current password must be between 6 and 20 characters'
-              }
-            }
+                message: "Current password must be between 6 and 20 characters",
+              },
+            },
           },
           password: {
             validators: {
               notEmpty: {
-                message: 'Please enter your new password'
+                message: "Please enter your new password",
               },
               stringLength: {
                 min: 6,
                 max: 20,
-                message: 'New password must be between 6 and 20 characters'
-              }
-            }
+                message: "New password must be between 6 and 20 characters",
+              },
+            },
           },
           password_confirmation: {
             validators: {
               notEmpty: {
-                message: 'Please confirm your new password'
+                message: "Please confirm your new password",
               },
               identical: {
                 compare: function () {
-                  return formChangePassword.querySelector('[name="password"]').value;
+                  return formChangePassword.querySelector('[name="password"]')
+                    .value;
                 },
-                message: 'The password and its confirm are not the same'
-              }
-            }
-          }
+                message: "The password and its confirm are not the same",
+              },
+            },
+          },
         },
         plugins: {
           trigger: new FormValidation.plugins.Trigger(),
           bootstrap5: new FormValidation.plugins.Bootstrap5({
-            eleValidClass: '',
-            rowSelector: '.mb-3'
+            eleValidClass: "",
+            rowSelector: ".mb-3",
           }),
           submitButton: new FormValidation.plugins.SubmitButton(),
           defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-          autoFocus: new FormValidation.plugins.AutoFocus()
+          autoFocus: new FormValidation.plugins.AutoFocus(),
         },
-        init: instance => {
-          instance.on('plugins.message.placed', function (e) {
-            if (e.element.parentElement.classList.contains('input-group')) {
-              e.element.parentElement.insertAdjacentElement('afterend', e.messageElement);
+        init: (instance) => {
+          instance.on("plugins.message.placed", function (e) {
+            if (e.element.parentElement.classList.contains("input-group")) {
+              e.element.parentElement.insertAdjacentElement(
+                "afterend",
+                e.messageElement
+              );
             }
           });
-        }
+        },
       });
     }
   })();

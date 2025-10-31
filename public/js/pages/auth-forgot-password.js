@@ -12,13 +12,21 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (formForgotPassword) {
       const fv = FormValidation.formValidation(formForgotPassword, {
         fields: {
-          email: {
+          phone: {
             validators: {
               notEmpty: {
-                message: "Please enter your email",
+                message: "Please enter your phone number",
               },
-              emailAddress: {
-                message: "The value is not a valid email address",
+              stringLength: {
+                min: 10,
+                max: 25,
+                message:
+                  "Phone number must be between 10 and 25 characters long",
+              },
+              regexp: {
+                regexp: /^8[1-9][0-9]{6,15}$/,
+                message:
+                  "The phone number must be a valid Indonesian phone number",
               },
             },
           },

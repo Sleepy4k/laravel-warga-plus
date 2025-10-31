@@ -31,9 +31,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
               },
               identical: {
                 compare: function () {
-                  return formResetPassword.querySelector(
-                    '[name="password"]'
-                  ).value;
+                  return formResetPassword.querySelector('[name="password"]')
+                    .value;
                 },
                 message: "The password and its confirm are not the same",
               },

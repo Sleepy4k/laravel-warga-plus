@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   (function () {
     const forms = [
       { selector: "#form-add-new-record" },
-      { selector: "#form-edit-record" }
+      { selector: "#form-edit-record" },
     ];
 
     const validationConfig = {
@@ -18,13 +18,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
             stringLength: {
               min: 2,
               max: 255,
-              message: "Name must be between 2 and 255 characters"
+              message: "Name must be between 2 and 255 characters",
             },
             regexp: {
               regexp: /^[a-z.]+$/,
-              message: "Name can only consist of alphabetical characters and dots"
-            }
-          }
+              message:
+                "Name can only consist of alphabetical characters and dots",
+            },
+          },
         },
         guard_name: {
           validators: {
@@ -32,20 +33,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
             stringLength: {
               min: 2,
               max: 255,
-              message: "Guard name must be between 2 and 255 characters"
-            }
-          }
-        }
+              message: "Guard name must be between 2 and 255 characters",
+            },
+          },
+        },
       },
       plugins: {
         trigger: new FormValidation.plugins.Trigger(),
         bootstrap5: new FormValidation.plugins.Bootstrap5({
           eleValidClass: "",
-          rowSelector: ".col-sm-12"
+          rowSelector: ".col-sm-12",
         }),
         submitButton: new FormValidation.plugins.SubmitButton(),
         defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-        autoFocus: new FormValidation.plugins.AutoFocus()
+        autoFocus: new FormValidation.plugins.AutoFocus(),
       },
       init: (instance) => {
         instance.on("plugins.message.placed", function (e) {
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
             );
           }
         });
-      }
+      },
     };
 
     forms.forEach(({ selector }) => {

@@ -14,7 +14,7 @@ $(document).ready(function () {
     });
   });
 
-  const clickSelector = '[id^="sidebar-menu-page-"], [id^="shortcut-link-"], [id^="navbar-link-"], [id^="profile-nav-"], [id^="shortcut-add-button"]';
+  const clickSelector = '[id^="sidebar-menu-page-"], [id^="shortcut-link-"], [id^="navbar-link-"], [id^="profile-nav-"], [id^="shortcut-add-button"], [id^="dashboard-write-report-button"]';
 
   $(document).on("click", clickSelector, function (e) {
     const url = $(this).data("route");

@@ -31,16 +31,6 @@ document.addEventListener("DOMContentLoaded", function (e) {
         stepsValidationForm.querySelectorAll(".btn-prev")
       );
 
-      const multiStepsMobile = document.querySelector(".multi-steps-mobile");
-
-      // Mobile
-      if (multiStepsMobile) {
-        new Cleave(multiStepsMobile, {
-          phone: true,
-          phoneRegionCode: "ID",
-        });
-      }
-
       let validationStepper = new Stepper(stepsValidation, {
         linear: true,
       });
@@ -50,32 +40,36 @@ document.addEventListener("DOMContentLoaded", function (e) {
         stepsValidationFormStep1,
         {
           fields: {
-            username: {
+            phone: {
               validators: {
                 notEmpty: {
-                  message: "Please enter username",
+                  message: 'Please enter your phone number'
                 },
                 stringLength: {
-                  min: 6,
+                  min: 10,
                   max: 25,
-                  message:
-                    "The username must be more than 6 and less than 25 characters long",
+                  message: 'Phone number must be between 10 and 25 characters long'
                 },
                 regexp: {
-                  regexp: /^[a-zA-Z0-9]+$/,
-                  message:
-                    "The username can only consist of alphabetical and number",
-                },
+                  regexp: /^8[1-9][0-9]{6,15}$/,
+                  message: 'The phone number must be a valid Indonesian phone number. (e.g., 81234567890)'
+                }
               },
             },
-            email: {
+            identity_number: {
               validators: {
                 notEmpty: {
-                  message: "Please enter email address",
+                  message: "Please enter your identity number",
                 },
-                emailAddress: {
-                  message: "The value is not a valid email address",
+                stringLength: {
+                  min: 10,
+                  max: 20,
+                  message: 'Identity number must be between 10 and 20 characters long'
                 },
+                regexp: {
+                  regexp: /^[0-9]{12,16}$/,
+                  message: 'The identity number must be a valid Indonesian identity number'
+                }
               },
             },
             password: {
@@ -162,29 +156,35 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 },
               },
             },
-            whatsapp_number: {
+            gender: {
               validators: {
                 notEmpty: {
-                  message: "Please enter mobile number",
-                },
-              },
+                  message: 'Please select your gender'
+                }
+              }
             },
-            telkom_batch: {
+            birth_date: {
               validators: {
                 notEmpty: {
-                  message: "Please enter telkom batch",
+                  message: 'Please select your birth date'
+                },
+                date: {
+                  format: 'YYYY-MM-DD',
+                  message: 'The value is not a valid date'
+                }
+              }
+            },
+            job: {
+              validators: {
+                notEmpty: {
+                  message: 'Please enter your job'
                 },
                 stringLength: {
-                  min: 4,
-                  max: 5,
-                  message:
-                    "The telkom batch must be more than 4 and less than 5 characters long",
-                },
-                regex: {
-                  pattern:/^(19|20)\d{2}$/,
-                  message: "The telkom batch must be a valid year (e.g., 1999, 2024)",
-                },
-              },
+                  min: 2,
+                  max: 50,
+                  message: 'Job must be between 2 and 50 characters long'
+                }
+              }
             },
             address: {
               validators: {

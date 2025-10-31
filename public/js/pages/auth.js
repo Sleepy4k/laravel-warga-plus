@@ -12,19 +12,21 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (formAuthentication) {
       const fv = FormValidation.formValidation(formAuthentication, {
         fields: {
-          "email-username": {
+          "phone-identity": {
             validators: {
               notEmpty: {
-                message: "Please enter email / username",
+                message: "Please enter your phone number or identity number",
               },
               stringLength: {
-                min: 4,
-                message: "Email or username must be more than 4 characters",
+                min: 10,
+                max: 25,
+                message:
+                  "Phone number or identity number must be more than 10 characters and less than 25 characters",
               },
               regexp: {
-                regexp: /^[a-zA-Z0-9@._-]+$/,
+                regexp: /^(8[1-9][0-9]{6,15}|[0-9]{12,16})$/,
                 message:
-                  "The email or username can only consist of alphabetical, number, dot, underscore, and hyphen",
+                  "The phone number or identity number must be a valid Indonesian phone number or identity number",
               },
             },
           },

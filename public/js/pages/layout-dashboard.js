@@ -28,7 +28,8 @@ $(document).ready(function () {
  */
 $(document).ready(function () {
   $(document).on("click", "[data-route]", function (e) {
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.which === 2) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.which === 2)
+      return;
 
     const route = $(this).data("route");
     if (!route) return;

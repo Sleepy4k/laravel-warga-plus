@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         linear: true,
       });
 
-      validationStepper.to(2)
+      validationStepper.to(2);
 
       // Account details
       const multiSteps1 = FormValidation.formValidation(
@@ -107,27 +107,33 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 },
               },
             },
-            whatsapp_number: {
+            gender: {
               validators: {
                 notEmpty: {
-                  message: "Please enter mobile number",
+                  message: "Please select your gender",
                 },
               },
             },
-            telkom_batch: {
+            birth_date: {
               validators: {
                 notEmpty: {
-                  message: "Please enter telkom batch",
+                  message: "Please select your birth date",
+                },
+                date: {
+                  format: "YYYY-MM-DD",
+                  message: "The value is not a valid date",
+                },
+              },
+            },
+            job: {
+              validators: {
+                notEmpty: {
+                  message: "Please enter your job",
                 },
                 stringLength: {
-                  min: 4,
-                  max: 5,
-                  message:
-                    "The telkom batch must be more than 4 and less than 5 characters long",
-                },
-                regex: {
-                  pattern:/^(19|20)\d{2}$/,
-                  message: "The telkom batch must be a valid year (e.g., 1999, 2024)",
+                  min: 2,
+                  max: 50,
+                  message: "Job must be between 2 and 50 characters long",
                 },
               },
             },

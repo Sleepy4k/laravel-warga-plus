@@ -19,30 +19,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
             },
             stringLength: {
               min: 2,
-              max: 35,
-              message: "Name must be between 2 and 35 characters",
-            },
-            regexp: {
-              regexp: /^[a-zA-Z_-]+$/,
-              message:
-                "Name can only consist of alphabetical characters, dashes and underscores",
-            },
-          },
-        },
-        label: {
-          validators: {
-            notEmpty: {
-              message: "Please enter your label",
-            },
-            stringLength: {
-              min: 2,
-              max: 75,
-              message: "Label must be between 2 and 75 characters",
+              max: 50,
+              message: "Name must be between 2 and 50 characters",
             },
             regexp: {
               regexp: /^[a-zA-Z\s_-]+$/,
               message:
-                "Label can only consist of alphabetical characters, dashes, underscores and spaces",
+                "Name can only consist of alphabetical characters, dashes and underscores",
             },
           },
         },
