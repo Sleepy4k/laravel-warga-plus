@@ -48,6 +48,12 @@
         }
     },
     "scripts": {
+        "setup": [
+            "@php -r \"file_exists('vendor/autoload.php') || exec('composer install');\"",
+            "@php -r \"file_exists('node_modules/.package-lock.json') || exec('npm install');\"",
+            "npm run build",
+            "@php artisan naka:pre-setup"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -65,7 +71,8 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd\" \"php artisan serve\" --names=server"
+            "@php -r \"file_exists('node_modules/.package-lock.json') || exec('npm install');\"",
+            "npx concurrently -c \"#93c5fd,#fdba74\" \"php artisan serve\" \"npm run dev\" --names='server,vite'"
         ]
     },
     "extra": {
