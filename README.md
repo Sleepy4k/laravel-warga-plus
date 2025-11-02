@@ -1,13 +1,14 @@
 # Laravel Warga Plus
 
-This project is a
+This project is a web application built using the Laravel framework. It provides a user-friendly dashboard for both users and administrators to manage reports, settings, and content.
 
 ## Overview
 
 ### User Dashboard
 
-- User can see their dashboard to see and create a report.
-- Submit their spesific task easily only with some step on submission form
+- A simple and intuitive interface for users to submit and track reports.
+- Users can create new reports, view the status of their existing reports, and manage their profile.
+- Responsive design ensures accessibility across various devices.
 
 ### Admin Dashboard
 
@@ -45,28 +46,10 @@ Go to the project directory
 cd laravel-warga-plus
 ~~~
 
-Install composer dependencies
+Setup the server
 
 ~~~bash
-composer install
-~~~
-
-Install node dependencies
-
-~~~bash
-npm install
-~~~
-
-Build node project
-
-~~~bash
-npm run build
-~~~
-
-Run pre-setup command
-
-~~~bash
-php artisan naka:pre-setup
+composer run setup
 ~~~
 
 Start the server
