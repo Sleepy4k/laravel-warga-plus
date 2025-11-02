@@ -127,6 +127,8 @@ Route::middleware('auth')->group(function () {
                 Route::name('report.')->prefix('report')->group(function () {
                     Route::get('{report}/show', [Report\ReportController::class, 'show'])
                         ->name('show');
+                    Route::post('progress', Report\ReportProgressController::class)
+                        ->name('progress.store');
                     Route::resource('attachment', Report\AttachmentController::class)
                         ->only(['destroy']);
                     Route::resource('category', Report\ReportCategoryController::class)
