@@ -47,6 +47,10 @@ class ReportCategoryFactory extends Factory
             $item['name'] = ucwords($item['name']);
             $item['created_at'] = $currentTime;
             $item['updated_at'] = $currentTime;
+
+            if ($item['name'] === 'Lainnya') {
+                $item['created_at'] = $currentTime->subDays(10);
+            }
         }
 
         unset($item);
