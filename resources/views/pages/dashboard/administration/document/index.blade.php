@@ -239,6 +239,11 @@
                                 return "&nbsp" + (count === 1 ? singular : plural);
                             };
 
+                            if (formId === '#form-add-new-record') {
+                                const fileInput = $('#form-add-new-record').find('input[type="file"]');
+                                fileInput.val('');
+                            }
+
                             const totalDocument = response.data.totalDocument || 0;
                             const totalDocumentArchived = response.data.totalDocumentArchived || 0;
                             const totalDocumentCategories = response.data.totalDocumentCategories || 0;

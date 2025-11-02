@@ -25,6 +25,7 @@
         @cspMetaTag
 
         <meta property="csp-nonce" content="{{ app('csp-nonce') }}">
+        <meta property="csrf-token" content="{{ csrf_token() }}">
 
         <meta property="og:locale" content="{{ app()->getLocale() }}">
         <meta property="og:url" content="{{ url()->current() }}">
@@ -50,6 +51,9 @@
         <meta property="twitter:image:type" content="image/png">
         <meta property="twitter:image:alt" content="{{ empty($title) ? $appSettings['app_name'] : $title . ' | ' . $appSettings['app_name'] }}">
 
+        <meta property="login-url" content="{{ route('login') }}">
+        <meta property="heartbeat-url" content="{{ route('profile.heartbeat') }}">
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link rel="stylesheet"
@@ -69,9 +73,9 @@
         <link rel="stylesheet" href="{{ asset('vendor/css/front-pages/pages/front-landing.css') }}" class="template-customizer-theme-css"
             @cspNonce />
 
-        <script type="text/javascript" src="{{ asset('vendor/js/front-page/helpers.js') }}" @cspNonce></script>
-        <script type="text/javascript" src="{{ asset('vendor/js/front-page/template-customizer.js') }}" @cspNonce></script>
-        <script type="text/javascript" src="{{ asset('js/front-config.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/js/front-page/helpers.min.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/js/front-page/template-customizer.min.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('js/front-config.min.js') }}" @cspNonce></script>
 
         <script type="text/javascript" src="{{ asset('vendor/gsap/gsap.min.js') }}" @cspNonce></script>
         <script type="text/javascript" src="{{ asset('vendor/gsap/ScrollTrigger.min.js') }}" @cspNonce></script>
@@ -93,11 +97,15 @@
         <script type="text/javascript" src="{{ asset('vendor/libs/popper/popper.js') }}" @cspNonce></script>
         <script type="text/javascript" src="{{ asset('vendor/js/bootstrap.js') }}" @cspNonce></script>
 
-        <script type="text/javascript" src="{{ asset('js/front-main.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('js/front-main.min.js') }}" @cspNonce></script>
+
+        @if ($isLoggedIn)
+            <script type="text/javascript" src="{{ asset('js/heartbeat.min.js') }}" @cspNonce></script>
+        @endif
 
         @stack('plugin-scripts')
 
-        <script type="text/javascript" src="{{ asset('js/pages/layout-landing.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('js/pages/layout-landing.min.js') }}" @cspNonce></script>
 
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function () {

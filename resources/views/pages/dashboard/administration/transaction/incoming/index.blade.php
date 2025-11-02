@@ -776,6 +776,11 @@
                             }
                         },
                         onSuccess: function(response, formId) {
+                            if (formId === '#form-add-new-record') {
+                                addFormHandler.clearPrevious();
+                                $('#form-add-new-record')[0].reset();
+                            }
+
                             if (typeof Swal !== 'undefined') {
                                 Swal.fire({
                                     icon: "success",

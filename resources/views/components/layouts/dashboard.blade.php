@@ -25,6 +25,7 @@
         @cspMetaTag
 
         <meta property="csp-nonce" content="{{ app('csp-nonce') }}">
+        <meta property="csrf-token" content="{{ csrf_token() }}">
 
         <meta property="og:locale" content="{{ app()->getLocale() }}">
         <meta property="og:url" content="{{ url()->current() }}">
@@ -49,6 +50,9 @@
         <meta property="twitter:image:height" content="{{ $appSettings['seo_image_height'] }}" />
         <meta property="twitter:image:type" content="image/png">
         <meta property="twitter:image:alt" content="{{ $title }} | {{ $appSettings['app_name'] }}">
+
+        <meta property="login-url" content="{{ route('login') }}">
+        <meta property="heartbeat-url" content="{{ route('profile.heartbeat') }}">
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

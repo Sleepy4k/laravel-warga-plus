@@ -106,10 +106,38 @@
                     <div class="card-datatable table-responsive">
                         <table class="datatables-projects border-top table">
                             <thead>
-
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Title</th>
+                                    <th>Location</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($reports as $index => $report)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $report->title }}</td>
+                                        <td>{{ $report->location }}</td>
+                                        <td>{{ $report->category->name ?? 'Uncategorized' }}</td>
+                                        <td>
+                                            @php
+                                                $statusClasses = [
+                                                    'dibuat' => 'badge bg-warning',
+                                                    'diproses' => 'badge bg-info',
+                                                    'ditolak' => 'badge bg-danger',
+                                                    'selesai' => 'badge bg-success',
+                                                ];
+                                                $statusClass = $statusClasses[$report->status] ?? 'badge bg-secondary';
+                                            @endphp
+                                            <span class="{{ $statusClass }}">
+                                                {{ ucwords(str_replace('_', ' ', $report->status)) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -123,7 +151,56 @@
 
     @pushOnce('page-scripts')
         <script @cspNonce>
+            $(document).ready(function() {
+                $('.datatables-projects').DataTable({
+                    responsive: true,
+                    columnDefs: [{
+                            orderable: false,
+                            targets: -1
+                        },
+                        {
+                            searchable: false,
+                            targets: -1
+                        }
+                    ],
+                    order: [
+                        [0, 'asc']
+                    ],
+                    dom: '<"card-header pb-0 pt-sm-0"<"head-label text-center"><"d-flex justify-content-center justify-content-md-end"f>>t<"row mx-2"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+                    displayLength: 10,
+                    lengthMenu: [10, 25, 50, 75, 100],
+                    responsive: {
+                        details: {
+                            display: $.fn.dataTable.Responsive.display.modal({
+                                header: function(row) {
+                                    var data = row.data();
+                                    return 'Details of "' + data['project_name'] + '" Project';
+                                }
+                            }),
+                            type: 'column',
+                            renderer: function(api, rowIdx, columns) {
+                                var data = $.map(columns, function(col, i) {
+                                    return col.title !== '' ?
+                                        '<tr data-dt-row="' + col.rowIndex + '" data-dt-column="' +
+                                        col.columnIndex + '">' +
+                                        '<td>' +
+                                        col.title + ':' +
+                                        '</td> ' +
+                                        '<td>' +
+                                        col.data +
+                                        '</td>' +
+                                        '</tr>' :
+                                        '';
+                                }).join('');
 
+                                return data ? $('<table class="table"/><tbody />').append(data) : false;
+                            }
+                        }
+                    }
+                });
+
+                $('div.head-label').html('<h5 class="card-title mb-0">Reports</h5>');
+            });
         </script>
     @endPushOnce
 </x-layouts.dashboard>

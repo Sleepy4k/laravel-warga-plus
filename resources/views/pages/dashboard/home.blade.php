@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-sm-4 text-center">
                             <div class="card-body p-0">
-                                <img src="{{ asset('img/illustrations/man-with-laptop-dark.png') }}" height="120"
+                                <img src="{{ asset('img/illustrations/man-with-laptop-dark.png') }}" height="100"
                                     class="img-fluid" alt="View Badge User"
                                     data-app-dark-img="illustrations/man-with-laptop-dark.png"
                                     data-app-light-img="illustrations/man-with-laptop-light.png" loading="lazy">
@@ -40,14 +40,19 @@
                         <div class="mb-3">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="mb-0 fw-semibold">My Reports</h6>
-                                <span class="badge bg-warning text-black rounded-pill">Year
-                                    {{ now()->format('Y') }}</span>
+                                <span class="badge bg-warning text-black rounded-pill">Year {{ now()->format('Y') }}</span>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <h3 class="mb-0 fw-bold">{{ $totalArticles }} Report</h3>
+
+                        <div class="mb-2">
+                            <h3 class="mb-0 fw-bold">
+                                {{ $totalMyReports ?? 0 }}
+                                {{ Str::plural('Report', $totalMyReports ?? 0) }}
+                            </h3>
+                            <small class="text-muted">Reports you've submitted this year</small>
                         </div>
-                        <div id="profileReportChart" style="min-height: 80px;"></div>
+
+                        <div id="profileReportChart"></div>
                     </div>
                 </div>
             </div>
@@ -79,148 +84,100 @@
 
     @pushOnce('page-scripts')
         <script @cspNonce>
-            var productData = {!! $productChartData !!};
-            var articleData = {!! $articleChartData !!};
+            (function () {
+                try {
+                    const overviewData = @json($chartData) ?? [];
+                    const myReportData = @json($myReports) ?? [];
+                    const chartColors = @json($chartColorData) ?? ['#7367F0'];
 
-            const totalProductEl = document.querySelector('#totalProductEl'),
-                totalProductConfig = {
-                    chart: {
-                        height: 250,
-                        type: 'area',
-                        toolbar: false,
-                        dropShadow: {
-                            enabled: true,
-                            top: 14,
-                            left: 2,
-                            blur: 3,
-                            color: '#696cff',
-                            opacity: 0.15
-                        }
-                    },
-                    series: [{
-                        data: productData
-                    }],
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        width: 3,
-                        curve: 'straight'
-                    },
-                    colors: ['#696cff'],
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            shade: 'dark',
-                            shadeIntensity: 0.8,
-                            opacityFrom: 0.7,
-                            opacityTo: 0.25,
-                            stops: [0, 95, 100]
-                        }
-                    },
-                    grid: {
-                        show: true,
-                        borderColor: '#eceef1',
-                        padding: {
-                            top: -15,
-                            bottom: -10,
-                            left: 0,
-                            right: 0
-                        }
-                    },
-                    xaxis: {
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                        labels: {
-                            offsetX: 0,
-                            style: {
-                                colors: '#a1acb8',
-                                fontSize: '13px'
+                    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+                    const commonLabelStyle = {
+                        offsetX: 0,
+                        style: { colors: '#a1acb8', fontSize: '13px' }
+                    };
+
+                    const createAndRender = (el, config) => {
+                        if (!el) return;
+                        new ApexCharts(el, config).render();
+                    };
+
+                    const totalProductEl = document.getElementById('totalProductEl');
+                    const totalProductConfig = {
+                        chart: { height: 250, type: 'area', toolbar: true },
+                        legend: {
+                            show: true,
+                            position: 'top',
+                            horizontalAlign: 'right',
+                            markers: { width: 10, height: 10, radius: 12 },
+                            itemMargin: { horizontal: 10, vertical: 5 },
+                            fontSize: '14px',
+                            labels: { colors: '#fff' }
+                        },
+                        series: overviewData,
+                        dataLabels: { enabled: false },
+                        stroke: { width: 3, curve: 'smooth' },
+                        colors: chartColors,
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                shade: 'dark',
+                                shadeIntensity: 0.8,
+                                opacityFrom: 0.7,
+                                opacityTo: 0.25,
+                                stops: [0, 95, 100]
                             }
                         },
-                        axisBorder: {
-                            show: false
+                        grid: {
+                            show: true,
+                            borderColor: '#eceef1',
+                            padding: { top: -15, bottom: -10, left: 0, right: 0 }
                         },
-                        axisTicks: {
-                            show: false
-                        },
-                        lines: {
-                            show: false
+                        xaxis: { categories: months, labels: commonLabelStyle, axisBorder: { show: false }, axisTicks: { show: false }, lines: { show: false } },
+                        yaxis: {
+                            labels: {
+                                offsetX: -15,
+                                style: { fontSize: '13px', colors: '#a1acb8' },
+                                formatter: val => parseInt(val, 10)
+                            },
+                            min: 0
                         }
-                    },
-                    yaxis: {
-                        labels: {
-                            offsetX: -15,
-                            style: {
-                                fontSize: '13px',
-                                colors: '#a1acb8'
+                    };
+
+                    createAndRender(totalProductEl, totalProductConfig);
+
+                    const profileReportChartEl = document.getElementById('profileReportChart');
+                    const profileReportChartConfig = {
+                        chart: {
+                            height: 110,
+                            type: 'area',
+                            toolbar: { show: false },
+                            sparkline: { enabled: true }
+                        },
+                        grid: { show: false, padding: { right: 8 } },
+                        colors: chartColors,
+                        dataLabels: { enabled: false },
+                        stroke: { width: 5, curve: 'smooth' },
+                        series: myReportData,
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                shade: 'dark',
+                                shadeIntensity: 0.8,
+                                opacityFrom: 0.7,
+                                opacityTo: 0.25,
+                                stops: [0, 95, 100]
                             }
                         },
-                        min: 0,
-                        tickAmount: 5
-                    }
-                };
-            if (typeof totalProductEl !== undefined && totalProductEl !== null) {
-                const totalProduct = new ApexCharts(totalProductEl, totalProductConfig);
-                totalProduct.render();
-            }
+                        xaxis: { categories: months, labels: commonLabelStyle, axisBorder: { show: false }, axisTicks: { show: false }, lines: { show: false } },
+                        yaxis: { show: true, labels: { show: true, formatter: val => parseInt(val, 10) }, min: 0 }
+                    };
 
-            const profileReportChartEl = document.querySelector('#profileReportChart'),
-                profileReportChartConfig = {
-                    chart: {
-                        height: 80,
-                        type: 'line',
-                        toolbar: {
-                            show: false
-                        },
-                        dropShadow: {
-                            enabled: true,
-                            top: 10,
-                            left: 5,
-                            blur: 3,
-                            color: '#ffab00',
-                            opacity: 0.15
-                        },
-                        sparkline: {
-                            enabled: true
-                        }
-                    },
-                    grid: {
-                        show: false,
-                        padding: {
-                            right: 8
-                        }
-                    },
-                    colors: ['#ffab00'],
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        width: 5,
-                        curve: 'smooth'
-                    },
-                    series: [{
-                        data: articleData
-                    }],
-                    xaxis: {
-                        show: false,
-                        lines: {
-                            show: false
-                        },
-                        labels: {
-                            show: false
-                        },
-                        axisBorder: {
-                            show: false
-                        }
-                    },
-                    yaxis: {
-                        show: false
-                    }
-                };
-            if (typeof profileReportChartEl !== undefined && profileReportChartEl !== null) {
-                const profileReportChart = new ApexCharts(profileReportChartEl, profileReportChartConfig);
-                profileReportChart.render();
-            }
+                    createAndRender(profileReportChartEl, profileReportChartConfig);
+                } catch (e) {
+                    console.error(e);
+                }
+            })();
         </script>
     @endPushOnce
 </x-layouts.dashboard>

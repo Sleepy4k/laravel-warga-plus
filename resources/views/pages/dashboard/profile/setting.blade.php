@@ -89,8 +89,7 @@
                                 </div>
                                 <div class="mb-3 col-md-12">
                                     <label for="autosize-address" class="form-label">Address</label>
-                                    <textarea id="autosize-address" name="address" rows="3" class="form-control"
-                                        style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 85px;">{{ old('address', $personal->address) }}</textarea>
+                                    <textarea id="autosize-address" name="address" class="form-control">{{ old('address', $personal->address) }}</textarea>
                                     <x-input.error for="address" />
                                 </div>
                             </div>
