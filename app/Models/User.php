@@ -237,4 +237,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Shortcut::class, UserHasShortcut::class, 'user_id', 'shortcut_id');
     }
+
+    /**
+     * Get the reports for the user.
+     */
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'user_id', 'id');
+    }
 }

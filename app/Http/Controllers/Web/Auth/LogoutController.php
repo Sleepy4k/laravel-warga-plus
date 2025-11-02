@@ -22,6 +22,6 @@ class LogoutController extends Controller
 
         Toast::primary('Success', 'You have been logged out successfully.');
 
-        return to_route('landing.home');
+        return to_route('login');
     }
 }

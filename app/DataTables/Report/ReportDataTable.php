@@ -2,6 +2,7 @@
 
 namespace App\DataTables\Report;
 
+use App\Enums\ReportType;
 use App\Models\Report;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
@@ -13,6 +14,19 @@ use Yajra\DataTables\Services\DataTable;
 class ReportDataTable extends DataTable
 {
     /**
+     * Indicates if the current user is a default user.
+     */
+    protected bool $isUser = false;
+
+    /**
+     * Initialize the data table class.
+     */
+    public function __construct()
+    {
+        $this->isUser = isUserHasRole(config('rbac.role.default'));
+    }
+
+    /**
      * Build the DataTable class.
      *
      * @param QueryBuilder<Report> $query Results from query() method.
@@ -21,20 +35,20 @@ class ReportDataTable extends DataTable
     {
         $buttons = [
             'edit' => [
-                'permission' => 'document.edit',
+                'permission' => 'report.edit',
                 'class' => 'btn-warning edit-record',
                 'icon' => 'fa-pen-to-square',
                 'target' => '#edit-record',
             ],
             'delete' => [
-                'permission' => 'document.delete',
+                'permission' => 'report.delete',
                 'class' => 'btn-danger delete-record',
                 'icon' => 'fa-trash',
                 'target' => null,
             ],
         ];
 
-        return (new EloquentDataTable($query))
+        $table = (new EloquentDataTable($query))
             ->addColumn('action', function ($query) use ($buttons) {
                 $actions = '';
 
@@ -63,7 +77,26 @@ class ReportDataTable extends DataTable
                 $content = $query->content ?: '-';
                 return strlen($content) > 50 ? substr($content, 0, 47) . '...' : $content;
             })
-            ->rawColumns(['action'])
+            ->editColumn('status', function ($query) {
+                $status = ReportType::from($query->status)?->value ?? '-';
+                return ucwords(strtolower(str_replace('_', ' ', $status)));
+            })
+            ->editColumn('created_at', function ($query) {
+                return $query->created_at->format('d, M Y H:i');
+            })
+            ->orderColumn('full_name', function ($query, $order) {
+                $query->join('user_personal_data', 'reports.user_id', '=', 'user_personal_data.user_id')
+                    ->orderBy('user_personal_data.first_name', $order)
+                    ->orderBy('user_personal_data.last_name', $order);
+            });
+
+        if (!$this->isUser) {
+            $table->editColumn('full_name', function ($query) {
+                return $query->user->personal->full_name ?? '-';
+            });
+        }
+
+        return $table->rawColumns(['action'])
             ->addIndexColumn();
     }
 
@@ -74,9 +107,17 @@ class ReportDataTable extends DataTable
      */
     public function query(Report $model): QueryBuilder
     {
-        return $model
-            ->select('reports.id', 'reports.title', 'reports.content', 'reports.location', 'reports.status', 'reports.category_id', 'reports.user_id', 'reports.created_at', 'reports.updated_at')
-            ->with('category:id,name', 'user:id', 'user.person:id,first_name,last_name');
+        $query = $model
+            ->select('reports.id', 'reports.title', 'reports.content', 'reports.location', 'reports.status', 'category_id', 'reports.user_id', 'reports.created_at', 'reports.updated_at')
+            ->with('category:id,name', 'attachments:id,report_id,path,file_name,file_size,extension');
+
+        if ($this->isUser) {
+            $query->where('reports.user_id', auth('web')->id());
+        } else {
+            $query->with('user:id', 'user.personal:id,user_id,first_name,last_name');
+        }
+
+        return $query;
     }
 
     /**
@@ -112,7 +153,7 @@ class ReportDataTable extends DataTable
      */
     public function getColumns(): array
     {
-        return [
+        $columns = [
             Column::computed('updated_at')
                 ->exportable(false)
                 ->orderable(true)
@@ -129,7 +170,7 @@ class ReportDataTable extends DataTable
                 ->title('Content')
                 ->addClass('text-center')
                 ->hidden(),
-            Column::computed('content_display')
+            Column::make('content_display')
                 ->exportable(false)
                 ->printable(false)
                 ->title('Content')
@@ -137,12 +178,47 @@ class ReportDataTable extends DataTable
             Column::make('category.name')
                 ->title('Category')
                 ->addClass('text-center'),
+            Column::make('location')
+                ->title('Location')
+                ->addClass('text-center'),
+            Column::make('status')
+                ->title('Status')
+                ->addClass('text-center'),
+        ];
+
+        if (!$this->isUser) {
+            $columns = array_merge($columns, [
+                Column::make('user.personal.first_name')
+                    ->title('First Name')
+                    ->addClass('text-center')
+                    ->exportable(false)
+                    ->printable(false)
+                    ->hidden(),
+                Column::make('user.personal.last_name')
+                    ->title('Last Name')
+                    ->addClass('text-center')
+                    ->exportable(false)
+                    ->printable(false)
+                    ->hidden(),
+                Column::make('full_name')
+                    ->title('Reported By')
+                    ->addClass('text-center')
+                    ->searchable(false),
+            ]);
+        }
+
+        $columns = array_merge($columns, [
+            Column::make('created_at')
+                ->title('Created At')
+                ->addClass('text-center'),
             Column::computed('action')
                 ->title('Action')
                 ->exportable(false)
                 ->printable(false)
-                ->addClass('text-center'),
-        ];
+                ->addClass('text-center')
+        ]);
+
+        return $columns;
     }
 
     /**

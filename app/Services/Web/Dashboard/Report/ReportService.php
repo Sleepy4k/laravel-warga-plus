@@ -2,24 +2,49 @@
 
 namespace App\Services\Web\Dashboard\Report;
 
+use App\Contracts\Models;
+use App\Enums\ReportLogType;
+use App\Enums\ReportType;
 use App\Foundations\Service;
+use App\Models\Report;
+use App\Models\ReportAttachment;
+use App\Models\ReportCategory;
+use Illuminate\Support\Facades\DB;
 
 class ReportService extends Service
 {
+    /**
+     * Model contract constructor.
+     */
+    public function __construct(
+        private Models\ReportInterface $reportInterface
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index(): array
     {
-        return [];
-    }
+        $isUser = isUserHasRole(config('rbac.role.default'));
+        $whereClause = $isUser ? [['user_id', auth('web')->id()]] : [];
+        $reports = $this->reportInterface->all(['id', 'status', 'user_id'], [], $whereClause);
+        $totalReports = $reports->count();
+        $totalReportsProcessed = $reports->filter(fn ($report) => $report->status === ReportType::PROCCESSED->value)->count();
+        $totalReportsDeclined = $reports->filter(fn ($report) => $report->status === ReportType::DENIED->value)->count();
+        $totalReportsSolved = $reports->filter(fn ($report) => $report->status === ReportType::COMPLETED->value)->count();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(): array
-    {
-        return [];
+        $statuses = ReportType::cases();
+        $categories = ReportCategory::select('id', 'name', 'created_at')->orderBy('created_at', 'asc')->get();
+
+        return compact(
+            'totalReports',
+            'totalReportsProcessed',
+            'totalReportsDeclined',
+            'totalReportsSolved',
+            'categories',
+            'statuses',
+            'isUser'
+        );
     }
 
     /**
@@ -27,21 +52,56 @@ class ReportService extends Service
      */
     public function store(array $request): bool
     {
-        return false;
+        try {
+            $userId = auth('web')->id();
+
+            $attachments = $request['file'] ?? [];
+            unset($request['file']);
+
+            DB::beginTransaction();
+
+            if ($request['category_id'] === 'other' && isset($request['new-category'])) {
+                $category = ReportCategory::firstOrCreate([
+                    'name' => $request['new-category'],
+                ]);
+                $request['category_id'] = $category->id;
+                unset($request['new-category']);
+            }
+
+            $report = Report::create(array_merge($request, [
+                'user_id' => $userId,
+                'status' => ReportType::CREATED,
+            ]));
+
+            if ($attachments && !empty($attachments)) {
+                foreach ($attachments as $attachment) {
+                    ReportAttachment::create([
+                        'report_id' => $report->id,
+                        'user_id' => $userId,
+                        'path' => $attachment,
+                        'file_name' => $attachment->getClientOriginalName(),
+                        'file_size' => $attachment->getSize(),
+                        'extension' => $attachment->getClientOriginalExtension(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return true;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->sendReportLog(ReportLogType::ERROR, 'Error creating report: '.$th->getMessage(), [
+                'request' => $request
+            ]);
+            return false;
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(int $id): array
-    {
-        return [];
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(int $id): array
+    public function show(Report $report): array
     {
         return [];
     }
@@ -49,16 +109,96 @@ class ReportService extends Service
     /**
      * Update the specified resource in storage.
      */
-    public function update(array $request, int $id): bool
+    public function update(array $request, Report $report): bool
     {
-        return false;
+        try {
+            $attachments = $request['file'] ?? [];
+            unset($request['file']);
+
+            DB::beginTransaction();
+
+            if ($request['category_id'] === 'other' && isset($request['new-category'])) {
+                $category = ReportCategory::firstOrCreate([
+                    'name' => ucwords(strtolower($request['new-category'])),
+                ]);
+                $request['category_id'] = $category->id;
+                unset($request['new-category']);
+            }
+
+            if (!isUserHasRole(config('rbac.role.default')) && isset($request['status'])) {
+                $request['status'] = ReportType::from($request['status'])?->value;
+            } else {
+                unset($request['status']);
+            }
+
+            $updated = $report->update($request);
+
+            if ($attachments && !empty($attachments)) {
+                foreach ($attachments as $attachment) {
+                    ReportAttachment::create([
+                        'report_id' => $report->id,
+                        'user_id' => auth('web')->id(),
+                        'path' => $attachment,
+                        'file_name' => $attachment->getClientOriginalName(),
+                        'file_size' => $attachment->getSize(),
+                        'extension' => $attachment->getClientOriginalExtension(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return $updated;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->sendReportLog(ReportLogType::ERROR, 'Error updating report: '.$th->getMessage(), [
+                'request' => $request,
+                'report_id' => $report->id
+            ]);
+            return false;
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id): bool
+    public function destroy(Report $report): bool
     {
-        return false;
+        try {
+            if ($report->attachments()->count() > 0) {
+                foreach ($report->attachments as $attachment) {
+                    $attachment->delete();
+                }
+            }
+
+            return $report->delete();
+        } catch (\Throwable $th) {
+            $this->sendReportLog(ReportLogType::ERROR, 'Error deleting report: '.$th->getMessage(), [
+                'report_id' => $report->id
+            ]);
+            return false;
+        }
+    }
+
+    /**
+     * Get report statistics.
+     *
+     * @return array
+     */
+    public function getReportStats(): array
+    {
+        $reports = $this->reportInterface->all(['id', 'status']);
+
+        $totalReports = $reports->count();
+        $totalReportsProcessed = $reports->filter(fn ($report) => $report->status === ReportType::PROCCESSED->value)->count();
+        $totalReportsDeclined = $reports->filter(fn ($report) => $report->status === ReportType::DENIED->value)->count();
+        $totalReportsSolved = $reports->filter(fn ($report) => $report->status === ReportType::COMPLETED->value)->count();
+
+        return compact(
+            'totalReports',
+            'totalReportsProcessed',
+            'totalReportsDeclined',
+            'totalReportsSolved'
+        );
     }
 }

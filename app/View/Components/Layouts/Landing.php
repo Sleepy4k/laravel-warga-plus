@@ -20,6 +20,8 @@ class Landing extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.layouts.landing');
+        return view('components.layouts.landing', [
+            'isLoggedIn' => auth('web')->check(),
+        ]);
     }
 }

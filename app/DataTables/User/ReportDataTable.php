@@ -34,9 +34,12 @@ class ReportDataTable extends DataTable
      */
     public function query(Report $model): QueryBuilder
     {
+        $user = request()->route('user');
+
         return $model
-            ->select('reports.id', 'reports.title', 'reports.content', 'reports.location', 'reports.status', 'reports.category_id', 'reports.created_at', 'reports.updated_at')
-            ->with('category:id,name');
+            ->select('reports.id', 'reports.title', 'reports.content', 'reports.location', 'reports.status', 'reports.category_id', 'reports.user_id', 'reports.created_at', 'reports.updated_at')
+            ->with('category:id,name')
+            ->where('reports.user_id', $user?->id);
     }
 
     /**

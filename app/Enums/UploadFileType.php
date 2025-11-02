@@ -19,5 +19,6 @@ enum UploadFileType: string
     case ARTICLE = 'photos/article';
     case PRODUCT = 'photos/product';
     case DOCUMENT = 'files/document';
+    case REPORT_ATTACHMENT = 'files/report';
     case LETTER_ATTACHMENT = 'files/letter';
 }

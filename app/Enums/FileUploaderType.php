@@ -12,5 +12,6 @@ enum FileUploaderType: string
     case PROFILE = 'profile';
     case SETTING = 'setting';
     case DOCUMENT = 'document';
+    case REPORT = 'report';
     case LETTER_TRANSACTION = 'document_transaction';
 }

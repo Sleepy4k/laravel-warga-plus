@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
-        if (app()->environment('production')) {
+        if (app()->environment(['production', 'staging'])) {
             Debugbar::disable();
         } else {
             if (file_exists(storage_path('.installed'))) {

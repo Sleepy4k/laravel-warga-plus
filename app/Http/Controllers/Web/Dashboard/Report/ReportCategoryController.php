@@ -33,7 +33,7 @@ class ReportCategoryController extends Controller
      */
     public function index(ReportCategoryDataTable $dataTable)
     {
-        return $dataTable->render('pages.dashboard.report.category.index');
+        return $dataTable->render('pages.dashboard.report.category.index', $this->service->index());
     }
 
     /**

@@ -33,13 +33,25 @@ class ReportController extends Controller
      */
     public function index(ReportDataTable $dataTable)
     {
-        return $dataTable->render('pages.dashboard.report.index');
+        return $dataTable->render('pages.dashboard.report.index', $this->service->index());
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreRequest $request)
+    {
+        if (!$this->service->store($request->validated())) {
+            return $this->sendResponse(null, 'Failed to create report. Please try again.', 500);
+        }
+
+        return $this->sendResponse($this->service->getReportStats(), 'Report successfully created.', 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Report $report)
     {
         //
     }
@@ -49,7 +61,11 @@ class ReportController extends Controller
      */
     public function update(UpdateRequest $request, Report $report)
     {
-        //
+        if (!$this->service->update($request->validated(), $report)) {
+            return $this->sendResponse(null, 'Failed to update report. Please try again.', 500);
+        }
+
+        return $this->sendResponse($this->service->getReportStats(), 'Report successfully updated.', 200);
     }
 
     /**
@@ -57,6 +73,10 @@ class ReportController extends Controller
      */
     public function destroy(Report $report)
     {
-        //
+        if (!$this->service->destroy($report)) {
+            return $this->sendResponse(null, 'Failed to delete report. Please try again.', 500);
+        }
+
+        return $this->sendResponse($this->service->getReportStats(), 'Report successfully deleted.', 200);
     }
 }

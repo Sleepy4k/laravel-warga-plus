@@ -39,8 +39,8 @@ class Report extends Model
             'content' => AsHash::class,
             'location' => AsHash::class,
             'status' => 'string',
-            'category_id' => 'integer',
-            'user_id' => 'integer',
+            'category_id' => 'string',
+            'user_id' => 'string',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];
@@ -60,7 +60,7 @@ class Report extends Model
      */
     public function category()
     {
-        return $this->belongsTo(ReportCategory::class, 'category_id');
+        return $this->belongsTo(ReportCategory::class, 'category_id', 'id');
     }
 
     /**
@@ -68,7 +68,7 @@ class Report extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     /**

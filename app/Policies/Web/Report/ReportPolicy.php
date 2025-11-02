@@ -64,4 +64,12 @@ class ReportPolicy
 
         return $report->user_id === $user->id && $isAllowed;
     }
+
+    /**
+     * Determine whether the user can delete attachments of the model.
+     */
+    public function deleteAttachments(User $user): bool
+    {
+        return $user->can('report.update');
+    }
 }

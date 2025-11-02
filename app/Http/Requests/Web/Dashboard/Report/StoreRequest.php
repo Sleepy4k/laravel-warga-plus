@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Web\Dashboard\Report;
 
+use App\Enums\FileUploaderType;
+use App\Facades\FileUploader;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreRequest extends FormRequest
 {
@@ -21,8 +24,19 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $fileUploader = FileUploader::init(FileUploaderType::LETTER_TRANSACTION);
+        $fileType = $fileUploader->get('type', 'file');
+        $fileMimes = $fileUploader->get('mimes', 'pdf,doc,docx,jpg,jpeg,png');
+        $fileMaxSize = $fileUploader->get('max_size', 8192);
+
         return [
-            //
+            'title' => ['required', 'string', 'max:150'],
+            'content' => ['required', 'string'],
+            'location' => ['required', 'string', 'max:255'],
+            'category_id' => ['required', 'string', 'max:50'],
+            'new-category' => [Rule::requiredIf($this->input('category_id') === 'other'), 'max:50'],
+            'file' => ['nullable', 'array'],
+            'file.*' => ['required', $fileType, 'mimes:'.$fileMimes, 'extensions:'.$fileMimes, 'max:'.$fileMaxSize],
         ];
     }
 }
