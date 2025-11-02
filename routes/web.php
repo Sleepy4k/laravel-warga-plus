@@ -121,10 +121,18 @@ Route::middleware('auth')->group(function () {
             Route::name('dashboard.')->prefix('dashboard')->group(function () {
                 Route::get('/', AnalyticController::class)->name('index');
 
-                Route::get('/report', AnalyticController::class)->name('report.index');
-                Route::resource('report/category', Report\ReportCategoryController::class)
-                    ->names('report.category')
+                Route::resource('/report', Report\ReportController::class)
                     ->except(['create', 'show', 'edit']);
+
+                Route::name('report.')->prefix('report')->group(function () {
+                    Route::get('{report}/show', [Report\ReportController::class, 'show'])
+                        ->name('show');
+                    Route::resource('attachment', Report\AttachmentController::class)
+                        ->only(['destroy']);
+                    Route::resource('category', Report\ReportCategoryController::class)
+                        ->names('category')
+                        ->except(['create', 'show', 'edit']);
+                });
 
                 Route::get('/information', AnalyticController::class)->name('information.index');
                 Route::get('/information/category', AnalyticController::class)
