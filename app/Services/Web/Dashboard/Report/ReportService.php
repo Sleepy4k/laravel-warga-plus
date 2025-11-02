@@ -9,6 +9,7 @@ use App\Foundations\Service;
 use App\Models\Report;
 use App\Models\ReportAttachment;
 use App\Models\ReportCategory;
+use App\Models\ReportProgress;
 use Illuminate\Support\Facades\DB;
 
 class ReportService extends Service
@@ -73,6 +74,12 @@ class ReportService extends Service
                 'status' => ReportType::CREATED,
             ]));
 
+            ReportProgress::create([
+                'report_id' => $report->id,
+                'title' => 'Report Created',
+                'description' => 'The report has been created by the user.',
+            ]);
+
             if ($attachments && !empty($attachments)) {
                 foreach ($attachments as $attachment) {
                     ReportAttachment::create([
@@ -103,7 +110,26 @@ class ReportService extends Service
      */
     public function show(Report $report): array
     {
-        return [];
+        $report->load([
+            'user:id,phone,identity_number,is_active',
+            'user.personal:user_id,first_name,last_name,birth_date,job,gender,address,avatar',
+            'category:id,name',
+            'attachments:id,report_id,path,file_name,file_size,extension,created_at',
+            'progress:report_id,title,description,created_at',
+        ]);
+        $user = $report->user;
+        $personal = $user->personal;
+        $role = $user->getRoleNames()->first() ?? 'N/A';
+        $isCanAddProgress = !in_array($report->status, [
+            ReportType::COMPLETED->value,
+            ReportType::DENIED->value,
+            ReportType::CREATED->value,
+        ], true);
+
+        // sort progress by created_at descending
+        $progresses = $report->progress->sortByDesc('created_at')->values();
+
+        return compact('report', 'user', 'personal', 'role', 'isCanAddProgress', 'progresses');
     }
 
     /**
@@ -127,6 +153,26 @@ class ReportService extends Service
 
             if (!isUserHasRole(config('rbac.role.default')) && isset($request['status'])) {
                 $request['status'] = ReportType::from($request['status'])?->value;
+                $status = $request['status'] ?? null;
+
+                $progressMap = [
+                    ReportType::PROCCESSED->value => [
+                        'title' => 'Report Processed',
+                        'description' => 'The report is being processed by the management.',
+                    ],
+                    ReportType::DENIED->value => [
+                        'title' => 'Report Denied',
+                        'description' => 'The report has been denied by the management.',
+                    ],
+                    ReportType::COMPLETED->value => [
+                        'title' => 'Report Completed',
+                        'description' => 'The report has been completed by the management.',
+                    ],
+                ];
+
+                if ($status !== null && isset($progressMap[$status])) {
+                    ReportProgress::create(array_merge(['report_id' => $report->id], $progressMap[$status]));
+                }
             } else {
                 unset($request['status']);
             }

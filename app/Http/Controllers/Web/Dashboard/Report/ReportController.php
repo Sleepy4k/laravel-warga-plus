@@ -23,6 +23,7 @@ class ReportController extends Controller
         private $abilities = [
             'index' => 'viewAny',
             'store' => 'store',
+            'show' => 'view',
             'update' => 'update',
             'destroy' => 'delete',
         ]
@@ -53,7 +54,7 @@ class ReportController extends Controller
      */
     public function show(Report $report)
     {
-        //
+        return view('pages.dashboard.report.detail', $this->service->show($report));
     }
 
     /**

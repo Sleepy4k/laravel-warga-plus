@@ -78,4 +78,12 @@ class Report extends Model
     {
         return $this->hasMany(ReportAttachment::class, 'report_id');
     }
+
+    /**
+     * Get the progress updates for the report.
+     */
+    public function progress()
+    {
+        return $this->hasMany(ReportProgress::class, 'report_id');
+    }
 }

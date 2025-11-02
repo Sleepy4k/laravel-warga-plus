@@ -144,7 +144,7 @@ class ListService extends Service
             'genders' => $genders,
             'uid' => $currentUser->id,
             'user' => $currentUser,
-            'role' => $currentUser->getRoleNames()->first() ?? 'Guest',
+            'role' => $currentUser->getRoleNames()->first() ?? 'N/A',
             'personal' => $personal,
             'recentLogins' => $recentLogins,
             'deviceIcon' => $deviceIcon,

@@ -122,10 +122,19 @@ class UserDataTable extends DataTable
      */
     public function query(User $model): QueryBuilder
     {
+        $assignableRoles = config('rbac.assign.' . getUserRole(), []);
+
         return $model
             ->select('users.id', 'users.phone', 'users.identity_number', 'users.last_seen', 'users.is_active', 'users.created_at', 'users.updated_at')
-            ->with('personal:id,user_id,first_name,last_name,avatar,gender,job,birth_date,address')
-            ->whereHas('personal');
+            ->with('personal:id,user_id,first_name,last_name,avatar,gender,job,birth_date,address', 'roles:id,name')
+            ->whereHas('personal')
+            ->where(function ($query) use ($assignableRoles) {
+                if (!empty($assignableRoles)) {
+                    $query->whereHas('roles', function ($roleQuery) use ($assignableRoles) {
+                        $roleQuery->whereIn('name', $assignableRoles);
+                    });
+                }
+            });
     }
 
     /**
