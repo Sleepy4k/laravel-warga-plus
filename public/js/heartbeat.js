@@ -1,13 +1,19 @@
-$(document).ready(function () {
+document.addEventListener("DOMContentLoaded", function () {
   let isFocused = true;
+
+  const baseUrl = window.location.origin;
   const csrfToken = document
-    .querySelector('meta[name="csrf-token"]')
+    .querySelector('meta[property="csrf-token"]')
     .getAttribute("content");
+  const loginUrl = document
+    .querySelector('meta[property="login-url"]')
+    .getAttribute("content") || baseUrl + "/login";
+  const heartbeatUrl = document
+    .querySelector('meta[property="heartbeat-url"]')
+    .getAttribute("content") || baseUrl + "/profile/heartbeat";
 
   function sendHeartbeat() {
-    const loginUrl = "{{ route('login') }}";
-
-    fetch("{{ route('profile.heartbeat') }}", {
+    fetch(heartbeatUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -23,6 +29,10 @@ $(document).ready(function () {
             console.log("User is not authenticated, redirecting to login...");
             window.location.href = loginUrl;
           } else {
+            if (!window.location.href.includes("/dashboard")) {
+              return;
+            }
+
             response.json().then((result) => {
               $class =
                 "avatar avatar-" + result.data.last_seen + " position-relative";
