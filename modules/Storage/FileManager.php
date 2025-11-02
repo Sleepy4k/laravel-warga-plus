@@ -119,6 +119,10 @@ class FileManager
                         Storage::put($indexFilePath, Storage::disk('public')->get('index.html'));
                     }
                 }
+            } else {
+                if (!Storage::exists(rtrim($directory, '/'))) {
+                    Storage::makeDirectory(rtrim($directory, '/'));
+                }
             }
 
             if (in_array($fileExtension, ['jpg', 'jpeg', 'webp'])) {

@@ -2,12 +2,15 @@
 
 namespace Modules\Notification;
 
+use App\Enums\ReportLogType;
+use App\Traits\SystemLog;
 use Exception;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class FonnteGateway
 {
+    use SystemLog;
+
     /**
      * Base URL for Fonnte API
      *
@@ -92,7 +95,7 @@ class FonnteGateway
         if (!$response->ok()) {
             $logparam = $param;
             $logparam['message'] = isset($param['message']) ? (strlen($param['message']) > 20 ? substr($param['message'], 0, 20) . '...' : $param['message']) : null;
-            Log::error("ERROR RESPONSE fonnte", [
+            $this->sendReportLog(ReportLogType::ERROR, "Error response from fonnte with status " . $response->status(), [
                 'endpoint' => $this->base_url . $endpoint,
                 'request' => $logparam,
                 'response' => $response->body(),
@@ -104,7 +107,8 @@ class FonnteGateway
 
         $logparam = $param;
         $logparam['message'] = isset($param['message']) ? (strlen($param['message']) > 20 ? substr($param['message'], 0, 20) . '...' : $param['message']) : null;
-        Log::info("OK RESPONSE fonnte", [
+
+        $this->sendReportLog(ReportLogType::INFO, "Successful response from fonnte", [
             'endpoint' => $this->base_url . $endpoint,
             'request' => $logparam,
             'response' => $response->body(),
