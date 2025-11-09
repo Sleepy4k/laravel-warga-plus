@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('report_progress', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignIdFor(Report::class, 'report_id')->constrained()->cascadeOnDelete();
-            $table->string('title');
+            $table->text('title');
             $table->text('description');
             $table->timestamps();
         });
