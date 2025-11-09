@@ -1,9 +1,4 @@
 <x-layouts.dashboard title="Analytics">
-    @pushOnce('plugin-styles')
-        <link rel="stylesheet" href="{{ asset('vendor/libs/apex-charts/apex-charts.css') }}" @cspNonce />
-        <link rel="stylesheet" href="{{ asset('vendor/css/pages/card-analytics.css') }}" @cspNonce />
-    @endPushOnce
-
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row g-4 mb-4">
             <div class="col-lg-8 order-0">
@@ -37,22 +32,43 @@
             <div class="col-lg-4 order-1">
                 <div class="card h-100 shadow-sm border-0">
                     <div class="card-body d-flex flex-column justify-content-between">
-                        <div class="mb-3">
-                            <div class="d-flex align-items-center justify-content-between">
-                                <h6 class="mb-0 fw-semibold">My Reports</h6>
-                                <span class="badge bg-warning text-black rounded-pill">Year {{ now()->format('Y') }}</span>
+                        @if ($isRoleUser)
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6 class="mb-0 fw-semibold">My Reports</h6>
+                                    <span class="badge bg-warning text-black rounded-pill">Year {{ now()->format('Y') }}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="mb-2">
-                            <h3 class="mb-0 fw-bold">
-                                {{ $totalMyReports ?? 0 }}
-                                {{ Str::plural('Report', $totalMyReports ?? 0) }}
-                            </h3>
-                            <small class="text-muted">Reports you've submitted this year</small>
-                        </div>
+                            <div class="mb-2">
+                                <h3 class="mb-0 fw-bold">
+                                    {{ $totalMyReports ?? 0 }}
+                                    {{ Str::plural('Report', $totalMyReports ?? 0) }}
+                                </h3>
+                                <small class="text-muted">Reports you've submitted this year</small>
+                            </div>
 
-                        <div id="profileReportChart"></div>
+                            <div id="profileReportChart"></div>
+                        @else
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6 class="mb-0 fw-semibold">Informations</h6>
+                                    <span class="badge bg-warning text-black rounded-pill">Year {{ now()->format('Y') }}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <h3 class="mb-0 fw-bold">
+                                    {{ $totalInformations ?? 0 }}
+                                    {{ Str::plural('Information', $totalInformations ?? 0) }}
+                                </h3>
+                                <small class="text-muted">
+                                    Informations published this year
+                                </small>
+                            </div>
+
+                            <div id="informationChart"></div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -84,27 +100,27 @@
 
     @pushOnce('page-scripts')
         <script @cspNonce>
+            const CSP_NONCE = document.querySelector('meta[property="csp-nonce"]')?.getAttribute('content') || null;
+            const chartColors = @json($chartColorData) ?? ['#7367F0'];
+            const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const commonLabelStyle = {
+                offsetX: 0,
+                style: { colors: '#a1acb8', fontSize: '13px' }
+            };
+
+            const createAndRender = (el, config) => {
+                if (!el) return;
+                new ApexCharts(el, config).render();
+            };
+        </script>
+        <script @cspNonce>
             (function () {
                 try {
                     const overviewData = @json($chartData) ?? [];
-                    const myReportData = @json($myReports) ?? [];
-                    const chartColors = @json($chartColorData) ?? ['#7367F0'];
-
-                    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
-                    const commonLabelStyle = {
-                        offsetX: 0,
-                        style: { colors: '#a1acb8', fontSize: '13px' }
-                    };
-
-                    const createAndRender = (el, config) => {
-                        if (!el) return;
-                        new ApexCharts(el, config).render();
-                    };
 
                     const totalProductEl = document.getElementById('totalProductEl');
                     const totalProductConfig = {
-                        chart: { height: 250, type: 'area', toolbar: true },
+                        chart: { height: 250, type: 'area', toolbar: true, nonce: CSP_NONCE },
                         legend: {
                             show: true,
                             position: 'top',
@@ -145,39 +161,91 @@
                     };
 
                     createAndRender(totalProductEl, totalProductConfig);
-
-                    const profileReportChartEl = document.getElementById('profileReportChart');
-                    const profileReportChartConfig = {
-                        chart: {
-                            height: 110,
-                            type: 'area',
-                            toolbar: { show: false },
-                            sparkline: { enabled: true }
-                        },
-                        grid: { show: false, padding: { right: 8 } },
-                        colors: chartColors,
-                        dataLabels: { enabled: false },
-                        stroke: { width: 5, curve: 'smooth' },
-                        series: myReportData,
-                        fill: {
-                            type: 'gradient',
-                            gradient: {
-                                shade: 'dark',
-                                shadeIntensity: 0.8,
-                                opacityFrom: 0.7,
-                                opacityTo: 0.25,
-                                stops: [0, 95, 100]
-                            }
-                        },
-                        xaxis: { categories: months, labels: commonLabelStyle, axisBorder: { show: false }, axisTicks: { show: false }, lines: { show: false } },
-                        yaxis: { show: true, labels: { show: true, formatter: val => parseInt(val, 10) }, min: 0 }
-                    };
-
-                    createAndRender(profileReportChartEl, profileReportChartConfig);
                 } catch (e) {
                     console.error(e);
                 }
             })();
         </script>
+        @if ($isRoleUser)
+            <script @cspNonce>
+                (function () {
+                    try {
+                        const myReportData = @json($myReports) ?? [];
+
+                        const profileReportChartEl = document.getElementById('profileReportChart');
+                        const profileReportChartConfig = {
+                            chart: {
+                                height: 110,
+                                type: 'area',
+                                toolbar: { show: false },
+                                sparkline: { enabled: true },
+                                nonce: CSP_NONCE
+                            },
+                            grid: { show: false, padding: { right: 8 } },
+                            colors: chartColors,
+                            dataLabels: { enabled: false },
+                            stroke: { width: 5, curve: 'smooth' },
+                            series: myReportData,
+                            fill: {
+                                type: 'gradient',
+                                gradient: {
+                                    shade: 'dark',
+                                    shadeIntensity: 0.8,
+                                    opacityFrom: 0.7,
+                                    opacityTo: 0.25,
+                                    stops: [0, 95, 100]
+                                }
+                            },
+                            xaxis: { categories: months, labels: commonLabelStyle, axisBorder: { show: false }, axisTicks: { show: false }, lines: { show: false } },
+                            yaxis: { show: true, labels: { show: true, formatter: val => parseInt(val, 10) }, min: 0 }
+                        };
+
+                        createAndRender(profileReportChartEl, profileReportChartConfig);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                })();
+            </script>
+        @else
+            <script @cspNonce>
+                (function () {
+                    try {
+                        const informations = @json($informations) ?? [];
+
+                        const informationChartEl = document.getElementById('informationChart');
+                        const informationChartConfig = {
+                            chart: {
+                                height: 110,
+                                type: 'area',
+                                toolbar: { show: false },
+                                sparkline: { enabled: true },
+                                nonce: CSP_NONCE
+                            },
+                            grid: { show: false, padding: { right: 8 } },
+                            colors: chartColors,
+                            dataLabels: { enabled: false },
+                            stroke: { width: 5, curve: 'smooth' },
+                            series: informations,
+                            fill: {
+                                type: 'gradient',
+                                gradient: {
+                                    shade: 'dark',
+                                    shadeIntensity: 0.8,
+                                    opacityFrom: 0.7,
+                                    opacityTo: 0.25,
+                                    stops: [0, 95, 100]
+                                }
+                            },
+                            xaxis: { categories: months, labels: commonLabelStyle, axisBorder: { show: false }, axisTicks: { show: false }, lines: { show: false } },
+                            yaxis: { show: true, labels: { show: true, formatter: val => parseInt(val, 10) }, min: 0 }
+                        };
+
+                        createAndRender(informationChartEl, informationChartConfig);
+                    } catch (e) {
+                        console.error(e);
+                    }
+                })();
+            </script>
+        @endif
     @endPushOnce
 </x-layouts.dashboard>

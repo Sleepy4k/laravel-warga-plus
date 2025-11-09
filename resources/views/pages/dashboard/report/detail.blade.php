@@ -114,17 +114,17 @@
             </div>
 
             <div class="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
-                <ul class="nav nav-pills flex-column flex-md-row mb-2" role="tablist" id="detail-account-tabs">
+                <ul class="nav nav-pills flex-column flex-md-row mb-2" role="tablist" id="detail-report-tabs">
                     <li class="nav-item">
-                        <button class="nav-link" role="tab" data-bs-toggle="tab" id="account-tab"
-                            data-bs-target="#account-settings" aria-controls="account-settings" aria-selected="true">
+                        <button class="nav-link" role="tab" data-bs-toggle="tab" id="report-tab"
+                            data-bs-target="#report-settings" aria-controls="report-settings" aria-selected="true">
                             <i class="bx bx-comment-add me-1"></i>
                             Report
                         </button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" role="tab" data-bs-toggle="tab" id="security-tab"
-                            data-bs-target="#security-settings" aria-controls="security-settings" aria-selected="false">
+                        <button class="nav-link" role="tab" data-bs-toggle="tab" id="progress-tab"
+                            data-bs-target="#progress-settings" aria-controls="progress-settings" aria-selected="false">
                             <i class="bx bx-check-circle me-1"></i>
                             Progress
                         </button>
@@ -132,7 +132,7 @@
                 </ul>
 
                 <div class="tab-content mb-4" style="padding: 0; padding-top: 1rem;">
-                    <div class="tab-pane fade" id="account-settings" role="tabpanel" aria-labelledby="account-tab">
+                    <div class="tab-pane fade" id="report-settings" role="tabpanel" aria-labelledby="report-tab">
                         <div class="card mb-4">
                             <h5 class="card-header">{{ $report->title }}</h5>
                             <div class="card-body table-responsive">
@@ -247,7 +247,7 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="security-settings" role="tabpanel" aria-labelledby="security-tab">
+                    <div class="tab-pane fade" id="progress-settings" role="tabpanel" aria-labelledby="progress-tab">
                         <div class="card mb-4">
                             <h5 class="card-header">Report Progress</h5>
                             <div class="card-body">
@@ -343,15 +343,15 @@
         </script>
         <script type="text/javascript" @cspNonce>
             $(document).ready(function() {
-                $('#detail-account-tabs button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                $('#detail-report-tabs button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
                     const tabId = $(e.target).attr('id');
                     let tab = '';
                     switch (tabId) {
-                        case 'account-tab':
-                            tab = 'account';
+                        case 'report-tab':
+                            tab = 'report';
                             break;
-                        case 'security-tab':
-                            tab = 'security';
+                        case 'progress-tab':
+                            tab = 'progress';
                             break;
                     }
                     if (tab) {
@@ -371,7 +371,7 @@
                 const params = new URLSearchParams(window.location.search);
                 let tab = params.get('tab');
                 if (!tab) {
-                    tab = 'account';
+                    tab = 'report';
                     const url = new URL(window.location);
                     url.searchParams.set('tab', tab);
                     window.history.replaceState({}, '', url);

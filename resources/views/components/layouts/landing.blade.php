@@ -107,7 +107,7 @@
 
         <script type="text/javascript" src="{{ asset('js/pages/layout-landing.min.js') }}" @cspNonce></script>
 
-        <script type="text/javascript">
+        <script type="text/javascript" @cspNonce>
             document.addEventListener('DOMContentLoaded', function () {
                 if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
                     gsap.registerPlugin(ScrollTrigger);

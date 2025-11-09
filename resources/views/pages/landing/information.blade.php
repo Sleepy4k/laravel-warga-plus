@@ -93,9 +93,6 @@
                                         <span
                                             class="badge bg-label-{{ ['primary', 'success', 'danger', 'warning', 'info'][$index % 5] }} me-2">{{ $type }}</span>
                                         <small class="text-muted">{{ $date }}</small>
-                                        <div class="ms-auto">
-                                            <a href="#" class="btn btn-sm btn-primary">Detail</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -15,7 +15,7 @@
 
         <p class="mb-4">
             Reports are organized into <strong>Categories</strong> for easier management and reporting.<br />
-            <strong>Note:</strong> Keep category names clear and descriptive — they are shared system-wide.
+            <strong>Note:</strong> Keep category names clear and descriptive, they are shared system-wide.
         </p>
 
         <div class="card">

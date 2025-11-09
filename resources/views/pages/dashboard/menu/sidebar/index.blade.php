@@ -375,6 +375,132 @@
                         update: @json(auth('web')->user()->can('menu.sidebar.update')),
                         delete: @json(auth('web')->user()->can('menu.sidebar.delete')),
                     },
+                    handleCreateMenu: function(item, permissions) {
+                        const $parentLi = $("<li>")
+                            .addClass(
+                                "list-group-item border border-primary-subtle rounded-3 shadow-sm d-flex flex-column"
+                            )
+                            .attr({
+                                draggable: item.meta.is_sortable ? "true" : "false",
+                                "data-id": item.id,
+                                "data-parent-id": "null",
+                            });
+
+                        const $parentHeader = $("<div>")
+                            .addClass(
+                                "d-flex align-items-center gap-2 pb-2 mt-2" +
+                                (item.meta.is_sortable ? " cursor-grab" : "")
+                            )
+                            .css("cursor", item.meta.is_sortable ? "grab" : "default").html(`
+                                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 1.5rem; height: 1.5rem; color: #6366f1;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                </svg>
+                                <span class="flex-grow-1 fw-bold fs-5">${item.name}</span>
+                                <span class="badge bg-primary text-white fs-6">
+                                    ${
+                                        item.is_spacer
+                                            ? "Spacer"
+                                            : item.children.length > 0
+                                            ? item.children.length + " items"
+                                            : "No children"
+                                    }
+                                </span>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light border-0 shadow-none d-flex align-items-center gap-1"
+                                        type="button" id="dropdownMenuButton-${
+                                            item.id
+                                        }" data-bs-toggle="dropdown" aria-expanded="false"
+                                        title="More actions" style="border: none; background: none;">
+                                        <i class="bx bx-dots-vertical-rounded fs-5"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownMenuButton-${
+                                        item.id
+                                    }">
+                                        ${
+                                            permissions.show
+                                                ? `<li><button class="dropdown-item d-flex align-items-center gap-2 show-record" data-id="${item.id}" data-target="#show-record"><i class="bx bx-info-circle text-primary"></i> Detail</button></li>`
+                                                : ""
+                                        }
+                                        ${
+                                            permissions.edit
+                                                ? `<li><button class="dropdown-item d-flex align-items-center gap-2 edit-record" data-id="${item.id}" data-target="#edit-record"><i class="bx bx-edit-alt text-warning"></i> Edit</button></li>`
+                                                : ""
+                                        }
+                                        ${
+                                            item.meta.is_sortable && permissions.delete
+                                                ? `
+                                                        <li><hr class="dropdown-divider"></li>
+                                                        <li><button class="dropdown-item d-flex align-items-center gap-2 text-danger delete-record" data-id="${item.id}" data-target="#delete-record"><i class="bx bx-trash"></i> Delete</button></li>
+                                                    `
+                                                : ""
+                                        }
+                                    </ul>
+                                </div>
+                            `);
+
+                        $parentLi.append($parentHeader);
+
+                        if (!item.is_spacer && item.children && item.children.length > 0) {
+                            const $childrenUl = $("<ul>")
+                                .addClass("list-group children-list mt-2")
+                                .attr("data-droppable-id", item.id);
+
+                            item.children.forEach((childItem) => {
+                                const $childLi = $("<li>")
+                                    .addClass(
+                                        "list-group-item border border-secondary-subtle rounded-2 shadow-sm d-flex align-items-center gap-2 mb-2"
+                                    )
+                                    .attr({
+                                        draggable: "true",
+                                        "data-id": childItem.id,
+                                        "data-parent-id": item.id,
+                                    })
+                                    .css("cursor", "grab").html(`
+                                        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width: 1.25rem; height: 1.25rem; color: #6c757d;">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                        <span class="flex-grow-1 fw-medium fs-6">${childItem.name}</span>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-light border-0 shadow-none d-flex align-items-center gap-1"
+                                                type="button" id="dropdownMenuButton-child-${
+                                                    childItem.id
+                                                }" data-bs-toggle="dropdown" aria-expanded="false"
+                                                title="More actions" style="border: none; background: none;">
+                                                    <i class="bx bx-dots-vertical-rounded fs-5"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="dropdownMenuButton-${
+                                                    childItem.id
+                                                }">
+                                                ${
+                                                    permissions.show
+                                                        ? `<li><button class="dropdown-item d-flex align-items-center gap-2 show-record" data-id="${childItem.id}" data-target="#show-record"><i class="bx bx-info-circle text-primary"></i> Detail</button></li>`
+                                                        : ""
+                                                }
+                                                ${
+                                                    permissions.edit
+                                                        ? `<li><button class="dropdown-item d-flex align-items-center gap-2 edit-record" data-id="${childItem.id}" data-target="#edit-record"><i class="bx bx-edit-alt text-warning"></i> Edit</button></li>`
+                                                        : ""
+                                                }
+                                                ${
+                                                    item.meta.is_sortable && permissions.delete
+                                                        ? `
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li><button class="dropdown-item d-flex align-items-center gap-2 text-danger delete-record" data-id="${childItem.id}" data-target="#delete-record"><i class="bx bx-trash"></i> Delete</button></li>
+                                                                `
+                                                        : ""
+                                                }
+                                            </ul>
+                                        </div>
+                                    `);
+
+                                $childrenUl.append($childLi);
+                            });
+
+                            $parentLi.append($childrenUl);
+                        }
+
+                        return $parentLi;
+                    }
                 });
             });
         </script>

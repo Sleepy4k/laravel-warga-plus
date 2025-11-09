@@ -108,7 +108,7 @@
                                         <span class="badge bg-label-info">{{ $reportType }}</span>
                                     </div>
                                     <div>
-                                        <a href="#" class="btn btn-sm btn-primary">Detail</a>
+                                        <a href="{{ route('landing.report.show', $item) }}" class="btn btn-sm btn-primary">Detail</a>
                                     </div>
                                 </div>
                             </div>

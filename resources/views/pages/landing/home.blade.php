@@ -182,9 +182,6 @@
                                             <span
                                                 class="badge bg-label-{{ $color }} me-2">{{ $type }}</span>
                                             <span class="ms-2 text-muted small">{{ $date }}</span>
-                                            <div class="ms-auto">
-                                                <a href="#" class="btn btn-sm btn-primary">Detail</a>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

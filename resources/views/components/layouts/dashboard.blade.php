@@ -115,8 +115,6 @@
                         </div>
 
                         <x-dashboard.footer />
-
-                        <div class="content-backdrop fade"></div>
                     </div>
                 </div>
             </div>
