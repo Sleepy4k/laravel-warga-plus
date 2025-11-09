@@ -39,7 +39,7 @@ class AnalyticService extends Service
             ['created_at', '>=', $startOfYear],
             ['created_at', '<=', $endOfYear],
             ]
-        );
+        ) ?? collect();
 
         if (!$isRoleUser) {
             $informationsList = $this->informationInterface->all(
@@ -49,7 +49,7 @@ class AnalyticService extends Service
                     ['created_at', '>=', $startOfYear],
                     ['created_at', '<=', $endOfYear],
                 ]
-            );
+            ) ?? collect();
         }
 
         $months = range(1, 12);

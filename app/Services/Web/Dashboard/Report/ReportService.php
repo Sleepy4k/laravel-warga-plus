@@ -63,7 +63,7 @@ class ReportService extends Service
 
             if ($request['category_id'] === 'other' && isset($request['new-category'])) {
                 $category = ReportCategory::firstOrCreate([
-                    'name' => $request['new-category'],
+                    'name' => ucwords(strtolower($request['new-category'])),
                 ]);
                 $request['category_id'] = $category->id;
                 unset($request['new-category']);
