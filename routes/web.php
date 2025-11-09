@@ -12,6 +12,7 @@ use App\Http\Controllers\Web\Dashboard\Misc;
 use App\Http\Controllers\Web\Dashboard\Menu;
 use App\Http\Controllers\Web\Dashboard\Report;
 use App\Http\Controllers\Web\Dashboard\Setting;
+use App\Http\Controllers\Web\Dashboard\Information;
 use App\Http\Controllers\Web\Dashboard\Administration\Agenda;
 use App\Http\Controllers\Web\Dashboard\Administration\Document;
 use App\Http\Controllers\Web\Dashboard\Administration\Reference;
@@ -93,9 +94,11 @@ Route::middleware(['auth', 'prevent_invalid_registration', 'verified'])->group(f
                 ->except(['create', 'show', 'edit']);
         });
 
-        Route::get('/information', AnalyticController::class)->name('information.index');
-        Route::get('/information/category', AnalyticController::class)
-            ->name('information.category.index');
+        Route::resource('information', Information\InformationController::class)
+            ->except(['create', 'show', 'edit']);
+        Route::resource('information/category', Information\InformationCategoryController::class)
+            ->names('information.category')
+            ->except(['create', 'show', 'edit']);
 
         Route::resource('user', User\ListController::class)
             ->except(['create', 'edit']);
