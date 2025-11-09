@@ -7,12 +7,24 @@ $(document).ready(function () {
   $footer.hide();
   $loader.show();
 
-  $(window).on("load", function () {
+  function handleWindowLoad() {
     $loader.fadeOut(300, function () {
       $footer.fadeIn(200);
       $mainContent.fadeIn(200);
     });
-  });
+  }
+
+  if (document.readyState === "complete") {
+    handleWindowLoad();
+  } else {
+    $(window).on("load", handleWindowLoad);
+
+    setTimeout(function () {
+      if ($loader.is(":visible")) {
+        handleWindowLoad();
+      }
+    }, 5000);
+  }
 
   const clickSelector = '[id^="sidebar-menu-page-"], [id^="shortcut-link-"], [id^="navbar-link-"], [id^="profile-nav-"], [id^="shortcut-add-button"], [id^="dashboard-write-report-button"]';
 
