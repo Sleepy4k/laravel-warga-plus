@@ -67,7 +67,7 @@ class UserDataTable extends DataTable
                 return $actions ?: '-';
             })
             ->editColumn('user', function ($query) {
-                return '<div class="d-flex justify-content-start align-items-center" style="text-align: start;">'.
+                return '<div class="d-flex justify-content-start align-items-center text-start">'.
                     '<div class="avatar-wrapper">'.
                         '<div class="avatar avatar-sm me-4">'.
                             '<img src="'.$query->userAvatar().'" alt="Avatar" class="rounded-circle" loading="lazy" />'.

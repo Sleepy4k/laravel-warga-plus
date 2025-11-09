@@ -33,18 +33,8 @@ class ListService extends Service
         $totalActiveUsers = $users->filter(fn($user) => $user->is_active)->count();
         $totalInactiveUsers = $users->filter(fn($user) => !$user->is_active)->count();
 
-        // set roles data for security, so admin can assign role but not above admin role
         $userRole = getUserRole();
-        $isRoleHighest = $userRole == config('rbac.role.highest');
-        if ($userRole == config('rbac.role.default')) {
-            $assignableRoles = [config('rbac.role.default')];
-        } else if ($isRoleHighest) {
-            $assignableRoles = config('rbac.list.roles');
-        } else {
-            $assignableRoles = array_filter(config('rbac.assign'), fn($roles) => in_array($userRole, $roles));
-            $assignableRoles = array_keys($assignableRoles);
-            $assignableRoles = array_intersect($assignableRoles, $roles->pluck('name')->toArray());
-        }
+        $assignableRoles = config('rbac.assign.'.$userRole) ?? [ $userRole ];
 
         return compact(
             'genders',

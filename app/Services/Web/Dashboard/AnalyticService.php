@@ -14,6 +14,7 @@ class AnalyticService extends Service
      */
     public function __construct(
         private Models\ReportInterface $reportInterface,
+        private Models\InformationInterface $informationInterface
     ) {}
 
     /**
@@ -23,19 +24,55 @@ class AnalyticService extends Service
      */
     public function invoke(): array
     {
-        $reportsData = $this->reportInterface->all(['id', 'status', 'user_id', 'created_at']);
-
         $statuses = ReportType::toArray();
         $currentYear = Carbon::now()->year;
-        $userId = auth('web')->id();
+        $userIdStr = (string) auth('web')->id();
+        $isRoleUser = isUserHasRole(config('rbac.role.default'));
+
+        $startOfYear = Carbon::create($currentYear, 1, 1)->startOfDay();
+        $endOfYear = Carbon::create($currentYear, 12, 31)->endOfDay();
+
+        $reportsData = $this->reportInterface->all(
+            ['id', 'status', 'user_id', 'created_at'],
+            [],
+            [
+            ['created_at', '>=', $startOfYear],
+            ['created_at', '<=', $endOfYear],
+            ]
+        );
+
+        if (!$isRoleUser) {
+            $informationsList = $this->informationInterface->all(
+                ['id', 'created_at'],
+                [],
+                [
+                    ['created_at', '>=', $startOfYear],
+                    ['created_at', '<=', $endOfYear],
+                ]
+            );
+        }
 
         $months = range(1, 12);
-        $zeros = array_combine($months, array_fill(0, count($months), 0));
+        $zeros = array_fill_keys($months, 0);
 
-        $chartDataRaw = $myReportsRaw = [];
+        $chartDataRaw = [];
+        $myReportsRaw = [];
+
         foreach ($statuses as $status) {
             $chartDataRaw[$status] = $zeros;
-            $myReportsRaw[$status] = $zeros;
+            if ($isRoleUser) {
+                $myReportsRaw[$status] = $zeros;
+            }
+        }
+
+        if (!$isRoleUser) {
+            $informationChartDataRaw = $zeros;
+            foreach ($informationsList as $info) {
+                $createdAt = Carbon::parse($info->created_at);
+                if ($createdAt->year === $currentYear) {
+                    $informationChartDataRaw[$createdAt->month]++;
+                }
+            }
         }
 
         foreach ($reportsData as $r) {
@@ -47,16 +84,16 @@ class AnalyticService extends Service
             $month = $createdAt->month;
             $status = (string) $r->status;
 
-            if (!isset($chartDataRaw[$status])) continue;
+            if (!isset($chartDataRaw[$status])) {
+                continue;
+            }
 
             $chartDataRaw[$status][$month]++;
 
-            if ((string) $r->user_id === (string) $userId) {
+            if ($isRoleUser && (string) $r->user_id === $userIdStr) {
                 $myReportsRaw[$status][$month]++;
             }
         }
-
-        $totalMyReports = array_sum(array_map('array_sum', $myReportsRaw));
 
         $formatForChart = function (array $raw) {
             $out = [];
@@ -70,7 +107,17 @@ class AnalyticService extends Service
         };
 
         $chartData = $formatForChart($chartDataRaw);
-        $myReports = $formatForChart($myReportsRaw);
+
+        if ($isRoleUser) {
+            $totalMyReports = array_sum(array_map('array_sum', $myReportsRaw));
+            $myReports = $formatForChart($myReportsRaw);
+        } else {
+            $totalInformations = array_sum($informationChartDataRaw);
+            $informations[] = [
+                'name' => 'Informations',
+                'data' => array_values($informationChartDataRaw),
+            ];
+        }
 
         $chartColorData = array_values([
             ReportType::CREATED->value    => '#f6ad55',
@@ -79,6 +126,10 @@ class AnalyticService extends Service
             ReportType::COMPLETED->value  => '#fc8181',
         ]);
 
-        return compact('chartData', 'myReports', 'totalMyReports', 'chartColorData');
+        if ($isRoleUser) {
+            return compact('isRoleUser', 'chartData', 'myReports', 'totalMyReports', 'chartColorData');
+        } else {
+            return compact('isRoleUser', 'chartData', 'informations', 'totalInformations', 'chartColorData');
+        }
     }
 }
