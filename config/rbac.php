@@ -396,6 +396,11 @@ return [
             'report.category.edit',
             'report.category.update',
             'report.category.delete',
+
+            'document.menu',
+
+            'document.gallery.index',
+            'document.gallery.show',
         ],
     ],
 ];
