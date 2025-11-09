@@ -10,7 +10,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         api: __DIR__.'/../routes/api.php',
-        then: fn() => require __DIR__.'/../routes/install.php'
+        then: function () {
+            require __DIR__.'/../routes/auth.php';
+            require __DIR__.'/../routes/install.php';
+        }
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->throttleApi();
