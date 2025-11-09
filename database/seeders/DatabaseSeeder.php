@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             LetterStatusSeeder::class,
             DocumentCategorySeeder::class,
             ReportCategorySeeder::class,
+            InformationCategorySeeder::class,
         ], $isMustSilent);
     }
 }

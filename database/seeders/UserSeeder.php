@@ -41,10 +41,26 @@ class UserSeeder extends Seeder
             ]
         ];
 
+        $uuids = collect(range(1, count($users)))
+            ->map(fn() => (string) \Illuminate\Support\Str::uuid())
+            ->sort()
+            ->values()
+            ->all();
+
+        $currentTime = now();
+
+        foreach ($users as $index => &$item) {
+            $item['id'] = $uuids[$index];
+            $item['verified_at'] = $currentTime;
+            $item['created_at'] = $currentTime;
+            $item['updated_at'] = $currentTime;
+        }
+
+        unset($item);
+
         array_map(function ($user) {
             $role = $user['role'];
             unset($user['role']);
-            $user['verified_at'] = now();
 
             User::create($user)->assignRole($role);
         }, $users);
@@ -73,11 +89,27 @@ class UserSeeder extends Seeder
             ]
         ];
 
+        $uuids = collect(range(1, count($users)))
+            ->map(fn() => (string) \Illuminate\Support\Str::uuid())
+            ->sort()
+            ->values()
+            ->all();
+
+        $currentTime = now();
+
+        foreach ($users as $index => &$item) {
+            $item['id'] = $uuids[$index];
+            $item['password'] = 'password';
+            $item['verified_at'] = $currentTime;
+            $item['created_at'] = $currentTime;
+            $item['updated_at'] = $currentTime;
+        }
+
+        unset($item);
+
         array_map(function ($user) {
             $role = $user['role'];
             unset($user['role']);
-            $user['password'] = 'password';
-            $user['verified_at'] = now();
 
             User::create($user)->assignRole($role);
         }, $users);

@@ -1,0 +1,66 @@
+<?php
+
+namespace Database\Factories;
+
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\InformationCategory>
+ */
+class InformationCategoryFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        $data = [
+            [
+                'name' => 'Pengumuman',
+            ],
+            [
+                'name' => 'Kegiatan',
+            ],
+            [
+                'name' => 'Peraturan',
+            ],
+            [
+                'name' => 'Keuangan',
+            ],
+            [
+                'name' => 'Kesehatan',
+            ],
+            [
+                'name' => 'Keamanan',
+            ],
+            [
+                'name' => 'Lainnya',
+            ],
+        ];
+
+        $uuids = collect(range(1, count($data)))
+            ->map(fn() => (string) \Illuminate\Support\Str::uuid())
+            ->sort()
+            ->values()
+            ->all();
+
+        $currentTime = now();
+
+        foreach ($data as $index => &$item) {
+            $item['id'] = $uuids[$index];
+            $item['name'] = ucwords($item['name']);
+            $item['created_at'] = $currentTime;
+            $item['updated_at'] = $currentTime;
+
+            if ($item['name'] === 'Lainnya') {
+                $item['created_at'] = $currentTime->subDays(10);
+            }
+        }
+
+        unset($item);
+
+        return $data;
+    }
+}

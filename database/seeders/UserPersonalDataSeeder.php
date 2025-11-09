@@ -28,7 +28,7 @@ class UserPersonalDataSeeder extends Seeder
      */
     private function createProductionUsers(): void
     {
-        $users = User::get('id');
+        $users = User::select('id')->orderBy('id')->get()->toArray();
         $payload = [
             [
                 'user_id' => $users[0]['id'],
@@ -50,13 +50,20 @@ class UserPersonalDataSeeder extends Seeder
             ]
         ];
 
-        $payload = collect($payload)->map(function ($item) {
-            $item['id'] = \Illuminate\Support\Str::uuid();
+        $uuids = collect(range(1, count($payload)))
+            ->map(fn() => (string) \Illuminate\Support\Str::uuid())
+            ->sort()
+            ->values()
+            ->all();
+
+        foreach ($payload as $index => &$item) {
+            $item['id'] = $uuids[$index];
             $item['birth_date'] = encrypt($item['birth_date']);
             $item['job'] = encrypt($item['job']);
             $item['address'] = encrypt($item['address']);
-            return $item;
-        })->toArray();
+        }
+
+        unset($item);
 
         UserPersonalData::insert($payload);
     }
