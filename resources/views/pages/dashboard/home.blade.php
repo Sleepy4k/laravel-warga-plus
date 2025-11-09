@@ -156,7 +156,8 @@
                                 style: { fontSize: '13px', colors: '#a1acb8' },
                                 formatter: val => parseInt(val, 10)
                             },
-                            min: 0
+                            min: 0,
+                            tickAmount: 2
                         }
                     };
 
