@@ -243,9 +243,9 @@ return [
 
     /* Roles that can assign other roles */
     'assign' => [
-        'admin' => ['admin'],
+        'admin' => ['admin', 'pengurus', 'user'],
         'pengurus' => ['pengurus', 'user'],
-        'user' => ['pengurus', 'user'],
+        'user' => ['user'],
     ],
 
     /* Permissions for each role */
