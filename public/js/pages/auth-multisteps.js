@@ -23,6 +23,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
       const stepsValidationFormStep3 = stepsValidationForm.querySelector(
         "#tosLinksValidation"
       );
+      if (
+        !stepsValidationFormStep1 ||
+        !stepsValidationFormStep2 ||
+        !stepsValidationFormStep3
+      ) {
+        console.log("Multi steps form steps are missing");
+        return;
+      }
       // Multi steps next prev button
       const stepsValidationNext = [].slice.call(
         stepsValidationForm.querySelectorAll(".btn-next")
@@ -43,17 +51,19 @@ document.addEventListener("DOMContentLoaded", function (e) {
             phone: {
               validators: {
                 notEmpty: {
-                  message: 'Please enter your phone number'
+                  message: "Please enter your phone number",
                 },
                 stringLength: {
                   min: 10,
                   max: 25,
-                  message: 'Phone number must be between 10 and 25 characters long'
+                  message:
+                    "Phone number must be between 10 and 25 characters long",
                 },
                 regexp: {
                   regexp: /^8[1-9][0-9]{6,15}$/,
-                  message: 'The phone number must be a valid Indonesian phone number. (e.g., 81234567890)'
-                }
+                  message:
+                    "The phone number must be a valid Indonesian phone number. (e.g., 81234567890)",
+                },
               },
             },
             identity_number: {
@@ -64,12 +74,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
                 stringLength: {
                   min: 10,
                   max: 20,
-                  message: 'Identity number must be between 10 and 20 characters long'
+                  message:
+                    "Identity number must be between 10 and 20 characters long",
                 },
                 regexp: {
                   regexp: /^[0-9]{12,16}$/,
-                  message: 'The identity number must be a valid Indonesian identity number'
-                }
+                  message:
+                    "The identity number must be a valid Indonesian identity number",
+                },
               },
             },
             password: {
@@ -159,32 +171,20 @@ document.addEventListener("DOMContentLoaded", function (e) {
             gender: {
               validators: {
                 notEmpty: {
-                  message: 'Please select your gender'
-                }
-              }
+                  message: "Please select your gender",
+                },
+              },
             },
             birth_date: {
               validators: {
                 notEmpty: {
-                  message: 'Please select your birth date'
+                  message: "Please select your birth date",
                 },
                 date: {
-                  format: 'YYYY-MM-DD',
-                  message: 'The value is not a valid date'
-                }
-              }
-            },
-            job: {
-              validators: {
-                notEmpty: {
-                  message: 'Please enter your job'
+                  format: "YYYY-MM-DD",
+                  message: "The value is not a valid date",
                 },
-                stringLength: {
-                  min: 2,
-                  max: 50,
-                  message: 'Job must be between 2 and 50 characters long'
-                }
-              }
+              },
             },
             address: {
               validators: {
@@ -207,6 +207,8 @@ document.addEventListener("DOMContentLoaded", function (e) {
               rowSelector: function (field, ele) {
                 switch (field) {
                   case "address":
+                    return ".col-md-12";
+                  case "job":
                     return ".col-md-12";
                   default:
                     return ".col-sm-6";
