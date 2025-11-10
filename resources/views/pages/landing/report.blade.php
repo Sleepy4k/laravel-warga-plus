@@ -16,30 +16,29 @@
                     <form id="filterForm" class="row g-2 align-items-center">
                         <div class="col-12 col-md">
                             <input type="search" name="q" class="form-control"
-                                placeholder="Cari laporan (lokasi, judul, deskripsi)..." value="{{ request('q') }}"
+                                placeholder="Cari laporan (judul, deskripsi)..." value="{{ request('q') }}"
                                 aria-label="Cari laporan">
                         </div>
 
                         <div class="col-6 col-md-auto">
                             <select name="type" class="form-select" aria-label="Filter tipe">
                                 <option value="">Semua Tipe</option>
-                                <option value="Kehilangan" {{ request('type') == 'Kehilangan' ? 'selected' : '' }}>
-                                    Kehilangan</option>
-                                <option value="Sampah" {{ request('type') == 'Sampah' ? 'selected' : '' }}>Sampah</option>
-                                <option value="Infrastruktur" {{ request('type') == 'Infrastruktur' ? 'selected' : '' }}>
-                                    Infrastruktur</option>
-                                <option value="Keamanan" {{ request('type') == 'Keamanan' ? 'selected' : '' }}>Keamanan
-                                </option>
+                                @foreach ($types as $type)
+                                    <option value="{{ $type->id }}"
+                                        {{ request('type') == (string) $type->id ? 'selected' : '' }}>
+                                        {{ ucwords($type->name) }}</option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="col-6 col-md-auto">
                             <select name="status" class="form-select">
                                 <option value="">Semua Status</option>
-                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Selesai</option>
-                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Dalam Proses
-                                </option>
-                                <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Menunggu</option>
+                                @foreach ($statuses as $status)
+                                    <option value="{{ $status->value }}"
+                                        {{ request('status') == (string) $status->value ? 'selected' : '' }}>
+                                        {{ ucwords($status->value) }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -52,31 +51,8 @@
                 </div>
             </div>
 
-            @php
-                // contoh data sementara — ganti dengan data nyata dari controller
-                $items = range(1, 9);
-                $typeMap = ['Kehilangan', 'Sampah', 'Infrastruktur', 'Keamanan', 'Lainnya'];
-            @endphp
-
             <div class="row g-4" id="reportsContainer">
-                @forelse($items as $item)
-                    @php
-                        $reportType = $typeMap[$item % count($typeMap)];
-                        $title = match ($reportType) {
-                            'Kehilangan' => 'Motor hilang di parkiran',
-                            'Sampah' => 'Sampah berserakan di gang A',
-                            'Infrastruktur' => 'Papan jalan rusak di perempatan',
-                            'Keamanan' => 'Lampu jalan mati di blok B',
-                            default => 'Laporan umum warga',
-                        };
-                        $statusMap = [
-                            0 => ['text' => 'Selesai', 'bg' => 'success', 'icon' => 'bx bx-check-circle'],
-                            1 => ['text' => 'Dalam Proses', 'bg' => 'warning', 'icon' => 'bx bx-time-five'],
-                            2 => ['text' => 'Menunggu', 'bg' => 'secondary', 'icon' => 'bx bx-hourglass'],
-                        ];
-                        $status = $statusMap[$item % 3];
-                    @endphp
-
+                @forelse($reports as $item)
                     <div class="col-lg-4 col-sm-6">
                         <div class="card h-100 shadow-sm border-0 bg-body">
                             <div class="card-body d-flex flex-column">
@@ -86,29 +62,31 @@
                                             class="rounded-circle" loading="lazy">
                                     </div>
                                     <div>
-                                        <h6 class="mb-0">Nama Pelapor {{ $item }}</h6>
-                                        <small class="text-muted">{{ $reportType }} •
-                                            {{ date('d M Y', strtotime('-' . $item . ' days')) }}</small>
+                                        <h6 class="mb-0">{{ $item->user->personal->full_name ?? 'N/A' }}</h6>
+                                        <small class="text-muted">{{ $item->category->name ?? 'N/A' }} •
+                                            {{ date('d M Y', strtotime($item->created_at)) }}</small>
                                     </div>
                                     <div class="ms-auto">
                                         <span
-                                            class="badge bg-label-{{ $status['bg'] }} d-flex align-items-center gap-1">
-                                            <i class="{{ $status['icon'] }}"></i>
-                                            <span>{{ $status['text'] }}</span>
+                                            class="badge bg-label-{{ $reportIcons[$item->status]['bg'] }} d-flex align-items-center gap-1">
+                                            <i class="{{ $reportIcons[$item->status]['icon'] }}"></i>
+                                            <span>{{ $reportIcons[$item->status]['text'] }}</span>
                                         </span>
                                     </div>
                                 </div>
 
-                                <h5 class="mb-2">{{ $title }}</h5>
-                                <p class="mb-3 text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    Deskripsi singkat masalah dilaporkan untuk memberi konteks kepada petugas.</p>
+                                <h5 class="mb-2">{{ $item->title }}</h5>
+                                <p class="mb-3 text-muted">
+                                    {{ Str::limit($item->content, 100, '...') }}
+                                </p>
 
                                 <div class="mt-auto d-flex justify-content-between align-items-center">
                                     <div>
-                                        <span class="badge bg-label-info">{{ $reportType }}</span>
+                                        <span class="badge bg-label-info">{{ $item->category->name ?? 'N/A' }}</span>
                                     </div>
                                     <div>
-                                        <a href="{{ route('landing.report.show', $item) }}" class="btn btn-sm btn-primary">Detail</a>
+                                        <a href="{{ route('landing.report.show', $item->id) }}"
+                                            class="btn btn-sm btn-primary">Detail</a>
                                     </div>
                                 </div>
                             </div>
@@ -123,33 +101,13 @@
                 @endforelse
             </div>
 
-            <div class="mt-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
-                <div class="text-muted text-center text-md-start w-100 w-md-auto">
-                    <small class="d-block d-md-inline">Showing 1 to 10 of 30 entries</small>
-                </div>
-
-                <div class="w-100 w-md-auto d-flex justify-content-center justify-content-md-end">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-rounded mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" aria-label="Previous">&lt;</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">&gt;</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            {{ $reports->links() }}
         </div>
     </section>
 
     @pushOnce('page-scripts')
         <script @cspNonce>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 gsap.from("#reportsContainer .card", {
                     opacity: 0,
                     y: 50,
