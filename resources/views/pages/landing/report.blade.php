@@ -1,8 +1,4 @@
 <x-layouts.landing title="Laporan Warga">
-    @pushOnce('plugin-styles')
-        <link rel="stylesheet" href="{{ asset('vendor/libs/select2/select2.css') }}" @cspNonce />
-    @endPushOnce
-
     <x-landing.hero>
         <div class="hero-text-box text-center position-relative">
             <h1 class="text-primary hero-title display-6 fw-extrabold">Laporan Warga</h1>
@@ -109,25 +105,14 @@
         </div>
     </section>
 
-    @pushOnce('plugin-scripts')
-        <script type="text/javascript" src="{{ asset('vendor/js/front-page/jquery.min.js') }}" @cspNonce></script>
-        <script type="text/javascript" src="{{ asset('vendor/libs/select2/select2.js') }}" @cspNonce></script>
-    @endPushOnce
-
     @pushOnce('page-scripts')
         <script @cspNonce>
-            $(document).ready(function() {
-                const select2Elements = $('.select2');
-                if (select2Elements.length) {
-                    select2Elements.each(function() {
-                        $(this).select2({
-                            dropdownParent: $(this).parent(),
-                            placeholder: 'Select an option',
-                            allowClear: false,
-                            width: '100%',
-                        });
-                    });
-                }
+            document.getElementById('resetFilters').addEventListener('click', function() {
+                const form = document.getElementById('filterForm');
+                form.querySelector('input[name="q"]').value = '';
+                form.querySelector('select[name="type"]').selectedIndex = 0;
+                form.querySelector('select[name="status"]').selectedIndex = 0;
+                form.submit();
             });
         </script>
         @if (count($reports) > 0)

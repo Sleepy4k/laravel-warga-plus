@@ -10,46 +10,16 @@
 
     <section id="detailReport" class="section-py">
         <div class="container">
-            @php
-                // sample placeholder data — replace with real $report from controller
-                $report = $report ?? (object) [
-                    'id' => 1,
-                    'title' => 'Papan jalan rusak di perempatan',
-                    'type' => 'Infrastruktur',
-                    'status' => 1,
-                    'reporter' => 'Nama Pelapor',
-                    'reported_at' => now()->subDays(3),
-                    'location' => 'Perempatan Blok C',
-                    'description' => "Papan penunjuk jalan di perempatan rusak dan patah, berisiko bagi pengendara. Mohon segera diperbaiki.",
-                    'images' => [
-                        'img/products/1.png',
-                        'img/products/2.png',
-                    ],
-                    'timeline' => [
-                        ['status' => 'Diterima', 'note' => 'Laporan diterima oleh sistem', 'at' => now()->subDays(3)],
-                        ['status' => 'Dikonfirmasi oleh Pengurus RT', 'note' => 'Pengurus RT memverifikasi lokasi', 'at' => now()->subDays(2)],
-                        ['status' => 'Dalam Proses', 'note' => 'Dinas terkait dijadwalkan melakukan perbaikan', 'at' => now()->subDay()],
-                    ],
-                ];
-
-                $statusMap = [
-                    0 => ['text' => 'Selesai', 'bg' => 'success', 'icon' => 'bx bx-check-circle'],
-                    1 => ['text' => 'Dalam Proses', 'bg' => 'warning', 'icon' => 'bx bx-time-five'],
-                    2 => ['text' => 'Menunggu', 'bg' => 'secondary', 'icon' => 'bx bx-hourglass'],
-                ];
-                $status = $statusMap[$report->status ?? 2];
-            @endphp
-
             <div class="row g-4">
                 <div class="col-lg-8">
                     <div class="card shadow-sm border-0 bg-body">
                         <div class="card-body">
                             <div id="reportGallery" class="carousel slide mb-4" data-bs-ride="carousel">
                                 <div class="carousel-inner">
-                                    @foreach($report->images as $i => $img)
+                                    @foreach($report->attachments as $i => $attachment)
                                         <div class="carousel-item {{ $i == 0 ? 'active' : '' }}">
                                             <div class="d-block w-100 rounded overflow-hidden" style="height:360px;position:relative;">
-                                                <img src="{{ asset($img) }}" alt="Laporan image {{ $i + 1 }}" loading="lazy"
+                                                <img src="{{ asset($attachment->path) }}" alt="Laporan image {{ $i + 1 }}" loading="lazy"
                                                      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
                                             </div>
                                         </div>
@@ -66,9 +36,9 @@
                             </div>
 
                             <div class="d-flex gap-2 flex-wrap justify-content-center mb-3">
-                                @foreach($report->images as $i => $img)
-                                    <a href="{{ asset($img) }}" target="_blank" class="border rounded p-1 d-inline-block">
-                                        <img src="{{ asset($img) }}" alt="Attachment {{ $i + 1 }}" style="width:80px;height:60px;object-fit:cover;" loading="lazy">
+                                @foreach($report->attachments as $i => $attachment)
+                                    <a href="{{ asset($attachment->path) }}" target="_blank" class="border rounded p-1 d-inline-block">
+                                        <img src="{{ asset($attachment->path) }}" alt="Attachment {{ $i + 1 }}" style="width:80px;height:60px;object-fit:cover;" loading="lazy">
                                     </a>
                                 @endforeach
                             </div>
@@ -78,9 +48,9 @@
                             </h3>
 
                             <div class="d-flex align-items-center mb-3 gap-3">
-                                <small class="text-muted"><i class="bx bx-calendar"></i> {{ $report->reported_at->format('d M Y, H:i') }}</small>
+                                <small class="text-muted"><i class="bx bx-calendar"></i> {{ $report->created_at->format('d M Y, H:i') }}</small>
                                 <small class="text-muted">·</small>
-                                <small class="text-muted">{{ $report->reported_at->diffForHumans() }}</small>
+                                <small class="text-muted">{{ $report->created_at->diffForHumans() }}</small>
 
                                 <div class="ms-auto d-flex">
                                     <button id="shareBtn" type="button" class="btn btn-sm btn-outline-primary">
@@ -91,7 +61,7 @@
 
                             <h6>Deskripsi Lengkap</h6>
                             <p id="reportDesc" class="text-muted">
-                                {{ $report->description }}
+                                {{ $report->content }}
                             </p>
                         </div>
                     </div>
@@ -100,7 +70,7 @@
                         <div class="card-body">
                             <h5 class="mb-3">Timeline Progress</h5>
                             <ul class="timeline list-unstyled mb-0">
-                                @foreach($report->timeline as $step)
+                                @foreach($report->progress as $step)
                                     <li class="d-flex mb-4">
                                         <div class="me-3">
                                             <span class="avatar avatar-xs bg-label-primary rounded-circle d-inline-flex align-items-center justify-content-center">
@@ -110,15 +80,15 @@
                                         <div>
                                             <div>
                                                 <div class="mb-1">
-                                                    <strong class="d-block">{{ $step['status'] }}</strong>
+                                                    <strong class="d-block">{{ $step->title }}</strong>
                                                 </div>
 
                                                 <div class="mb-2">
-                                                    <p class="mb-1 text-muted">{{ $step['note'] }}</p>
+                                                    <p class="mb-1 text-muted">{{ $step->description }}</p>
                                                 </div>
 
                                                 <div>
-                                                    <small class="text-muted">{{ (\Carbon\Carbon::parse($step['at']))->format('l, d M Y H:i') }}</small>
+                                                    <small class="text-muted">{{ $step->created_at->format('l, d M Y H:i') }}</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -137,8 +107,8 @@
                             <div class="d-flex align-items-center gap-3 mb-3">
                                 <div class="flex-shrink-0">
                                     <img
-                                        src="{{ 'https://ui-avatars.com/api/?name=' . urlencode($report->reporter) . '&background=0D6EFD&color=fff&size=128' }}"
-                                        alt="Foto {{ $report->reporter }}"
+                                        src="{{ $report->user->personal->avatar ?? asset('warga-plus.png') }}"
+                                        alt="{{ $report->user->personal->full_name ?? 'N/A' }}"
                                         class="rounded-circle"
                                         style="width:64px;height:64px;object-fit:cover;">
                                 </div>
@@ -146,11 +116,11 @@
                                 <div class="flex-grow-1">
                                     <div class="d-flex align-items-start">
                                         <div>
-                                            <div class="fw-bold">{{ $report->reporter }}</div>
+                                            <div class="fw-bold">{{ $report->user->personal->full_name ?? 'N/A' }}</div>
                                             <small class="text-muted">Pelapor</small>
                                         </div>
                                         <div class="ms-auto text-end">
-                                            <span class="badge bg-label-{{ $status['bg'] }}">{{ $status['text'] }}</span>
+                                            <span class="badge bg-label-primary">{{ ucfirst($report->status) }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -158,21 +128,21 @@
 
                             <div class="mb-3">
                                 <small class="text-muted">Jenis</small>
-                                <div>{{ $report->type }}</div>
+                                <div>{{ $report->category->name }}</div>
                             </div>
 
                             <div class="mb-3">
                                 <small class="text-muted">Lokasi</small>
-                                <div>{{ $report->location }}</div>
+                                <div>{{ ucfirst($report->location) }}</div>
                             </div>
 
                             <div class="mb-3">
                                 <small class="text-muted">Dilaporkan</small>
-                                <div>{{ $report->reported_at->format('d M Y, H:i') }}</div>
+                                <div>{{ $report->created_at->format('d M Y, H:i') }}</div>
                             </div>
 
                             <div class="d-grid gap-2 mt-3">
-                                <a href="tel:813xxxxxxxx" class="btn btn-primary btn-sm">
+                                <a href="tel:{{ $report->user->phone }}" class="btn btn-primary btn-sm">
                                     <i class="bx bx-phone me-1"></i> Hubungi Pelapor
                                 </a>
 
