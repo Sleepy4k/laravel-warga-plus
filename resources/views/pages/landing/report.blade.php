@@ -1,4 +1,8 @@
 <x-layouts.landing title="Laporan Warga">
+    @pushOnce('plugin-styles')
+        <link rel="stylesheet" href="{{ asset('vendor/libs/select2/select2.css') }}" @cspNonce />
+    @endPushOnce
+
     <x-landing.hero>
         <div class="hero-text-box text-center position-relative">
             <h1 class="text-primary hero-title display-6 fw-extrabold">Laporan Warga</h1>
@@ -105,22 +109,44 @@
         </div>
     </section>
 
+    @pushOnce('plugin-scripts')
+        <script type="text/javascript" src="{{ asset('vendor/js/front-page/jquery.min.js') }}" @cspNonce></script>
+        <script type="text/javascript" src="{{ asset('vendor/libs/select2/select2.js') }}" @cspNonce></script>
+    @endPushOnce
+
     @pushOnce('page-scripts')
         <script @cspNonce>
-            document.addEventListener('DOMContentLoaded', function() {
-                gsap.from("#reportsContainer .card", {
-                    opacity: 0,
-                    y: 50,
-                    duration: 1,
-                    ease: "power3.out",
-                    stagger: 0.2,
-                    scrollTrigger: {
-                        trigger: "#reportsContainer",
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    }
-                });
+            $(document).ready(function() {
+                const select2Elements = $('.select2');
+                if (select2Elements.length) {
+                    select2Elements.each(function() {
+                        $(this).select2({
+                            dropdownParent: $(this).parent(),
+                            placeholder: 'Select an option',
+                            allowClear: false,
+                            width: '100%',
+                        });
+                    });
+                }
             });
         </script>
+        @if (count($reports) > 0)
+            <script @cspNonce>
+                document.addEventListener('DOMContentLoaded', function() {
+                    gsap.from("#reportsContainer .card", {
+                        opacity: 0,
+                        y: 50,
+                        duration: 1,
+                        ease: "power3.out",
+                        stagger: 0.2,
+                        scrollTrigger: {
+                            trigger: "#reportsContainer",
+                            start: "top 80%",
+                            toggleActions: "play none none reverse"
+                        }
+                    });
+                });
+            </script>
+        @endif
     @endPushOnce
 </x-layouts.landing>
