@@ -21,16 +21,20 @@ class ReportService extends Service
         $type = $params['type'] ?? null;
         $status = $params['status'] ?? null;
 
-        $reports = Report::when($search, function ($query, $search) {
-            $query->where(function ($subQuery) use ($search) {
-                $subQuery->where('title', 'like', "%{$search}%")
-                    ->orWhere('content', 'like', "%{$search}%");
-            });
-        })->when($type, function ($query, $type) {
+        $reports = Report::when($type, function ($query, $type) {
             $query->where('category_id', $type);
         })->when($status, function ($query, $status) {
             $query->where('status', $status);
         })->latest()->with('category:id,name', 'user:id', 'user.personal:id,user_id,first_name,last_name')->paginate(9)->withQueryString();
+
+        if ($search) {
+            $reports = $reports->filter(function ($report) use ($search) {
+                return str_contains(strtolower($report->title), strtolower($search))
+                    || str_contains(strtolower($report->content), strtolower($search))
+                    || str_contains(strtolower($report->location), strtolower($search));
+            });
+            $reports = Report::setPaginateFromCollection($reports, 9);
+        }
 
         $reportIcons = [];
         foreach (ReportType::cases() as $type) {

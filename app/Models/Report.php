@@ -56,6 +56,24 @@ class Report extends Model
     }
 
     /**
+     * Set paginate from collection.
+     */
+    public static function setPaginateFromCollection($collection, $perPage)
+    {
+        $page = request()->get('page', 1);
+        $total = $collection->count();
+        $items = $collection->slice(($page - 1) * $perPage, $perPage)->values();
+
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $items,
+            $total,
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+    }
+
+    /**
      * Get the category that owns the report.
      */
     public function category()
