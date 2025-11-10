@@ -32,9 +32,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', Landing\HomeController::class)->name('landing.home');
 Route::get('/about-us', Landing\AboutUsController::class)->name('landing.about');
 Route::get('/report', Landing\ReportController::class)->name('landing.report');
-Route::get('/report/{report}', function ($report) {
-    return view('pages.landing.detail-report', ['reportId' => $report]);
-})->name('landing.report.show');
+Route::get('/report/{report}', Landing\ReportDetailController::class)->name('landing.report.show');
 Route::get('/information', Landing\InformationController::class)->name('landing.information');
 
 Route::middleware('throttle:10,1')->group(function () {
