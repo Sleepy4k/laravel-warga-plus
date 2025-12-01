@@ -54,10 +54,6 @@ class GateServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->runningInConsole()) {
-            return;
-        }
-
         // Only when server environment is production
         if (app()->isProduction()) {
             Gate::before(function ($user, $ability) {

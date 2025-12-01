@@ -24,10 +24,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->runningInConsole()) {
-            return;
-        }
-
         Route::pattern('logDate', '[0-9]{4}-[0-9]{2}-[0-9]{2}');
         Route::pattern('appSettingType', implode('|', ApplicationSettingType::toArray()));
 

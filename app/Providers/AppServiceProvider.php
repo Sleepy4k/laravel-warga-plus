@@ -26,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
         JsonResource::withoutWrapping();
 
+        if (app()->runningInConsole()) {
+            return;
+        }
+
         if (file_exists(storage_path('.installed'))) {
             $settings = Setting::select('group', 'key', 'value')
                 ->where('group', 'app')

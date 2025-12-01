@@ -36,10 +36,6 @@ class BindServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->runningInConsole() || !empty($this->modelObservers)) {
-            return;
-        }
-
         $modelsPath = app_path('Models');
         $observersPath = app_path('Observers');
 

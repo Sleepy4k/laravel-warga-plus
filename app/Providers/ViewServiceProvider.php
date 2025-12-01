@@ -22,10 +22,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (app()->runningInConsole()) {
-            return;
-        }
-
         View::composer([
             'components.layouts.auth',
             'components.layouts.landing',
